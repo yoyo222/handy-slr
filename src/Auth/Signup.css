@@ -1,0 +1,35 @@
+/* src/Auth/Signup.css */
+
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f5f5f5; /* Light background for contrast */
+  }
+  
+  .auth-paper {
+    padding: 2rem;
+    width: 400px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .auth-form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .auth-button {
+    margin-top: 1rem;
+    font-size: 16px;
+  }
+  
+  .auth-error {
+    margin-top: 0.5rem;
+  }
+  
+  .auth-success {
+    margin-top: 0.5rem;
+    color: green;
+  }
+  

@@ -1,0 +1,554 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.record-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: var(--background-color);
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.record-video-element {
+  height: 100%;
+  width: auto;
+  object-fit: contain;
+  transform: scaleX(-1);
+  transition: filter 0.5s ease;
+  z-index: 2;
+}
+
+.record-video-element.blurred {
+  filter: blur(8px);
+}
+
+.record-video-element.visible {
+  filter: none;
+}
+
+.record-overlay-image {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-height: 100%;
+  height: 100%;
+  width: auto;
+  object-fit: contain;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.record-overlay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  max-width: 600px;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: var(--text-color);
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  z-index: 4;
+}
+
+.record-overlay-title {
+  font-size: 2em;
+  font-weight: bold;
+  margin: 0;
+  line-height: 1.2;
+  word-wrap: break-word;
+}
+
+.countdown-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 4rem;
+  color: var(--text-color);
+  z-index: 5;
+}
+
+.save-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: var(--input-bg);
+  padding: 20px 30px;
+  border-radius: 8px;
+  z-index: 6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.save-overlay input {
+  padding: 10px;
+  margin-bottom: 15px;
+  width: 100%;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background-color: var(--input-bg);
+  color: var(--text-color);
+}
+
+.save-overlay button {
+  padding: 10px 20px;
+  margin: 5px;
+  background-color: #4b59f7;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.save-overlay button:hover {
+  background-color: #3e47d0;
+}
+
+.save-overlay button:active {
+  background-color: #2e36a0;
+}
+
+.subtitle-container {
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+  text-align: center;
+  z-index: 7;
+}
+
+.subtitle-text {
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  display: inline-block;
+  font-size: 1.2rem;
+}
+
+.toggle-overlay-button {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  width: 60px;
+  height: 34px;
+  background-color: #ccc;
+  border-radius: 34px;
+  border: none;
+  cursor: pointer;
+  z-index: 8;
+  padding: 0;
+  transition: background-color 0.3s ease;
+  overflow: hidden;
+}
+
+.toggle-overlay-button::before {
+  content: '';
+  position: absolute;
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+}
+
+.toggle-overlay-button[aria-checked="true"] {
+  background-color: #4b59f7;
+}
+
+.toggle-overlay-button[aria-checked="true"]::before {
+  transform: translateX(26px);
+}
+
+.toggle-overlay-button:hover {
+  opacity: 0.9;
+}
+
+.toggle-overlay-button:focus {
+  outline: 2px solid #4b59f7;
+  outline-offset: 2px;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  padding: 20px 30px;
+  border-radius: 8px;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.modal-close-button {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--text-color);
+  cursor: pointer;
+}
+
+.help-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  padding: 12px 18px;
+  background-color: #4b59f7;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.help-button:hover {
+  background-color: #3e47d0;
+  transform: translateY(-2px);
+}
+
+.help-button:active {
+  background-color: #2e36a0;
+  transform: translateY(0);
+}
+
+.help-button svg {
+  margin-right: 8px;
+}
+
+
+.secondary-button {
+  position: absolute;
+  top: 80px;
+  right: 20px;
+  padding: 12px 18px;
+  background-color: #4b59f7;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.toggle-overlay-button {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  padding: 12px 18px;
+  background-color: #4b59f7;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  z-index: 8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+
+.secondary-button:hover {
+  background-color: #3e47d0;
+  transform: translateY(-2px);
+}
+
+.secondary-button:active {
+  background-color: #2e36a0;
+  transform: translateY(0);
+}
+
+.secondary-button svg {
+  margin-right: 8px;
+}
+
+@media (max-width: 768px) {
+  .record-video-element {
+    height: 100%;
+    width: auto;
+  }
+
+  .record-overlay {
+    width: 90%;
+    padding: 15px;
+  }
+
+  .record-overlay-title {
+    font-size: 1.5em;
+  }
+
+  .subtitle-text {
+    font-size: 1rem;
+    padding: 8px 16px;
+  }
+
+  .countdown-overlay {
+    font-size: 3rem;
+  }
+
+  .save-overlay {
+    padding: 15px 20px;
+  }
+
+  .save-overlay input {
+    padding: 8px;
+    margin-bottom: 10px;
+  }
+
+  .save-overlay button {
+    padding: 8px 16px;
+  }
+
+  .toggle-overlay-button {
+    padding: 10px 16px;
+  }
+
+  .help-button {
+    padding: 10px 16px;
+  }
+
+  .secondary-button {
+    padding: 10px 16px;
+    top: 70px;
+  }
+}
+
+@media (max-width: 420px) {
+  .record-overlay-image {
+    max-height: 100%;
+    height: 100%;
+    width: auto;
+  }
+
+  .record-overlay {
+    width: 95%;
+    padding: 10px;
+  }
+
+  .record-overlay-title {
+    font-size: 1.2em;
+  }
+
+  .subtitle-text {
+    font-size: 0.9rem;
+    padding: 6px 12px;
+  }
+
+  .countdown-overlay {
+    font-size: 2.5rem;
+  }
+
+  .save-overlay {
+    padding: 10px 15px;
+  }
+
+  .save-overlay input {
+    padding: 6px;
+    margin-bottom: 8px;
+  }
+
+  .save-overlay button {
+    padding: 6px 12px;
+  }
+
+  .toggle-overlay-button {
+    padding: 8px 14px;
+    bottom: 15px;
+    right: 15px;
+  }
+
+  .toggle-overlay-button svg {
+    margin-right: 5px;
+    width: 18px;
+    height: 18px;
+  }
+
+  .help-button {
+    padding: 8px 14px;
+    right: 15px;
+    top: 15px;
+  }
+
+  .secondary-button {
+    padding: 8px 14px;
+    top: 65px;
+    right: 15px;
+  }
+
+  .secondary-button svg {
+    margin-right: 5px;
+    width: 18px;
+    height: 18px;
+  }
+
+  .modal-content {
+    padding: 10px 15px;
+  }
+
+  .modal-close-button {
+    font-size: 1rem;
+    top: 5px;
+    right: 10px;
+  }
+}
+
+.tutorial-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 5;
+  animation: fadeIn 0.5s ease-in;
+}
+
+.tutorial-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 2rem;
+  border-radius: 1rem;
+  backdrop-filter: blur(8px);
+  color: white;
+  animation: slideUp 0.5s ease-out;
+}
+
+.tutorial-message {
+  font-size: 1.8rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.tutorial-instructions {
+  font-size: 1.2rem;
+  opacity: 0.9;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.tutorial-hint {
+  font-size: 1rem;
+  opacity: 0.7;
+  margin-top: 0.5rem;
+}
+
+.pulse-dot {
+  width: 12px;
+  height: 12px;
+  background-color: #ff4444;
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+.arrow {
+  animation: bounce 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(255, 68, 68, 0.7);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 10px rgba(255, 68, 68, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(255, 68, 68, 0);
+  }
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-5px);
+  }
+  60% {
+    transform: translateY(-3px);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.tutorial-overlay {
+  opacity: 1;
+  transition: opacity 0.5s ease-out;
+}
+
+.tutorial-overlay.fade-out {
+  opacity: 0;
+}
