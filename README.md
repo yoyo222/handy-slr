@@ -1,42 +1,44 @@
 # Handy AI
 
-Handy AI is a proof-of-concept app created to demonstrate model described by "prototypical-DTW for few shot classification of sign language". New signs can be added, which can be identified in real-time without having to train any further.
+A real-time sign language translation app using few-shot learning — new signs can be recorded and recognized instantly without retraining the model.
 
-Handy AIは新しい手話を追加することができ、追加された手話はさらなる訓練なしでリアルタイムに識別できます。
-## Installation  インストール
+## How it works
 
-Install all node modules and python packages while inside the project directory.
-プロジェクトディレクトリ内で、すべてのNodeモジュールとPythonパッケージをインストールします。
+Hand landmarks are extracted via MediaPipe, embedded into a 256-dimensional space by a CNN+TCN neural network, then matched against stored sign recordings using Partial DTW. See [ARCHITECTURE.md](./ARCHITECTURE.md) for full technical detail.
+
+## Requirements
+
+- Node.js + Yarn
+- Python 3.8+
+- A webcam
+
+## Installation
+
 ```bash
 yarn
-pip install server/requirements.txt
+pip install -r server/requirements.txt
 ```
 
-## Usage 使用方法
-Run the python server. It will be hosted in localhost: 8765.
+## Usage
 
-You should see "Server Started Successfully" message shortly after.
-
-Pythonサーバーを実行します。サーバーはlocalhost:8765でホストされます。
-
-しばらくすると、「Server Started Successfully」（サーバーが正常に起動しました）というメッセージが表示されます。
+Start the Python WebSocket server (terminal 1):
 ```bash
 python server/server.py
 ```
-Then run the web app on a new terminal. It will be hosted in localhost:3000
-その後、Webアプリを新たなターミナルで実行します。localhost:3000でホストされます。
 
+Start the web app (terminal 2):
 ```bash
 yarn start
 ```
-Username is TEST, password is test123.
-You can also choose to create a new user. 
-A newly added sign will be accesible only by the user.
 
-ユーザー名はTEST、パスワードはtest123で使えます。
-新しいユーザーを登録できます。
-新しく追加された手話はユーザー個人だけが見られます。
+Open [localhost:3000](http://localhost:3000).
+
+Default login — username: `TEST`, password: `test123`
+
+You can also create a new account. Recorded signs are saved per user.
 
 ## License
-Favicon- Flaticon Basic License https://www.flaticon.com/free-icons/sign-language
+
+Favicon — [Flaticon Basic License](https://www.flaticon.com/free-icons/sign-language)
+
 [MIT](https://choosealicense.com/licenses/mit/)

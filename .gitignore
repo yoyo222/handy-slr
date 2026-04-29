@@ -36,7 +36,6 @@ venv/
 # Server runtime
 /server/database
 /server/tmp
-/server/login/users.json
 
 # IDE
 .vscode/

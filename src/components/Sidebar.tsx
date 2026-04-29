@@ -49,6 +49,12 @@ const DocPopup: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, setCurrentComponent, onLogout }) => {
   const { language } = useLanguage();
   const [showDocPopup, setShowDocPopup] = useState(false);
+  const [activeItem, setActiveItem] = useState('dashboard');
+
+  const navigate = (component: string) => {
+    setActiveItem(component);
+    setCurrentComponent(component);
+  };
 
   return (
     <div className={`sidebar ${isOpen ? 'open' : 'closed'}`}>
@@ -65,27 +71,27 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, setCurrentComp
       </div>
 
       <ul className="nav-list">
-        <li onClick={() => setCurrentComponent("dashboard")}>
+        <li onClick={() => navigate("dashboard")}>
           <Tooltip title={isOpen ? '' : t('translate', language)} placement="right">
-            <div className="nav-item" aria-label={t('translate', language)}>
+            <div className={`nav-item ${activeItem === 'dashboard' ? 'active' : ''}`} aria-label={t('translate', language)}>
               <FaHandPaper className="icon" />
               {isOpen && <span className="links_name">{t('translate', language)}</span>}
             </div>
           </Tooltip>
         </li>
 
-        <li onClick={() => setCurrentComponent("record")}>
+        <li onClick={() => navigate("record")}>
           <Tooltip title={isOpen ? '' : t('record', language)} placement="right">
-            <div className="nav-item" aria-label={t('record', language)}>
+            <div className={`nav-item ${activeItem === 'record' ? 'active' : ''}`} aria-label={t('record', language)}>
               <FaCamera className="icon" />
               {isOpen && <span className="links_name">{t('record', language)}</span>}
             </div>
           </Tooltip>
         </li>
 
-        <li onClick={() => setCurrentComponent("saved")}>
+        <li onClick={() => navigate("saved")}>
           <Tooltip title={isOpen ? '' : t('files', language)} placement="right">
-            <div className="nav-item" aria-label={t('files', language)}>
+            <div className={`nav-item ${activeItem === 'saved' ? 'active' : ''}`} aria-label={t('files', language)}>
               <FaFolder className="icon" />
               {isOpen && <span className="links_name">{t('files', language)}</span>}
             </div>
@@ -101,9 +107,9 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, setCurrentComp
           </Tooltip>
         </li>
 
-        <li onClick={() => setCurrentComponent("settings")}>
+        <li onClick={() => navigate("settings")}>
           <Tooltip title={isOpen ? '' : t('settings', language)} placement="right">
-            <div className="nav-item" aria-label={t('settings', language)}>
+            <div className={`nav-item ${activeItem === 'settings' ? 'active' : ''}`} aria-label={t('settings', language)}>
               <FaCog className="icon" />
               {isOpen && <span className="links_name">{t('settings', language)}</span>}
             </div>

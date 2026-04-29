@@ -4,7 +4,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: "Poppins", sans-serif;
+    font-family: "Inter", sans-serif;
 }
 
 .sidebar {
@@ -90,8 +90,14 @@
 }
 
 .nav-item:hover {
-    background: var(--button-secondary-bg);
+    background: var(--sidebar-bg-hover);
     color: var(--text-color);
+}
+
+.nav-item.active {
+    background: var(--sidebar-bg-hover);
+    border-left: 3px solid #4b59f7;
+    color: #4b59f7;
 }
 
 .links_name {
