@@ -1,0 +1,46 @@
+[
+  {
+    "checkpoint": "server\\model\\weights.h5",
+    "n_way": 5,
+    "k_shot": 1,
+    "n_query": 5,
+    "n_episodes": 50,
+    "prototype_strategy": "per_recording",
+    "mean_accuracy": 0.4663999999999999,
+    "std_accuracy": 0.12664533153653948,
+    "seed": 0
+  },
+  {
+    "checkpoint": "server\\model\\weights.h5",
+    "n_way": 5,
+    "k_shot": 1,
+    "n_query": 5,
+    "n_episodes": 1000,
+    "prototype_strategy": "per_recording",
+    "mean_accuracy": 0.4407600000000001,
+    "std_accuracy": 0.1248528029320928,
+    "seed": 0
+  },
+  {
+    "checkpoint": "server\\model\\weights.h5",
+    "n_way": 10,
+    "k_shot": 1,
+    "n_query": 5,
+    "n_episodes": 1000,
+    "prototype_strategy": "per_recording",
+    "mean_accuracy": 0.32614,
+    "std_accuracy": 0.0825996392243937,
+    "seed": 0
+  },
+  {
+    "checkpoint": "server\\model\\weights.h5",
+    "n_way": 10,
+    "k_shot": 5,
+    "n_query": 5,
+    "n_episodes": 1000,
+    "prototype_strategy": "per_recording",
+    "mean_accuracy": 0.47332,
+    "std_accuracy": 0.0833077283329704,
+    "seed": 0
+  }
+]

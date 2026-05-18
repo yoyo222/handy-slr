@@ -1,0 +1,46 @@
+{
+  "history": [
+    {
+      "epoch": 1,
+      "train_loss": 204.6379700088501,
+      "train_acc": 0.45941176470588235,
+      "val_loss": 73.64226379394532,
+      "val_acc": 0.6176470588235294,
+      "ckpt": "experiments\\checkpoints\\wlasl_ft_ep01.h5"
+    },
+    {
+      "epoch": 2,
+      "train_loss": 81.4874507522583,
+      "train_acc": 0.4823529411764706,
+      "val_loss": 50.75879039764404,
+      "val_acc": 0.48823529411764705,
+      "ckpt": "experiments\\checkpoints\\wlasl_ft_ep02.h5"
+    },
+    {
+      "epoch": 3,
+      "train_loss": 52.200182628631595,
+      "train_acc": 0.5452941176470588,
+      "val_loss": 43.35415344238281,
+      "val_acc": 0.5058823529411764,
+      "ckpt": "experiments\\checkpoints\\wlasl_ft_ep03.h5"
+    },
+    {
+      "epoch": 4,
+      "train_loss": 44.22471311569214,
+      "train_acc": 0.5794117647058824,
+      "val_loss": 50.46395683288574,
+      "val_acc": 0.31176470588235294,
+      "ckpt": "experiments\\checkpoints\\wlasl_ft_ep04.h5"
+    },
+    {
+      "epoch": 5,
+      "train_loss": 35.71411401748657,
+      "train_acc": 0.5941176470588235,
+      "val_loss": 42.49341259002686,
+      "val_acc": 0.35294117647058826,
+      "ckpt": "experiments\\checkpoints\\wlasl_ft_ep05.h5"
+    }
+  ],
+  "best_epoch": 1,
+  "best_val_acc": 0.6176470588235294
+}
