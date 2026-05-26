@@ -21,6 +21,10 @@ class Session:
         self.prev_left_hand = np.zeros((21, 3))
         self.prev_right_hand = np.zeros((21, 3))
         self.hand_landmarks = []
+        self.presence_mask = []
+        self.left_missing_count = 0
+        self.right_missing_count = 0
+        self.both_missing_count = 0
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.model = get_model(device=self.device)
         self.curr_sentence = []
@@ -41,13 +45,19 @@ class Session:
                 if os.path.isdir(folder_path):
                     self.classDescriptions[folder_name] = ''
                     for file_name in os.listdir(folder_path):
-                        if file_name.endswith('.npy'):
+                        if file_name.endswith('.npy') and not file_name.endswith('.presence.npy'):
                             video_name = file_name[:-3] + 'webm'
+                            presence_name = file_name[:-4] + '.presence.npy'
                             file_path_npy = os.path.join(folder_path, file_name)
                             file_path_video = os.path.join(folder_path, video_name)
+                            file_path_presence = os.path.join(folder_path, presence_name)
                             data = np.load(file_path_npy)
                             if len(data.shape) == 2 and data.shape[1] == 256:
-                                self.database.append((folder_name, data, file_path_npy, file_path_video))
+                                if os.path.exists(file_path_presence):
+                                    presence = np.load(file_path_presence)
+                                else:
+                                    presence = np.ones((data.shape[0], 2), dtype=np.uint8)
+                                self.database.append((folder_name, data, file_path_npy, file_path_video, presence))
                             # print(data.shape)
 
                         elif file_name.endswith('.txt'):
@@ -112,16 +122,32 @@ class Session:
                             frame_landmarks[i + 21, :] = [landmark.x, landmark.y, landmark.z]
                         self.prev_right_hand = frame_landmarks[21:, :]
 
+            # Fix #1: decay frozen hand to zero after MISSING_RESET frames (~250ms)
+            # so prolonged absence reads as "no hand" instead of a stale ghost pose.
+            MISSING_RESET = 5
+            if left_hand_detected:
+                self.left_missing_count = 0
+            else:
+                self.left_missing_count += 1
+                if self.left_missing_count > MISSING_RESET:
+                    self.prev_left_hand = np.zeros((21, 3))
+            if right_hand_detected:
+                self.right_missing_count = 0
+            else:
+                self.right_missing_count += 1
+                if self.right_missing_count > MISSING_RESET:
+                    self.prev_right_hand = np.zeros((21, 3))
+
             if not left_hand_detected:
                 frame_landmarks[:21, :] = self.prev_left_hand
             if not right_hand_detected:
                 frame_landmarks[21:, :] = self.prev_right_hand
 
-            return frame_landmarks
+            return frame_landmarks, (left_hand_detected, right_hand_detected)
 
         except Exception as e:
             print(f"Error in convert_mediapipe: {e}")
-            return np.zeros((42, 3))
+            return np.zeros((42, 3)), (False, False)
 
     def getEmbedding(self, landmarks):
         try:
@@ -135,14 +161,32 @@ class Session:
     def recieve(self, frame, mode="translate"):
         # if len(self.database) == 0:
         #     print("Database is empty! Either record new signs or use an account with recorded signs")
-            
-        current_landmarks = self.convert_mediapipe(self.decode_image(frame))
+
+        current_landmarks, presence = self.convert_mediapipe(self.decode_image(frame))
+        left_present, right_present = presence
+
+        # Fix #2: if both hands are gone for >8 frames (~400ms) mid-window,
+        # drop the partial buffer so it doesn't poison the embedding.
+        if mode == 'translate':
+            if not left_present and not right_present:
+                self.both_missing_count += 1
+                if self.both_missing_count > 8 and len(self.hand_landmarks) > 0:
+                    self.hand_landmarks = []
+                    self.presence_mask = []
+                    self.both_missing_count = 0
+                    return False
+            else:
+                self.both_missing_count = 0
+
         self.hand_landmarks.append(current_landmarks)
+        self.presence_mask.append([left_present, right_present])
         if mode == 'translate':
             if len(self.hand_landmarks) == 30:
                 output = self.getEmbedding(self.hand_landmarks)
-                sequence, costs = classify(output, 0.9, self.database)
+                query_presence = np.array(self.presence_mask, dtype=np.uint8)
+                sequence, costs = classify(output, 0.9, self.database, query_presence=query_presence)
                 self.hand_landmarks = []
+                self.presence_mask = []
                 if len(sequence) == 0:
                     self.lastWord = None
                     self.refreshCount += 1
@@ -176,6 +220,10 @@ class Session:
         self.prev_left_hand = np.zeros((21, 3))
         self.prev_right_hand = np.zeros((21, 3))
         self.hand_landmarks = []
+        self.presence_mask = []
+        self.left_missing_count = 0
+        self.right_missing_count = 0
+        self.both_missing_count = 0
         self.lastWord = None
         self.refreshCount = 0
         # print("Reseted")
@@ -185,6 +233,10 @@ class Session:
 
     async def stop_recording(self, name, video_data=None):
         embeddings = self.getEmbedding(self.hand_landmarks)
+        if len(self.presence_mask) == len(self.hand_landmarks) and len(self.presence_mask) > 0:
+            presence = np.array(self.presence_mask, dtype=np.uint8)
+        else:
+            presence = np.ones((len(self.hand_landmarks), 2), dtype=np.uint8)
         folder_path = f'server/database/{self.id}/{name}'
 
         if not os.path.exists(folder_path):
@@ -194,12 +246,15 @@ class Session:
 
         timestamp = datetime.datetime.now().strftime('%Y%m%d_%H%M%S')
         filename_npy = f'{timestamp}.npy'
-        filename_video = f'{timestamp}.webm' 
+        filename_video = f'{timestamp}.webm'
+        filename_presence = f'{timestamp}.presence.npy'
         file_path_npy = os.path.join(folder_path, filename_npy)
         file_path_video = os.path.join(folder_path, filename_video)
+        file_path_presence = os.path.join(folder_path, filename_presence)
 
         try:
             np.save(file_path_npy, embeddings)
+            np.save(file_path_presence, presence)
             # print(f"Embeddings saved for {name} at {file_path_npy}")
             # print(f"Total timeframes {len(self.hand_landmarks)}")
         except Exception as e:
@@ -215,8 +270,9 @@ class Session:
                 print(f"Failed to save video: {e}")
 
         self.hand_landmarks = []
+        self.presence_mask = []
 
-        self.database.append((name, embeddings, file_path_npy, file_path_video))
+        self.database.append((name, embeddings, file_path_npy, file_path_video, presence))
 
 
         with open(file_path_video, 'rb') as file:
@@ -264,7 +320,7 @@ class Session:
         if len(self.database) != 0:
             yield len(self.database)
             saved = []
-            for class_name, _, _, video_path in self.database:
+            for class_name, _, _, video_path, *_ in self.database:
                 if os.path.exists(video_path):
                     if video_path.endswith('.webm'):
                         timestamp = os.path.basename(video_path)[:-5]
@@ -309,8 +365,10 @@ class Session:
             for filename in files:
                 filename_npy = f'{filename}.npy'
                 filename_video = f'{filename}.webm'
+                filename_presence = f'{filename}.presence.npy'
                 file_path_npy = os.path.join(directory_path, filename_npy)
                 file_path_video = os.path.join(directory_path, filename_video)
+                file_path_presence = os.path.join(directory_path, filename_presence)
 
                 if os.path.exists(file_path_npy):
                     os.remove(file_path_npy)
@@ -318,12 +376,15 @@ class Session:
                 if os.path.exists(file_path_video):
                     os.remove(file_path_video)
                     # print(f"Deleted {file_path_video}")
-        
-        
+                if os.path.exists(file_path_presence):
+                    os.remove(file_path_presence)
+
+
             newdatabase = []
-            for class_name, embeddings, npy_path, video_path in self.database:
+            for entry in self.database:
+                video_path = entry[3]
                 if not os.path.basename(video_path)[:-5] in toRemove:
-                    newdatabase.append((class_name, embeddings, npy_path, video_path))
+                    newdatabase.append(entry)
             self.database = newdatabase
         except Exception as e:
                 return f"Error deleting files: {e}"
@@ -331,9 +392,9 @@ class Session:
     def delete_folders(self, folders):
         newdatabase = []
         hash = set(folders)
-        for class_name, embeddings, npy_path, video_path in self.database:
-            if not class_name in hash:
-                newdatabase.append((class_name, embeddings, npy_path, video_path))
+        for entry in self.database:
+            if not entry[0] in hash:
+                newdatabase.append(entry)
         
         for class_name in folders:
             self.classDescriptions.pop(class_name)

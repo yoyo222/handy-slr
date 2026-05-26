@@ -29,21 +29,32 @@ import mediapipe as mp
 import numpy as np
 
 
+MISSING_RESET = 5  # mirror server/model/main.py:convert_mediapipe
+
+
 def extract_landmarks(video_path, frame_start, frame_end, hands):
-    """Return (T, 42, 3) landmark array for frames [frame_start, frame_end]
-    inclusive. frame_end < 0 means 'use all frames from frame_start to end'.
-    Returns None if the video can't be opened or has zero usable frames.
+    """Return ((T, 42, 3) landmark array, (T, 2) uint8 presence mask) for
+    frames [frame_start, frame_end] inclusive. frame_end < 0 means 'use all
+    frames from frame_start to end'. Returns (None, None) if the video can't
+    be opened or has zero usable frames.
+
+    Mirrors the post-fix server/model/main.py:convert_mediapipe:
+      - prev-hand cache decays to zeros after MISSING_RESET missing frames
+      - per-frame (left_seen, right_seen) flags are emitted as a sidecar mask
     """
     cap = cv2.VideoCapture(str(video_path))
     if not cap.isOpened():
-        return None
+        return None, None
 
     if frame_start > 0:
         cap.set(cv2.CAP_PROP_POS_FRAMES, frame_start)
 
     prev_left = np.zeros((21, 3))
     prev_right = np.zeros((21, 3))
+    left_missing = 0
+    right_missing = 0
     out = []
+    presence_out = []
     idx = frame_start
 
     while True:
@@ -53,10 +64,6 @@ def extract_landmarks(video_path, frame_start, frame_end, hands):
         if frame_end >= 0 and idx > frame_end:
             break
 
-        # Mirror server/model/main.py:convert_mediapipe exactly.
-        # cv2.VideoCapture returns BGR; the deployed code calls
-        # cvtColor(image, cv2.COLOR_RGB2BGR) which on a BGR array swaps R<->B
-        # to produce RGB. We do the same swap (semantically clearer name).
         frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         results = hands.process(frame_rgb)
 
@@ -79,19 +86,33 @@ def extract_landmarks(video_path, frame_start, frame_end, hands):
                         frame_lm[i + 21, :] = [lm.x, lm.y, lm.z]
                     prev_right = frame_lm[21:, :].copy()
 
+        if left_seen:
+            left_missing = 0
+        else:
+            left_missing += 1
+            if left_missing > MISSING_RESET:
+                prev_left = np.zeros((21, 3))
+        if right_seen:
+            right_missing = 0
+        else:
+            right_missing += 1
+            if right_missing > MISSING_RESET:
+                prev_right = np.zeros((21, 3))
+
         if not left_seen:
             frame_lm[:21, :] = prev_left
         if not right_seen:
             frame_lm[21:, :] = prev_right
 
         out.append(frame_lm)
+        presence_out.append([1 if left_seen else 0, 1 if right_seen else 0])
         idx += 1
 
     cap.release()
 
     if not out:
-        return None
-    return np.stack(out)
+        return None, None
+    return np.stack(out), np.array(presence_out, dtype=np.uint8)
 
 
 def resolve_video_path(inst, raw_videos_dir):
@@ -154,8 +175,9 @@ def main():
             done += 1
             video_id = inst["video_id"]
             out_path = gloss_dir / f"{video_id}.npy"
+            presence_path = gloss_dir / f"{video_id}.presence.npy"
 
-            if out_path.exists():
+            if out_path.exists() and presence_path.exists():
                 skipped += 1
             else:
                 src = resolve_video_path(inst, raw_dir)
@@ -164,11 +186,12 @@ def main():
                 else:
                     fs = max(0, inst["frame_start"] - 1)
                     fe = inst["frame_end"] - 1 if inst["frame_end"] > 0 else -1
-                    arr = extract_landmarks(src, fs, fe, hands)
+                    arr, presence = extract_landmarks(src, fs, fe, hands)
                     if arr is None or len(arr) == 0:
                         empty += 1
                     else:
                         np.save(out_path, arr)
+                        np.save(presence_path, presence)
                         saved += 1
 
             if done % 100 == 0:

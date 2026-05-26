@@ -67,12 +67,32 @@ def chunk_min_arr(arr, K):
     
     return min_array
 
-def classify(embeddings, threshold, database, chunk=10): 
+def classify(embeddings, threshold, database, chunk=10, query_presence=None):
+    # Fix #3: penalize prototypes whose per-hand presence pattern doesn't
+    # match the query's. WLASL-style "one hand absent" prototypes vs. a
+    # "both hands always shown" query (or vice versa) get a cost bump
+    # proportional to the L1 difference in per-hand visibility fraction.
+    PRESENCE_LAMBDA = 0.3
+    q_frac = None
+    if query_presence is not None and len(query_presence) > 0:
+        q_frac = np.asarray(query_presence, dtype=np.float32).mean(axis=0)
+
     costs = []
     candidates_names = []
-    for class_name, target_embedding, *_ in database:
+    for entry in database:
+        class_name = entry[0]
+        target_embedding = entry[1]
+        proto_presence = entry[4] if len(entry) >= 5 else None
+
         DTW_costs = partial_DTW(embeddings, target_embedding)
-        costs.append(DTW_costs/len(target_embedding))
+        normalized = DTW_costs / len(target_embedding)
+
+        if q_frac is not None and proto_presence is not None and len(proto_presence) > 0:
+            p_frac = np.asarray(proto_presence, dtype=np.float32).mean(axis=0)
+            penalty = PRESENCE_LAMBDA * float(np.sum(np.abs(q_frac - p_frac)))
+            normalized = normalized + penalty
+
+        costs.append(normalized)
         candidates_names.append(class_name)
     costs.append(np.full((len(embeddings),), threshold))
     costs = chunk_min_arr(np.array(costs), chunk)

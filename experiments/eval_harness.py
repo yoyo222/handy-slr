@@ -83,33 +83,49 @@ MIN_RECORDINGS = 10
 # Data loading
 # ---------------------------------------------------------------------------
 
-def load_wlasl_landmarks(landmarks_dir: Path) -> Dict[str, List[np.ndarray]]:
-    """Load all WLASL preprocessed landmark files.
+def load_wlasl_landmarks(
+    landmarks_dir: Path,
+) -> Tuple[Dict[str, List[np.ndarray]], Dict[str, List[np.ndarray]]]:
+    """Load all WLASL preprocessed landmark files + their presence sidecars.
 
-    Returns: {class_name: [array (T, 42, 3), ...]}, only classes with
-    >= MIN_RECORDINGS examples.
+    Returns: (landmarks_by_class, presence_by_class). Both dicts are keyed by
+    class name; values are lists aligned by index. Only classes with
+    >= MIN_RECORDINGS examples are kept. Missing presence sidecars get an
+    all-ones fallback so old caches still work.
     """
     out = {}
+    presence_out = {}
     for class_dir in sorted(landmarks_dir.iterdir()):
         if not class_dir.is_dir():
             continue
         recordings = []
+        presences = []
         for npy_path in sorted(class_dir.glob("*.npy")):
+            if npy_path.name.endswith(".presence.npy"):
+                continue
             try:
                 arr = np.load(npy_path)
                 if arr.ndim == 3 and arr.shape[1:] == (42, 3) and arr.shape[0] > 0:
                     recordings.append(arr)
+                    pres_path = npy_path.with_name(npy_path.stem + ".presence.npy")
+                    if pres_path.exists():
+                        pres = np.load(pres_path).astype(np.uint8)
+                    else:
+                        pres = np.ones((arr.shape[0], 2), dtype=np.uint8)
+                    presences.append(pres)
             except Exception as e:
                 print(f"WARNING: skipping {npy_path}: {e}", file=sys.stderr)
         if len(recordings) >= MIN_RECORDINGS:
             out[class_dir.name] = recordings
-    return out
+            presence_out[class_dir.name] = presences
+    return out, presence_out
 
 
 def crop_to_window(landmarks: np.ndarray, window: int = WINDOW_FRAMES) -> np.ndarray:
-    """Crop or pad a (T, 42, 3) landmark array to exactly `window` frames.
+    """Crop or pad a (T, ...) array to exactly `window` frames.
 
     Center-crop if T > window; pad with last-frame repetition if T < window.
+    Works for landmarks (T, 42, 3) and for presence masks (T, 2).
     """
     T = landmarks.shape[0]
     if T == window:
@@ -117,9 +133,9 @@ def crop_to_window(landmarks: np.ndarray, window: int = WINDOW_FRAMES) -> np.nda
     if T > window:
         start = (T - window) // 2
         return landmarks[start:start + window]
-    # T < window: pad with last frame repeated
     pad_count = window - T
-    pad = np.tile(landmarks[-1:], (pad_count, 1, 1))
+    pad_shape = (pad_count,) + landmarks.shape[1:]
+    pad = np.broadcast_to(landmarks[-1:], pad_shape)
     return np.concatenate([landmarks, pad], axis=0)
 
 
@@ -163,6 +179,14 @@ def embed_sequence(model: TCNSignEmbedding, landmarks: np.ndarray, device: str =
     with torch.no_grad():
         z = model(x)  # (1, 30, 256)
     return z.squeeze(0).cpu().numpy()
+
+
+def crop_presence(presence_dict: Dict[str, List[np.ndarray]]) -> Dict[str, List[np.ndarray]]:
+    """Crop every presence mask to WINDOW_FRAMES, mirroring embed_sequence."""
+    return {
+        cls: [crop_to_window(p) for p in plist]
+        for cls, plist in presence_dict.items()
+    }
 
 
 def embed_all_classes(
@@ -210,15 +234,17 @@ def embed_all_classes(
 
 def sample_episode(
     embedding_dict: Dict[str, List[np.ndarray]],
+    presence_dict: Dict[str, List[np.ndarray]],
     novel_classes: List[str],
     n_way: int,
     k_shot: int,
     n_query: int,
     rng: random.Random,
-) -> Tuple[List[Tuple[str, np.ndarray]], List[Tuple[str, np.ndarray]]]:
+) -> Tuple[List[Tuple[str, np.ndarray, np.ndarray]],
+           List[Tuple[str, np.ndarray, np.ndarray]]]:
     """Sample one n-way k-shot episode from the novel classes.
 
-    Returns (support, query) lists of (class_name, embedding) pairs.
+    Returns (support, query) lists of (class_name, embedding, presence) triples.
     """
     eligible = [c for c in novel_classes if len(embedding_dict.get(c, [])) >= k_shot + n_query]
     if len(eligible) < n_way:
@@ -231,11 +257,12 @@ def sample_episode(
     query = []
     for cls in chosen_classes:
         recordings = embedding_dict[cls]
+        presences = presence_dict[cls]
         picks = rng.sample(range(len(recordings)), k_shot + n_query)
         for idx in picks[:k_shot]:
-            support.append((cls, recordings[idx]))
+            support.append((cls, recordings[idx], presences[idx]))
         for idx in picks[k_shot:k_shot + n_query]:
-            query.append((cls, recordings[idx]))
+            query.append((cls, recordings[idx], presences[idx]))
     return support, query
 
 
@@ -244,35 +271,47 @@ def sample_episode(
 # ---------------------------------------------------------------------------
 
 def build_database(
-    support: List[Tuple[str, np.ndarray]],
+    support: List[Tuple[str, np.ndarray, np.ndarray]],
     strategy: str = "per_recording",
-) -> List[Tuple[str, np.ndarray, None, None]]:
+) -> List[Tuple[str, np.ndarray, None, None, np.ndarray]]:
     """Build the database list expected by classify-like routines.
 
     Strategies:
       - "per_recording": each support example is its own prototype. Baseline.
       - "dba": one DBA-aggregated barycenter per class. Phase 1 contribution.
               Requires experiments/dba.py to be implemented.
+
+    5th tuple field is the presence mask (shape (T, 2)) matching the prototype.
     """
     if strategy == "per_recording":
-        return [(cls, emb, None, None) for cls, emb in support]
+        return [(cls, emb, None, None, pres) for cls, emb, pres in support]
 
     if strategy == "dba":
-        # Group by class
         from collections import defaultdict
-        per_class = defaultdict(list)
-        for cls, emb in support:
-            per_class[cls].append(emb)
+        per_class_emb = defaultdict(list)
+        per_class_pres = defaultdict(list)
+        for cls, emb, pres in support:
+            per_class_emb[cls].append(emb)
+            per_class_pres[cls].append(pres)
 
-        # Compute one barycenter per class
         try:
-            from dba import dba  # YOUR implementation
+            from dba import dba
         except ImportError as e:
             raise RuntimeError(
                 "DBA strategy requires experiments/dba.py to be implemented. "
                 f"Import error: {e}"
             )
-        return [(cls, dba(emb_list), None, None) for cls, emb_list in per_class.items()]
+        # For DBA: average presence masks across recordings (continuous-valued
+        # average reflects per-frame visibility frequency).
+        out = []
+        for cls in per_class_emb:
+            bary = dba(per_class_emb[cls])
+            pres_avg = np.mean(
+                np.stack([p.astype(np.float32) for p in per_class_pres[cls]], axis=0),
+                axis=0,
+            )
+            out.append((cls, bary, None, None, pres_avg))
+        return out
 
     raise ValueError(f"Unknown strategy: {strategy}")
 
@@ -281,16 +320,38 @@ def build_database(
 # Per-episode evaluation
 # ---------------------------------------------------------------------------
 
+PRESENCE_LAMBDA = 0.3  # mirror server/model/classify.py
+
+
 def classify_query_simple(
     query_embedding: np.ndarray,
-    database: List[Tuple[str, np.ndarray, None, None]],
+    database: List[Tuple[str, np.ndarray, None, None, np.ndarray]],
+    query_presence: np.ndarray = None,
+    use_presence: bool = False,
 ) -> str:
-    """Classify a single query by min length-normalized partial-DTW distance."""
+    """Classify a single query by min length-normalized partial-DTW distance.
+
+    If use_presence is True and both query/prototype have a presence mask, add
+    PRESENCE_LAMBDA * L1(q_frac, p_frac) to each prototype's normalized cost.
+    """
+    q_frac = None
+    if use_presence and query_presence is not None and len(query_presence) > 0:
+        q_frac = np.asarray(query_presence, dtype=np.float32).mean(axis=0)
+
     best_class = None
     best_cost = float("inf")
-    for cls, target_emb, _, _ in database:
+    for entry in database:
+        cls = entry[0]
+        target_emb = entry[1]
+        proto_presence = entry[4] if len(entry) >= 5 else None
+
         costs = partial_DTW(query_embedding, target_emb)
         min_cost = float(np.min(costs)) / max(len(target_emb), 1)
+
+        if q_frac is not None and proto_presence is not None and len(proto_presence) > 0:
+            p_frac = np.asarray(proto_presence, dtype=np.float32).mean(axis=0)
+            min_cost += PRESENCE_LAMBDA * float(np.sum(np.abs(q_frac - p_frac)))
+
         if min_cost < best_cost:
             best_cost = min_cost
             best_class = cls
@@ -298,15 +359,16 @@ def classify_query_simple(
 
 
 def evaluate_episode(
-    support: List[Tuple[str, np.ndarray]],
-    query: List[Tuple[str, np.ndarray]],
+    support: List[Tuple[str, np.ndarray, np.ndarray]],
+    query: List[Tuple[str, np.ndarray, np.ndarray]],
     prototype_strategy: str = "per_recording",
+    use_presence: bool = False,
 ) -> float:
     """Run one episode. Return accuracy = fraction of queries classified correctly."""
     database = build_database(support, prototype_strategy)
     correct = 0
-    for true_cls, q_emb in query:
-        pred = classify_query_simple(q_emb, database)
+    for true_cls, q_emb, q_pres in query:
+        pred = classify_query_simple(q_emb, database, q_pres, use_presence=use_presence)
         if pred == true_cls:
             correct += 1
     return correct / len(query)
@@ -327,10 +389,11 @@ def eval_checkpoint(
     cache_path: Path = None,
     device: str = "cpu",
     seed: int = 0,
+    use_presence: bool = False,
 ) -> Tuple[float, float]:
     """Main evaluation. Returns (mean_accuracy, std_accuracy)."""
     print(f"Loading landmarks from {landmarks_dir}...")
-    landmark_dict = load_wlasl_landmarks(landmarks_dir)
+    landmark_dict, presence_dict = load_wlasl_landmarks(landmarks_dir)
     print(f"Loaded {len(landmark_dict)} classes with >= {MIN_RECORDINGS} recordings.")
 
     base, novel = make_class_disjoint_split(list(landmark_dict.keys()))
@@ -341,19 +404,24 @@ def eval_checkpoint(
     model = load_model(checkpoint_path, device=device)
 
     embedding_dict = embed_all_classes(model, landmark_dict, cache_path=cache_path, device=device)
+    presence_dict = crop_presence(presence_dict)
 
     # Warm up numba JIT
     print("Warming up numba JIT...")
     any_class = next(iter(embedding_dict.values()))
     _ = partial_DTW(any_class[0], any_class[1])
 
-    print(f"Running {n_episodes} episodes of {n_way}-way {k_shot}-shot ({prototype_strategy})...")
+    presence_tag = "presence-on" if use_presence else "presence-off"
+    print(f"Running {n_episodes} episodes of {n_way}-way {k_shot}-shot "
+          f"({prototype_strategy}, {presence_tag})...")
     rng = random.Random(seed)
     accs = []
     t0 = time.time()
     for ep in range(n_episodes):
-        support, query = sample_episode(embedding_dict, novel, n_way, k_shot, n_query, rng)
-        acc = evaluate_episode(support, query, prototype_strategy)
+        support, query = sample_episode(
+            embedding_dict, presence_dict, novel, n_way, k_shot, n_query, rng
+        )
+        acc = evaluate_episode(support, query, prototype_strategy, use_presence=use_presence)
         accs.append(acc)
         if (ep + 1) % 100 == 0:
             elapsed = time.time() - t0
@@ -385,6 +453,9 @@ def main():
     ap.add_argument("--device", default=None,
                     help="cpu or cuda. Default: cuda if available, else cpu.")
     ap.add_argument("--seed", type=int, default=0)
+    ap.add_argument("--use_presence", action="store_true",
+                    help="Apply the per-prototype presence-mismatch DTW penalty "
+                         "(Fix #3). Requires .presence.npy sidecars in landmarks_dir.")
     ap.add_argument("--output", type=Path, default=None,
                     help="If set, append results to this JSON file.")
     args = ap.parse_args()
@@ -403,21 +474,25 @@ def main():
         cache_path=args.cache_path,
         device=args.device,
         seed=args.seed,
+        use_presence=args.use_presence,
     )
 
     print()
-    print(f"=== {args.n_way}-way {args.k_shot}-shot ({args.prototype_strategy}) ===")
+    presence_tag = "presence-on" if args.use_presence else "presence-off"
+    print(f"=== {args.n_way}-way {args.k_shot}-shot ({args.prototype_strategy}, {presence_tag}) ===")
     print(f"Mean accuracy: {mean_acc * 100:.2f}% ± {std_acc * 100:.2f}% "
           f"over {args.n_episodes} episodes")
 
     if args.output is not None:
         result = {
             "checkpoint": str(args.checkpoint),
+            "landmarks_dir": str(args.landmarks_dir),
             "n_way": args.n_way,
             "k_shot": args.k_shot,
             "n_query": args.n_query,
             "n_episodes": args.n_episodes,
             "prototype_strategy": args.prototype_strategy,
+            "use_presence": args.use_presence,
             "mean_accuracy": mean_acc,
             "std_accuracy": std_acc,
             "seed": args.seed,
