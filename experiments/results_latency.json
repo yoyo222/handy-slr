@@ -1,0 +1,62 @@
+[
+  {
+    "n_classes": 5,
+    "k_shot": 5,
+    "n_prototypes_per_recording": 25,
+    "n_prototypes_dba": 5,
+    "ms_per_query_per_recording": 6.813952776913841,
+    "ms_per_query_dba": 1.6822583274915814,
+    "speedup": 4.050479445136193,
+    "dba_build_total_s": 0.06041079992428422,
+    "dba_build_per_class_ms": 12.082159984856844,
+    "n_queries": 36
+  },
+  {
+    "n_classes": 10,
+    "k_shot": 5,
+    "n_prototypes_per_recording": 50,
+    "n_prototypes_dba": 10,
+    "ms_per_query_per_recording": 14.095145454065818,
+    "ms_per_query_dba": 2.4479515144996573,
+    "speedup": 5.7579348980475045,
+    "dba_build_total_s": 0.11712330020964146,
+    "dba_build_per_class_ms": 11.712330020964146,
+    "n_queries": 66
+  },
+  {
+    "n_classes": 20,
+    "k_shot": 5,
+    "n_prototypes_per_recording": 100,
+    "n_prototypes_dba": 20,
+    "ms_per_query_per_recording": 27.65578849537842,
+    "ms_per_query_dba": 6.05379734435572,
+    "speedup": 4.568337346337402,
+    "dba_build_total_s": 0.2692023999989033,
+    "dba_build_per_class_ms": 13.460119999945164,
+    "n_queries": 113
+  },
+  {
+    "n_classes": 40,
+    "k_shot": 5,
+    "n_prototypes_per_recording": 200,
+    "n_prototypes_dba": 40,
+    "ms_per_query_per_recording": 54.619571501389146,
+    "ms_per_query_dba": 10.47686249949038,
+    "speedup": 5.213351946161933,
+    "dba_build_total_s": 0.5444441996514797,
+    "dba_build_per_class_ms": 13.611104991286993,
+    "n_queries": 200
+  },
+  {
+    "n_classes": 80,
+    "k_shot": 5,
+    "n_prototypes_per_recording": 400,
+    "n_prototypes_dba": 80,
+    "ms_per_query_per_recording": 107.95584099832922,
+    "ms_per_query_dba": 23.315067500807345,
+    "speedup": 4.630303600647562,
+    "dba_build_total_s": 0.9918937999755144,
+    "dba_build_per_class_ms": 12.39867249969393,
+    "n_queries": 200
+  }
+]

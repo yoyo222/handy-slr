@@ -1,0 +1,41 @@
+[
+  {
+    "checkpoint": "server\\model\\weights.h5",
+    "landmarks_dir": "experiments\\wlasl_landmarks",
+    "n_way": 5,
+    "k_shot": 5,
+    "n_query": 5,
+    "n_episodes": 1000,
+    "prototype_strategy": "medoid",
+    "use_presence": false,
+    "mean_accuracy": 0.48436,
+    "std_accuracy": 0.12230531631944706,
+    "seed": 0
+  },
+  {
+    "checkpoint": "server\\model\\weights.h5",
+    "landmarks_dir": "experiments\\wlasl_landmarks",
+    "n_way": 10,
+    "k_shot": 5,
+    "n_query": 5,
+    "n_episodes": 1000,
+    "prototype_strategy": "medoid",
+    "use_presence": false,
+    "mean_accuracy": 0.37362,
+    "std_accuracy": 0.08548973973524542,
+    "seed": 0
+  },
+  {
+    "checkpoint": "server\\model\\weights.h5",
+    "landmarks_dir": "experiments\\wlasl_landmarks",
+    "n_way": 20,
+    "k_shot": 5,
+    "n_query": 5,
+    "n_episodes": 1000,
+    "prototype_strategy": "medoid",
+    "use_presence": false,
+    "mean_accuracy": 0.29346000000000005,
+    "std_accuracy": 0.05101596220792076,
+    "seed": 0
+  }
+]

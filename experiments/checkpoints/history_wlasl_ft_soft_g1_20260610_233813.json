@@ -1,0 +1,36 @@
+{
+  "history": [
+    {
+      "epoch": 1,
+      "train_loss": 170.27864659627278,
+      "train_acc": 0.5588235294117647,
+      "val_loss": 222.45730285644532,
+      "val_acc": 0.47058823529411764,
+      "ckpt": "experiments\\checkpoints\\wlasl_ft_soft_g1_ep01.h5"
+    },
+    {
+      "epoch": 2,
+      "train_loss": 115.64484882354736,
+      "train_acc": 0.6078431372549019,
+      "val_loss": 228.85768432617186,
+      "val_acc": 0.3411764705882353,
+      "ckpt": "experiments\\checkpoints\\wlasl_ft_soft_g1_ep02.h5"
+    }
+  ],
+  "best_epoch": 1,
+  "best_val_acc": 0.47058823529411764,
+  "args": {
+    "landmarks": "experiments/wlasl100_landmarks",
+    "init_weights": "server/model/weights.h5",
+    "out_dir": "experiments/checkpoints",
+    "epochs": 2,
+    "lr": 0.001,
+    "n_classes_per_batch": 10,
+    "n_distractors": 10,
+    "train_episodes": 30,
+    "val_episodes": 5,
+    "seed": 42,
+    "loss": "soft",
+    "gamma": 1.0
+  }
+}

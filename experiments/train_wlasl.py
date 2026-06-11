@@ -6,12 +6,17 @@ Adapts the friend's NB2 training pipeline (`train/finalfinal_*.ipynb`) to:
   - train on `experiments/wlasl100_landmarks/`,
   - save fine-tuned checkpoints to `experiments/checkpoints/wlasl_ft_ep{N}.h5`.
 
-Loss = `dtw_partition_loss` only (NB2's recipe). Hard DTW with PyTorch
-gradients flowing through per-frame distances along the chosen path.
+Loss = `dtw_partition_loss` (NB2's recipe). Two gradient-flow variants:
+  --loss hard  (default): alignment chosen by numba argmin (non-differentiable);
+               PyTorch gradients flow only through per-frame distances along
+               the chosen path.
+  --loss soft : Cuturi-Blondel soft-DTW (experiments/soft_dtw.py); softmin_gamma
+               makes the whole alignment landscape differentiable. Phase 2.
 
 Usage:
     python experiments/train_wlasl.py
     python experiments/train_wlasl.py --epochs 30 --lr 1e-3
+    python experiments/train_wlasl.py --loss soft --gamma 1.0 --epochs 2
 """
 
 import argparse
@@ -32,6 +37,9 @@ from torch.utils.data import DataLoader, Dataset
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "server"))
 from model.model import get_model
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from soft_dtw import soft_dtw
 
 
 # ---------------------------------------------------------------------------
@@ -216,7 +224,15 @@ def partition_sequence(sequence, labels):
     return parts
 
 
-def dtw_partition_loss(z_in, z_tgt, labels, threshold, alpha=0.05):
+def dtw_partition_loss(z_in, z_tgt, labels, threshold, alpha=0.05,
+                       loss_mode="hard", gamma=1.0):
+    """NB2's partition loss. loss_mode selects the per-target distance:
+
+    - "hard": alignment path from numba argmin (non-differentiable choice);
+              gradients flow through per-frame distances along that path.
+    - "soft": soft-DTW value (fully differentiable through the alignment
+              landscape). Same Euclidean local cost, same scale.
+    """
     episodes = partition_sequence(z_in, labels)
     loss = 0
     correct = total = 0
@@ -226,11 +242,14 @@ def dtw_partition_loss(z_in, z_tgt, labels, threshold, alpha=0.05):
         distances = []
         correct_dist = None
         for tgt_label, tgt_emb in enumerate(z_tgt):
-            path = dtw_path(episode.detach().cpu().numpy(),
-                            tgt_emb.detach().cpu().numpy())
-            d = torch.tensor(0.0, device=z_in.device)
-            for (i, j) in path:
-                d = d + torch.norm(episode[i] - tgt_emb[j])
+            if loss_mode == "soft":
+                d = soft_dtw(episode, tgt_emb, gamma=gamma)
+            else:
+                path = dtw_path(episode.detach().cpu().numpy(),
+                                tgt_emb.detach().cpu().numpy())
+                d = torch.tensor(0.0, device=z_in.device)
+                for (i, j) in path:
+                    d = d + torch.norm(episode[i] - tgt_emb[j])
             distances.append(d)
             if tgt_label == label.item():
                 correct_dist = d
@@ -248,7 +267,7 @@ def dtw_partition_loss(z_in, z_tgt, labels, threshold, alpha=0.05):
 # ---------------------------------------------------------------------------
 # Train / eval loops
 # ---------------------------------------------------------------------------
-def run_epoch(model, loader, device, optimizer=None):
+def run_epoch(model, loader, device, optimizer=None, loss_mode="hard", gamma=1.0):
     is_train = optimizer is not None
     model.train(is_train)
     total_loss = 0
@@ -266,7 +285,8 @@ def run_epoch(model, loader, device, optimizer=None):
             z_in = model(input_seq.unsqueeze(0)).squeeze(0)
             z_tgt = [model(t[m].unsqueeze(0)).squeeze(0)
                      for t, m in zip(tgt_seqs, tgt_masks)]
-            loss, c, t = dtw_partition_loss(z_in, z_tgt, labels, model.threshold)
+            loss, c, t = dtw_partition_loss(z_in, z_tgt, labels, model.threshold,
+                                            loss_mode=loss_mode, gamma=gamma)
 
         if is_train:
             optimizer.zero_grad()
@@ -292,6 +312,10 @@ def main():
     ap.add_argument("--train_episodes", type=int, default=100)
     ap.add_argument("--val_episodes", type=int, default=10)
     ap.add_argument("--seed", type=int, default=42)
+    ap.add_argument("--loss", choices=["hard", "soft"], default="hard",
+                    help="hard = NB2 path-sum gradients; soft = soft-DTW (Phase 2)")
+    ap.add_argument("--gamma", type=float, default=1.0,
+                    help="soft-DTW temperature (only used with --loss soft)")
     args = ap.parse_args()
 
     random.seed(args.seed); np.random.seed(args.seed); torch.manual_seed(args.seed)
@@ -327,11 +351,14 @@ def main():
     best_epoch = -1
     t_start = time.time()
 
+    ckpt_stem = "wlasl_ft" if args.loss == "hard" else f"wlasl_ft_soft_g{args.gamma:g}"
     for epoch in range(1, args.epochs + 1):
         t0 = time.time()
-        train_loss, train_acc = run_epoch(model, train_loader, device, optimizer=optimizer)
-        val_loss, val_acc = run_epoch(model, val_loader, device, optimizer=None)
-        ckpt_path = out_dir / f"wlasl_ft_ep{epoch:02d}.h5"
+        train_loss, train_acc = run_epoch(model, train_loader, device, optimizer=optimizer,
+                                          loss_mode=args.loss, gamma=args.gamma)
+        val_loss, val_acc = run_epoch(model, val_loader, device, optimizer=None,
+                                      loss_mode=args.loss, gamma=args.gamma)
+        ckpt_path = out_dir / f"{ckpt_stem}_ep{epoch:02d}.h5"
         torch.save(model.state_dict(), ckpt_path)
 
         history.append({"epoch": epoch, "train_loss": train_loss, "train_acc": train_acc,
@@ -347,14 +374,18 @@ def main():
               f"val_loss={val_loss:7.3f} val_acc={val_acc:.3f}  "
               f"({elapsed:.0f}s)  -> {ckpt_path.name}", flush=True)
 
-    with open(out_dir / "history.json", "w") as f:
+    # Per-run history file (a shared history.json previously got overwritten
+    # by later runs); timestamp keeps reruns of the same config distinct.
+    run_tag = time.strftime("%Y%m%d_%H%M%S")
+    with open(out_dir / f"history_{ckpt_stem}_{run_tag}.json", "w") as f:
         json.dump({"history": history, "best_epoch": best_epoch,
-                   "best_val_acc": best_val_acc}, f, indent=2)
+                   "best_val_acc": best_val_acc,
+                   "args": vars(args)}, f, indent=2, default=str)
 
     print(f"\n=== Training complete ({(time.time()-t_start)/60:.1f} min) ===")
     print(f"Best val_acc {best_val_acc:.3f} at epoch {best_epoch}")
     print(f"Recommended checkpoint for eval: "
-          f"{out_dir / f'wlasl_ft_ep{best_epoch:02d}.h5'}")
+          f"{out_dir / f'{ckpt_stem}_ep{best_epoch:02d}.h5'}")
 
 
 if __name__ == "__main__":

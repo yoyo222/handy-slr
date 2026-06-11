@@ -278,13 +278,27 @@ def build_database(
 
     Strategies:
       - "per_recording": each support example is its own prototype. Baseline.
+      - "medoid": one prototype per class — the support recording with the
+              smallest sum of DTW distances to its classmates. Control for
+              DBA: isolates "1 prototype instead of k" from "averaging".
       - "dba": one DBA-aggregated barycenter per class. Phase 1 contribution.
-              Requires experiments/dba.py to be implemented.
 
     5th tuple field is the presence mask (shape (T, 2)) matching the prototype.
     """
     if strategy == "per_recording":
         return [(cls, emb, None, None, pres) for cls, emb, pres in support]
+
+    if strategy == "medoid":
+        from collections import defaultdict
+        from dba import medoid
+        per_class = defaultdict(list)
+        for cls, emb, pres in support:
+            per_class[cls].append((emb, pres))
+        out = []
+        for cls, items in per_class.items():
+            idx = medoid([emb for emb, _ in items]) if len(items) > 1 else 0
+            out.append((cls, items[idx][0], None, None, items[idx][1]))
+        return out
 
     if strategy == "dba":
         from collections import defaultdict
@@ -446,7 +460,7 @@ def main():
     ap.add_argument("--k_shot", type=int, default=1)
     ap.add_argument("--n_query", type=int, default=5)
     ap.add_argument("--n_episodes", type=int, default=1000)
-    ap.add_argument("--prototype_strategy", choices=["per_recording", "dba"],
+    ap.add_argument("--prototype_strategy", choices=["per_recording", "medoid", "dba"],
                     default="per_recording")
     ap.add_argument("--cache_path", type=Path,
                     default=Path(__file__).resolve().parent / "wlasl_embeddings.pkl")
