@@ -37,6 +37,12 @@ venv/
 /server/database
 /server/tmp
 
+# Experiment data (code, results_*.json, history JSONs stay tracked)
+/experiments/*landmarks*/
+/experiments/checkpoints/*.h5
+/experiments/*.pkl
+/experiments/*.log
+
 # IDE
 .vscode/
 .idea/
