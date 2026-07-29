@@ -1,7 +1,7 @@
 """
 latency_bench.py — inference-latency comparison: per-recording vs DBA prototypes.
 
-Phase 1a deliverable 5.1.6 (see rmd/RESEARCH_PLAN.md). Measures wall-clock
+Measures wall-clock
 classify time per query as a function of database size for both prototype
 strategies, plus the one-off DBA aggregation cost per class.
 

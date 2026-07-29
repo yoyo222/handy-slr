@@ -1,0 +1,105 @@
+{
+  "history": [
+    {
+      "epoch": 1,
+      "train_loss": 683.7435647583007,
+      "train_acc": 0.28,
+      "val_loss": 775.4424011230469,
+      "val_acc": 0.21568627450980393,
+      "ckpt": "experiments\\checkpoints\\wlasl_ftv2_soft_g2_ep01.h5"
+    },
+    {
+      "epoch": 2,
+      "train_loss": 554.8042169189453,
+      "train_acc": 0.3235294117647059,
+      "val_loss": 925.4991780598958,
+      "val_acc": 0.17254901960784313,
+      "ckpt": "experiments\\checkpoints\\wlasl_ftv2_soft_g2_ep02.h5"
+    },
+    {
+      "epoch": 3,
+      "train_loss": 515.7623968505859,
+      "train_acc": 0.35411764705882354,
+      "val_loss": 703.8732584635417,
+      "val_acc": 0.2196078431372549,
+      "ckpt": "experiments\\checkpoints\\wlasl_ftv2_soft_g2_ep03.h5"
+    },
+    {
+      "epoch": 4,
+      "train_loss": 431.7762133789063,
+      "train_acc": 0.38235294117647056,
+      "val_loss": 713.4693400065104,
+      "val_acc": 0.2196078431372549,
+      "ckpt": "experiments\\checkpoints\\wlasl_ftv2_soft_g2_ep04.h5"
+    },
+    {
+      "epoch": 5,
+      "train_loss": 442.4096467590332,
+      "train_acc": 0.3905882352941176,
+      "val_loss": 839.133133951823,
+      "val_acc": 0.2,
+      "ckpt": "experiments\\checkpoints\\wlasl_ftv2_soft_g2_ep05.h5"
+    },
+    {
+      "epoch": 6,
+      "train_loss": 386.5711611938477,
+      "train_acc": 0.4176470588235294,
+      "val_loss": 729.8328206380208,
+      "val_acc": 0.1803921568627451,
+      "ckpt": "experiments\\checkpoints\\wlasl_ftv2_soft_g2_ep06.h5"
+    },
+    {
+      "epoch": 7,
+      "train_loss": 359.14022033691407,
+      "train_acc": 0.43058823529411766,
+      "val_loss": 900.5483683268229,
+      "val_acc": 0.17647058823529413,
+      "ckpt": "experiments\\checkpoints\\wlasl_ftv2_soft_g2_ep07.h5"
+    }
+  ],
+  "best_epoch": 3,
+  "best_val_acc": 0.2196078431372549,
+  "val_classes": [
+    "about",
+    "bathroom",
+    "candy",
+    "christmas",
+    "class",
+    "coffee",
+    "convince",
+    "friend",
+    "green",
+    "improve",
+    "interest",
+    "last",
+    "man",
+    "music",
+    "need",
+    "new",
+    "pizza",
+    "remember",
+    "teach",
+    "wrong"
+  ],
+  "n_train_classes": 240,
+  "excluded_novel": 40,
+  "args": {
+    "landmarks": "experiments/wlasl_landmarks_v2",
+    "init_weights": "server/model/weights.h5",
+    "out_dir": "experiments/checkpoints",
+    "exclude_classes": "experiments/novel_classes.json",
+    "n_val_classes": 20,
+    "val_class_seed": 777,
+    "epochs": 15,
+    "lr": 0.0001,
+    "weight_decay": 0.0001,
+    "patience": 4,
+    "n_classes_per_batch": 10,
+    "n_distractors": 10,
+    "train_episodes": 50,
+    "val_episodes": 15,
+    "seed": 42,
+    "loss": "soft",
+    "gamma": 2.0
+  }
+}

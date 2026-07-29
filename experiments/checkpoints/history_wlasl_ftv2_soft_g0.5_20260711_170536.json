@@ -1,0 +1,89 @@
+{
+  "history": [
+    {
+      "epoch": 1,
+      "train_loss": 901.9351708984375,
+      "train_acc": 0.48705882352941177,
+      "val_loss": 202.79661356608074,
+      "val_acc": 0.2549019607843137,
+      "ckpt": "experiments\\checkpoints\\wlasl_ftv2_soft_g0.5_ep01.h5"
+    },
+    {
+      "epoch": 2,
+      "train_loss": 409.956337890625,
+      "train_acc": 0.24352941176470588,
+      "val_loss": 236.34849243164064,
+      "val_acc": 0.17254901960784313,
+      "ckpt": "experiments\\checkpoints\\wlasl_ftv2_soft_g0.5_ep02.h5"
+    },
+    {
+      "epoch": 3,
+      "train_loss": 207.43212020874023,
+      "train_acc": 0.2411764705882353,
+      "val_loss": 205.4865239461263,
+      "val_acc": 0.2,
+      "ckpt": "experiments\\checkpoints\\wlasl_ftv2_soft_g0.5_ep03.h5"
+    },
+    {
+      "epoch": 4,
+      "train_loss": 182.55514419555664,
+      "train_acc": 0.3552941176470588,
+      "val_loss": 219.11410827636718,
+      "val_acc": 0.18823529411764706,
+      "ckpt": "experiments\\checkpoints\\wlasl_ftv2_soft_g0.5_ep04.h5"
+    },
+    {
+      "epoch": 5,
+      "train_loss": 154.10032363891602,
+      "train_acc": 0.4011764705882353,
+      "val_loss": 234.78072204589844,
+      "val_acc": 0.25098039215686274,
+      "ckpt": "experiments\\checkpoints\\wlasl_ftv2_soft_g0.5_ep05.h5"
+    }
+  ],
+  "best_epoch": 1,
+  "best_val_acc": 0.2549019607843137,
+  "val_classes": [
+    "about",
+    "bathroom",
+    "candy",
+    "christmas",
+    "class",
+    "coffee",
+    "convince",
+    "friend",
+    "green",
+    "improve",
+    "interest",
+    "last",
+    "man",
+    "music",
+    "need",
+    "new",
+    "pizza",
+    "remember",
+    "teach",
+    "wrong"
+  ],
+  "n_train_classes": 240,
+  "excluded_novel": 40,
+  "args": {
+    "landmarks": "experiments/wlasl_landmarks_v2",
+    "init_weights": "server/model/weights.h5",
+    "out_dir": "experiments/checkpoints",
+    "exclude_classes": "experiments/novel_classes.json",
+    "n_val_classes": 20,
+    "val_class_seed": 777,
+    "epochs": 15,
+    "lr": 0.0001,
+    "weight_decay": 0.0001,
+    "patience": 4,
+    "n_classes_per_batch": 10,
+    "n_distractors": 10,
+    "train_episodes": 50,
+    "val_episodes": 15,
+    "seed": 42,
+    "loss": "soft",
+    "gamma": 0.5
+  }
+}

@@ -1,17 +1,10 @@
 """
 eval_harness.py — n-way k-shot evaluation of TCNSignEmbedding checkpoints on WLASL.
 
-Phase 0 deliverable 4.1.4 (see rmd/RESEARCH_PLAN.md).
-
-The plumbing (data loading, embedding, episode sampling, CLI) is filled in.
-The ALGORITHMIC bits you should understand by writing yourself are isolated:
-  - build_database() in the "dba" branch — requires experiments/dba.py to be
-    implemented. Until then, run with --prototype_strategy per_recording.
-
 USAGE:
     # First time (no embedding cache):
     python eval_harness.py --checkpoint ../server/model/weights.h5 \\
-                           --landmarks_dir wlasl_landmarks \\
+                           --landmarks_dir wlasl_landmarks_v2 \\
                            --n_way 5 --k_shot 1 --n_episodes 1000
 
     # Subsequent runs reuse the cache automatically.
@@ -455,7 +448,7 @@ def main():
     ap.add_argument("--checkpoint", type=Path,
                     default=Path(__file__).resolve().parent.parent / "server" / "model" / "weights.h5")
     ap.add_argument("--landmarks_dir", type=Path,
-                    default=Path(__file__).resolve().parent / "wlasl_landmarks")
+                    default=Path(__file__).resolve().parent / "wlasl_landmarks_v2")
     ap.add_argument("--n_way", type=int, default=5)
     ap.add_argument("--k_shot", type=int, default=1)
     ap.add_argument("--n_query", type=int, default=5)
@@ -463,7 +456,7 @@ def main():
     ap.add_argument("--prototype_strategy", choices=["per_recording", "medoid", "dba"],
                     default="per_recording")
     ap.add_argument("--cache_path", type=Path,
-                    default=Path(__file__).resolve().parent / "wlasl_embeddings.pkl")
+                    default=Path(__file__).resolve().parent / "wlasl_v2_embeddings.pkl")
     ap.add_argument("--device", default=None,
                     help="cpu or cuda. Default: cuda if available, else cpu.")
     ap.add_argument("--seed", type=int, default=0)

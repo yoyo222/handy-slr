@@ -1,7 +1,7 @@
 """
 dba.py — DTW Barycenter Averaging (Petitjean 2011) for embedding sequences.
 
-Implements Phase 1a deliverables 5.1.1–5.1.3 (see rmd/RESEARCH_PLAN.md):
+Implements:
 
   - full_dtw_with_path: standard DTW with alignment path reconstruction.
   - medoid: the "central" sequence under DTW distance, used as init.
@@ -235,7 +235,7 @@ def dba(
 # ---------------------------------------------------------------------------
 
 def _test_dtw_simple():
-    """Sanity check on the worked example from PRIMER.md §5.3."""
+    """Sanity check on a hand-worked 3x2 DTW example."""
     x = np.array([[1.0], [2.0], [3.0]])
     y = np.array([[1.0], [3.0]])
     cost, path = full_dtw_with_path(x, y)
@@ -246,7 +246,7 @@ def _test_dtw_simple():
 
 
 def _test_dba_trivial():
-    """Sanity check on the worked example from PRIMER.md §8.3."""
+    """Sanity check on a hand-worked barycenter example."""
     seq1 = np.array([[1.0], [5.0], [9.0]])
     seq2 = np.array([[1.0], [1.0], [5.0], [9.0], [9.0]])
     barycenter = dba([seq1, seq2], init="first", max_iters=10)

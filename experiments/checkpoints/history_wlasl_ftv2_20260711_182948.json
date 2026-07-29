@@ -1,0 +1,97 @@
+{
+  "history": [
+    {
+      "epoch": 1,
+      "train_loss": 1189.1558203125,
+      "train_acc": 0.5294117647058824,
+      "val_loss": 294.36339314778644,
+      "val_acc": 0.4549019607843137,
+      "ckpt": "experiments\\checkpoints\\wlasl_ftv2_ep01.h5"
+    },
+    {
+      "epoch": 2,
+      "train_loss": 657.2725891113281,
+      "train_acc": 0.5223529411764706,
+      "val_loss": 192.86466013590496,
+      "val_acc": 0.5215686274509804,
+      "ckpt": "experiments\\checkpoints\\wlasl_ftv2_ep02.h5"
+    },
+    {
+      "epoch": 3,
+      "train_loss": 349.6260562133789,
+      "train_acc": 0.3764705882352941,
+      "val_loss": 133.37977345784506,
+      "val_acc": 0.43529411764705883,
+      "ckpt": "experiments\\checkpoints\\wlasl_ftv2_ep03.h5"
+    },
+    {
+      "epoch": 4,
+      "train_loss": 240.58429244995116,
+      "train_acc": 0.26588235294117646,
+      "val_loss": 98.19458669026693,
+      "val_acc": 0.23137254901960785,
+      "ckpt": "experiments\\checkpoints\\wlasl_ftv2_ep04.h5"
+    },
+    {
+      "epoch": 5,
+      "train_loss": 160.85596084594727,
+      "train_acc": 0.2223529411764706,
+      "val_loss": 78.60294342041016,
+      "val_acc": 0.27058823529411763,
+      "ckpt": "experiments\\checkpoints\\wlasl_ftv2_ep05.h5"
+    },
+    {
+      "epoch": 6,
+      "train_loss": 126.02678115844726,
+      "train_acc": 0.27294117647058824,
+      "val_loss": 71.77056045532227,
+      "val_acc": 0.2196078431372549,
+      "ckpt": "experiments\\checkpoints\\wlasl_ftv2_ep06.h5"
+    }
+  ],
+  "best_epoch": 2,
+  "best_val_acc": 0.5215686274509804,
+  "val_classes": [
+    "about",
+    "bathroom",
+    "candy",
+    "christmas",
+    "class",
+    "coffee",
+    "convince",
+    "friend",
+    "green",
+    "improve",
+    "interest",
+    "last",
+    "man",
+    "music",
+    "need",
+    "new",
+    "pizza",
+    "remember",
+    "teach",
+    "wrong"
+  ],
+  "n_train_classes": 240,
+  "excluded_novel": 40,
+  "args": {
+    "landmarks": "experiments/wlasl_landmarks_v2",
+    "init_weights": "server/model/weights.h5",
+    "out_dir": "experiments/checkpoints",
+    "exclude_classes": "experiments/novel_classes.json",
+    "n_val_classes": 20,
+    "val_class_seed": 777,
+    "epochs": 15,
+    "lr": 0.0001,
+    "weight_decay": 0.0001,
+    "patience": 4,
+    "n_classes_per_batch": 10,
+    "n_distractors": 10,
+    "train_episodes": 50,
+    "val_episodes": 15,
+    "seed": 42,
+    "loss": "hard",
+    "gamma": 1.0
+  }
+}
