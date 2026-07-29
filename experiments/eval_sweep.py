@@ -67,6 +67,9 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--add", action="append", default=[], metavar="NAME=PATH",
                     help="checkpoint(s) to evaluate instead of the default grid")
+    ap.add_argument("--normalize", choices=["none", "l2"], default="none",
+                    help="l2 = unit-normalize embedding frames before DTW; "
+                         "must match the checkpoint's training setting")
     args = ap.parse_args()
     if args.add:
         CHECKPOINTS = []
@@ -93,6 +96,15 @@ def main():
         del model
         if device == "cuda":
             torch.cuda.empty_cache()
+
+    if args.normalize == "l2":
+        # caches hold raw model output; normalize after load so the same
+        # cache serves both settings
+        for name in embeddings:
+            embeddings[name] = {
+                cls: [r / (np.linalg.norm(r, axis=-1, keepdims=True) + 1e-8)
+                      for r in recs]
+                for cls, recs in embeddings[name].items()}
 
     any_class = next(iter(next(iter(embeddings.values())).values()))
     _ = partial_DTW(any_class[0], any_class[1])  # numba warm-up
@@ -128,6 +140,7 @@ def main():
                     "subset": subset_name, "n_subset_classes": len(classes),
                     "n_way": n_way, "k_shot": k_shot, "n_query": N_QUERY,
                     "n_episodes": N_EPISODES, "use_presence": False,
+                    "normalize": args.normalize,
                     "mean_accuracy": float(np.mean(accs)),
                     "std_accuracy": float(np.std(accs)),
                     "seed": SEED, "seconds": round(time.time() - t0, 1),

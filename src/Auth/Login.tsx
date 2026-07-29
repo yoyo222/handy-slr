@@ -18,8 +18,9 @@ interface LoginProps {
 
 const Login: React.FC<LoginProps> = ({ socketRef, onLogin }) => {
   const navigate = useNavigate();
-  const [username, setUsername] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+  // demo convenience: prefilled credentials (clear for production use)
+  const [username, setUsername] = useState<string>('TEST');
+  const [password, setPassword] = useState<string>('test123');
   const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = (e: React.FormEvent) => {

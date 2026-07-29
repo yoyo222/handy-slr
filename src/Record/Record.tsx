@@ -345,6 +345,9 @@ const Record: React.FC<RecordProps> = ({ socketRef, socketMessage, isConnected }
         </div>
       )}
 
+      {isVideoVisible && !isSaving && countdown === 0 && (
+        <div className="record-hint">{t('open_mouth_to_stop', language)}</div>
+      )}
       {subtitleText && (
         <div className="subtitle-container">
           <p className="subtitle-text">{subtitleText}</p>

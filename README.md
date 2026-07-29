@@ -4,7 +4,7 @@ A real-time sign language translation app using few-shot learning — new signs 
 
 ## How it works
 
-Hand landmarks are extracted via MediaPipe, embedded into a 256-dimensional space by a CNN+TCN neural network, then matched against stored sign recordings using Partial DTW. See [CLAUDE.md](./CLAUDE.md) for the architecture overview and [rmd/STATUS.md](./rmd/STATUS.md) for research status.
+Hand landmarks are extracted via MediaPipe, embedded into a 256-dimensional space by a CNN+TCN neural network, then matched against stored sign recordings using Partial DTW. See [CLAUDE.md](./CLAUDE.md) for the architecture overview and [rmd/RESEARCH.md](./rmd/RESEARCH.md) for research status.
 
 ## Requirements
 

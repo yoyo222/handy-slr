@@ -1,0 +1,171 @@
+{
+  "history": [
+    {
+      "epoch": 1,
+      "train_loss": 115.4382487487793,
+      "train_acc": 0.08235294117647059,
+      "val_loss": 107.85623982747396,
+      "val_acc": 0.11764705882352941,
+      "ckpt": "experiments\\checkpoints\\wlasl_ftv2_soft_g0.1_l2_ep01.h5"
+    },
+    {
+      "epoch": 2,
+      "train_loss": 101.59773239135743,
+      "train_acc": 0.08352941176470588,
+      "val_loss": 109.76368306477865,
+      "val_acc": 0.11372549019607843,
+      "ckpt": "experiments\\checkpoints\\wlasl_ftv2_soft_g0.1_l2_ep02.h5"
+    },
+    {
+      "epoch": 3,
+      "train_loss": 93.67660186767579,
+      "train_acc": 0.10588235294117647,
+      "val_loss": 87.51009063720703,
+      "val_acc": 0.16470588235294117,
+      "ckpt": "experiments\\checkpoints\\wlasl_ftv2_soft_g0.1_l2_ep03.h5"
+    },
+    {
+      "epoch": 4,
+      "train_loss": 77.73964241027832,
+      "train_acc": 0.15764705882352942,
+      "val_loss": 98.40776557922364,
+      "val_acc": 0.20784313725490197,
+      "ckpt": "experiments\\checkpoints\\wlasl_ftv2_soft_g0.1_l2_ep04.h5"
+    },
+    {
+      "epoch": 5,
+      "train_loss": 74.51767566680908,
+      "train_acc": 0.22470588235294117,
+      "val_loss": 93.22029724121094,
+      "val_acc": 0.13333333333333333,
+      "ckpt": "experiments\\checkpoints\\wlasl_ftv2_soft_g0.1_l2_ep05.h5"
+    },
+    {
+      "epoch": 6,
+      "train_loss": 69.75219299316406,
+      "train_acc": 0.29294117647058826,
+      "val_loss": 77.48091405232748,
+      "val_acc": 0.21176470588235294,
+      "ckpt": "experiments\\checkpoints\\wlasl_ftv2_soft_g0.1_l2_ep06.h5"
+    },
+    {
+      "epoch": 7,
+      "train_loss": 62.65090721130371,
+      "train_acc": 0.3,
+      "val_loss": 93.79728291829427,
+      "val_acc": 0.22745098039215686,
+      "ckpt": "experiments\\checkpoints\\wlasl_ftv2_soft_g0.1_l2_ep07.h5"
+    },
+    {
+      "epoch": 8,
+      "train_loss": 62.242060623168946,
+      "train_acc": 0.30117647058823527,
+      "val_loss": 87.69666595458985,
+      "val_acc": 0.17254901960784313,
+      "ckpt": "experiments\\checkpoints\\wlasl_ftv2_soft_g0.1_l2_ep08.h5"
+    },
+    {
+      "epoch": 9,
+      "train_loss": 61.392135276794434,
+      "train_acc": 0.28,
+      "val_loss": 80.96806818644205,
+      "val_acc": 0.19215686274509805,
+      "ckpt": "experiments\\checkpoints\\wlasl_ftv2_soft_g0.1_l2_ep09.h5"
+    },
+    {
+      "epoch": 10,
+      "train_loss": 57.41065563201904,
+      "train_acc": 0.3552941176470588,
+      "val_loss": 87.35936864217122,
+      "val_acc": 0.16470588235294117,
+      "ckpt": "experiments\\checkpoints\\wlasl_ftv2_soft_g0.1_l2_ep10.h5"
+    },
+    {
+      "epoch": 11,
+      "train_loss": 50.2102681350708,
+      "train_acc": 0.4117647058823529,
+      "val_loss": 87.76505279541016,
+      "val_acc": 0.16862745098039217,
+      "ckpt": "experiments\\checkpoints\\wlasl_ftv2_soft_g0.1_l2_ep11.h5"
+    },
+    {
+      "epoch": 12,
+      "train_loss": 48.84917484283447,
+      "train_acc": 0.46941176470588236,
+      "val_loss": 90.94981155395507,
+      "val_acc": 0.15294117647058825,
+      "ckpt": "experiments\\checkpoints\\wlasl_ftv2_soft_g0.1_l2_ep12.h5"
+    },
+    {
+      "epoch": 13,
+      "train_loss": 45.78275287628174,
+      "train_acc": 0.42823529411764705,
+      "val_loss": 79.99533971150716,
+      "val_acc": 0.19215686274509805,
+      "ckpt": "experiments\\checkpoints\\wlasl_ftv2_soft_g0.1_l2_ep13.h5"
+    },
+    {
+      "epoch": 14,
+      "train_loss": 43.27224395751953,
+      "train_acc": 0.4835294117647059,
+      "val_loss": 74.87851130167643,
+      "val_acc": 0.1803921568627451,
+      "ckpt": "experiments\\checkpoints\\wlasl_ftv2_soft_g0.1_l2_ep14.h5"
+    },
+    {
+      "epoch": 15,
+      "train_loss": 40.31389236450195,
+      "train_acc": 0.5070588235294118,
+      "val_loss": 85.99230626424153,
+      "val_acc": 0.15294117647058825,
+      "ckpt": "experiments\\checkpoints\\wlasl_ftv2_soft_g0.1_l2_ep15.h5"
+    }
+  ],
+  "best_epoch": 7,
+  "best_val_acc": 0.22745098039215686,
+  "val_classes": [
+    "about",
+    "bathroom",
+    "candy",
+    "christmas",
+    "class",
+    "coffee",
+    "convince",
+    "friend",
+    "green",
+    "improve",
+    "interest",
+    "last",
+    "man",
+    "music",
+    "need",
+    "new",
+    "pizza",
+    "remember",
+    "teach",
+    "wrong"
+  ],
+  "n_train_classes": 240,
+  "excluded_novel": 40,
+  "args": {
+    "landmarks": "experiments/wlasl_landmarks_v2",
+    "init_weights": "server/model/weights.h5",
+    "out_dir": "experiments/checkpoints",
+    "exclude_classes": "experiments/novel_classes.json",
+    "n_val_classes": 20,
+    "val_class_seed": 777,
+    "epochs": 30,
+    "lr": 0.0001,
+    "weight_decay": 0.0001,
+    "patience": 8,
+    "n_classes_per_batch": 10,
+    "n_distractors": 10,
+    "train_episodes": 50,
+    "val_episodes": 15,
+    "seed": 42,
+    "loss": "soft",
+    "gamma": 0.1,
+    "normalize": "l2",
+    "alpha": 0.05
+  }
+}

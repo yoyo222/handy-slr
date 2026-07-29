@@ -112,6 +112,7 @@ class VideoChunkProcessor {
 
 const Home: React.FC<HomeProps> = ({ socketRef, socketMessage, isConnected }) => {
   const [subtitleText, setSubtitleText] = useState<string>('');
+  const [handsDetected, setHandsDetected] = useState<[boolean, boolean]>([false, false]);
   const [isVideoVisible, setIsVideoVisible] = useState(false);
   const [isOverlayVisible, setIsOverlayVisible] = useState(true); 
   const [isHelpOpen, setIsHelpOpen] = useState(false); 
@@ -214,10 +215,15 @@ const Home: React.FC<HomeProps> = ({ socketRef, socketMessage, isConnected }) =>
   
   useEffect(() => {
     if (socketMessage && socketMessage.function === 'recieve' && socketMessage.result) {
-      if (socketMessage.result === 'No match found') {
+      const res = socketMessage.result as unknown;
+      if (typeof res === 'object' && res !== null) {
+        const obj = res as { hands?: [boolean, boolean]; sentence?: string };
+        if (obj.hands) setHandsDetected(obj.hands);
+        if (obj.sentence !== undefined) setSubtitleText(obj.sentence);
+      } else if (res === 'No match found') {
         setSubtitleText('');
-      } else {
-        setSubtitleText(socketMessage.result);
+      } else if (typeof res === 'string') {
+        setSubtitleText(res);
       }
     }
   }, [socketMessage]);
@@ -348,7 +354,14 @@ const Home: React.FC<HomeProps> = ({ socketRef, socketMessage, isConnected }) =>
           <p className="subtitle-text">{subtitleText.split(' ').slice(-15).join(' ')}</p>
         </div>
       )}
-      <button 
+      {isVideoVisible && (
+        <div className={`hand-indicator ${handsDetected[0] || handsDetected[1] ? 'detected' : 'missing'}`}>
+          {handsDetected[0] || handsDetected[1]
+            ? t('hands_detected', language)
+            : t('hands_missing', language)}
+        </div>
+      )}
+      <button
         className="toggle-overlay-button" 
         onClick={toggleOverlay}
         aria-checked={isOverlayVisible}

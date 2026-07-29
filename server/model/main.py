@@ -4,6 +4,7 @@ import numpy as np
 import torch
 from model.model import get_model
 from model.classify import classify, toSentence
+from model.calibrate import auto_threshold, trim_active_span
 import os
 import cv2
 import mediapipe as mp
@@ -66,6 +67,16 @@ class Session:
                                 self.classDescriptions[folder_name] = content
 
         # print("Initialized with database of length:", len(self.database))
+
+        # Calibrated decoder (validated on the continuous bench): conformal
+        # auto-threshold from the registered recordings + 3-chunk debounce.
+        self.DEBOUNCE = 3
+        self.threshold = auto_threshold(self.database)
+        print(f"[calibration] no-match threshold = {self.threshold:.3f} "
+              f"({len(self.database)} prototypes)")
+        self.run_label = None      # debounce state across buffers
+        self.run_len = 0
+        self.prev_emitted = None
 
         self.functions = {
             'recieve': self.recieve,
@@ -174,7 +185,7 @@ class Session:
                     self.hand_landmarks = []
                     self.presence_mask = []
                     self.both_missing_count = 0
-                    return False
+                    return {"hands": [left_present, right_present]}
             else:
                 self.both_missing_count = 0
 
@@ -184,30 +195,43 @@ class Session:
             if len(self.hand_landmarks) == 30:
                 output = self.getEmbedding(self.hand_landmarks)
                 query_presence = np.array(self.presence_mask, dtype=np.uint8)
-                sequence, costs = classify(output, 0.9, self.database, query_presence=query_presence)
+                _, costs = classify(output, self.threshold, self.database,
+                                    query_presence=query_presence)
                 self.hand_landmarks = []
                 self.presence_mask = []
-                if len(sequence) == 0:
-                    self.lastWord = None
+
+                # Debounced decode (bench-validated): a class is emitted only
+                # after winning DEBOUNCE consecutive 10-frame chunks; the last
+                # cost row is the no-match pseudo-class.
+                names = [entry[0] for entry in self.database] + [None]
+                emitted = []
+                for col in np.argmin(costs, axis=0):
+                    label = names[col]
+                    if label == self.run_label:
+                        self.run_len += 1
+                    else:
+                        self.run_label, self.run_len = label, 1
+                    if self.run_label is not None and self.run_len == self.DEBOUNCE:
+                        if self.run_label != self.prev_emitted:
+                            emitted.append(self.run_label)
+                            self.prev_emitted = self.run_label
+                    if self.run_label is None and self.run_len >= self.DEBOUNCE:
+                        self.prev_emitted = None
+
+                if emitted:
+                    self.curr_sentence.extend(emitted)
+                    self.refreshCount = 0
+                    if len(self.curr_sentence) > 15:
+                        self.curr_sentence = self.curr_sentence[-15:]
+                else:
                     self.refreshCount += 1
-                    if self.refreshCount == 4:
+                    if self.refreshCount == 8:
                         self.curr_sentence.clear()
                         self.refreshCount = 0
 
-                    self.hand_landmarks = []
-                    return 'No match found'
-
-                if self.lastWord != sequence[0]:
-                    self.curr_sentence.append(sequence[0])
-                    self.lastWord = sequence[-1]
-                    self.refreshCount = 0
-
-                for word in sequence[1:]:
-                    self.curr_sentence.append(word)
-
-                if len(self.curr_sentence) > 15:
-                    self.curr_sentence.pop(0)
-                return ' '.join(self.curr_sentence)
+                return {"hands": [left_present, right_present],
+                        "sentence": ' '.join(self.curr_sentence)}
+            return {"hands": [left_present, right_present]}
 
         if mode == 'record':
             if self.mouth_open(frame):
@@ -226,17 +250,24 @@ class Session:
         self.both_missing_count = 0
         self.lastWord = None
         self.refreshCount = 0
+        self.run_label = None
+        self.run_len = 0
+        self.prev_emitted = None
         # print("Reseted")
 
     def record(self, frame):
         return 'MOUTH_OPEN_TRUE' if self.recieve(frame, mode='record') else None
 
     async def stop_recording(self, name, video_data=None):
-        embeddings = self.getEmbedding(self.hand_landmarks)
         if len(self.presence_mask) == len(self.hand_landmarks) and len(self.presence_mask) > 0:
             presence = np.array(self.presence_mask, dtype=np.uint8)
         else:
             presence = np.ones((len(self.hand_landmarks), 2), dtype=np.uint8)
+        # trim blank lead-in/out so the prototype holds only the actual sign
+        landmarks, presence = trim_active_span(self.hand_landmarks, presence)
+        if len(landmarks) < 2:
+            landmarks = np.array(self.hand_landmarks)
+        embeddings = self.getEmbedding(landmarks)
         folder_path = f'server/database/{self.id}/{name}'
 
         if not os.path.exists(folder_path):
@@ -273,7 +304,9 @@ class Session:
         self.presence_mask = []
 
         self.database.append((name, embeddings, file_path_npy, file_path_video, presence))
-
+        self.threshold = auto_threshold(self.database)
+        print(f"[calibration] threshold recalibrated = {self.threshold:.3f} "
+              f"({len(self.database)} prototypes)")
 
         with open(file_path_video, 'rb') as file:
             video_data = file.read()
@@ -386,6 +419,7 @@ class Session:
                 if not os.path.basename(video_path)[:-5] in toRemove:
                     newdatabase.append(entry)
             self.database = newdatabase
+            self.threshold = auto_threshold(self.database)
         except Exception as e:
                 return f"Error deleting files: {e}"
 
@@ -399,6 +433,7 @@ class Session:
         for class_name in folders:
             self.classDescriptions.pop(class_name)
         self.database = newdatabase
+        self.threshold = auto_threshold(self.database)
 
         for folder in folders:
             directory_path = f'server/database/{self.id}/{folder}'

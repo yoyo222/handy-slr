@@ -126,6 +126,22 @@ html, body {
   background-color: #2e36a0;
 }
 
+.record-hint {
+  position: absolute;
+  top: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 4;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background-color: rgba(0, 0, 0, 0.65);
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
 .subtitle-container {
   position: absolute;
   bottom: 20px;

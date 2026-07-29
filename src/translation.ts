@@ -11,6 +11,18 @@ interface Translations {
   };
   
   export const translations: Translations = {
+    'hands_detected': {
+      en: '✋ Hands detected',
+      jp: '✋ 手を検出中',
+    },
+    'hands_missing': {
+      en: 'Show your hands to the camera',
+      jp: '手をカメラに映してください',
+    },
+    'open_mouth_to_stop': {
+      en: 'Open your mouth to finish recording',
+      jp: '録画を終えるには口を開けてください',
+    },
     'click_to_start_translation': {
       en: 'Click the screen to start translation',
       jp: '画面をクリックすると翻訳が始まります',

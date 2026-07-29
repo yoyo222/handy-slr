@@ -42,7 +42,7 @@ import torch
 from scipy.spatial.transform import Rotation, Slerp
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from server.model.classify import classify
+from server.model.classify import classify, partial_DTW
 from eval_harness import (
     load_wlasl_landmarks, make_class_disjoint_split, load_model,
 )
@@ -136,6 +136,50 @@ def build_db(support_embs, support_pres, strategy):
         else:
             raise ValueError(strategy)
     return db
+
+
+# ---------------------------------------------------------------------------
+# Auto-calibration of the no-match threshold (leave-one-out conformal)
+# ---------------------------------------------------------------------------
+
+def auto_calibrate_threshold(support_embs, support_pres, strategy,
+                             use_presence, q=0.95):
+    """Set the no-match threshold from the registered recordings themselves.
+
+    For each recording, hold it out, build its class's prototype(s) from the
+    remaining recordings UNDER THE ACTIVE STRATEGY, and score the held-out
+    recording with the same normalized partial-DTW cost classify() thresholds
+    against (+ presence penalty when enabled). These are genuine
+    (within-class) nonconformity scores; their q-quantile is a
+    distribution-free threshold that accepts a true registered sign with
+    probability ~q (split-conformal guarantee under exchangeability).
+    Strategy dependence is absorbed automatically: DBA scores calibrate DBA's
+    threshold, per-recording scores calibrate per-recording's.
+
+    Returns (threshold, genuine_scores).
+    """
+    PRESENCE_LAMBDA = 0.3  # matches classify()
+    scores = []
+    for cls in sorted(support_embs):
+        embs, press = support_embs[cls], support_pres[cls]
+        if len(embs) < 2:
+            continue
+        for i in range(len(embs)):
+            rest_e = embs[:i] + embs[i + 1:]
+            rest_p = press[:i] + press[i + 1:]
+            db_i = build_db({cls: rest_e}, {cls: rest_p}, strategy)
+            q_frac = (np.asarray(press[i], dtype=np.float32).mean(axis=0)
+                      if use_presence else None)
+            best = np.inf
+            for entry in db_i:
+                proto, proto_pres = entry[1], entry[4]
+                cost = float((partial_DTW(embs[i], proto) / len(proto)).min())
+                if q_frac is not None and proto_pres is not None and len(proto_pres) > 0:
+                    p_frac = np.asarray(proto_pres, dtype=np.float32).mean(axis=0)
+                    cost += PRESENCE_LAMBDA * float(np.sum(np.abs(q_frac - p_frac)))
+                best = min(best, cost)
+            scores.append(best)
+    return float(np.quantile(scores, q)), scores
 
 
 # ---------------------------------------------------------------------------
@@ -294,6 +338,10 @@ def main():
                     help="boundary match tolerance in frames")
     ap.add_argument("--threshold", type=float, default=0.9,
                     help="no-match threshold (deployed default: 0.9)")
+    ap.add_argument("--auto_threshold", type=float, default=None, metavar="Q",
+                    help="override --threshold with the Q-quantile of "
+                         "leave-one-out genuine scores from the support set "
+                         "(conformal calibration; e.g. 0.95)")
     ap.add_argument("--debounce", type=int, default=1,
                     help="chunks a class must win consecutively to emit "
                          "(1 = deployed decoder)")
@@ -346,6 +394,15 @@ def main():
     db = build_db(support_embs, support_pres, args.strategy)
     print(f"{len(db)} prototypes ({time.time() - t0:.1f}s).")
 
+    if args.auto_threshold is not None:
+        thr, genuine = auto_calibrate_threshold(
+            support_embs, support_pres, args.strategy, use_presence,
+            q=args.auto_threshold)
+        print(f"Auto-calibrated threshold: {thr:.4f} "
+              f"(q={args.auto_threshold} of {len(genuine)} LOO genuine scores; "
+              f"median {np.median(genuine):.4f})")
+        args.threshold = thr
+
     agg = {"S": 0, "D": 0, "I": 0, "ref_len": 0, "exact": 0,
            "b_prec": [], "b_rec": [], "b_f1": [], "ms_per_buffer": []}
 
@@ -380,6 +437,7 @@ def main():
         "n_streams": args.n_streams,
         "signs_per_stream": args.signs_per_stream,
         "threshold": args.threshold,
+        "auto_threshold_q": args.auto_threshold,
         "debounce": args.debounce,
         "trim_blank": args.trim_blank,
         "tolerance_frames": args.tolerance,

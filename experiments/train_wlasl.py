@@ -335,7 +335,8 @@ def dtw_partition_loss(z_in, z_tgt, labels, threshold, alpha=0.05,
 # ---------------------------------------------------------------------------
 # Train / eval loops
 # ---------------------------------------------------------------------------
-def run_epoch(model, loader, device, optimizer=None, loss_mode="hard", gamma=1.0):
+def run_epoch(model, loader, device, optimizer=None, loss_mode="hard", gamma=1.0,
+              normalize="none", alpha=0.05):
     is_train = optimizer is not None
     model.train(is_train)
     total_loss = 0
@@ -353,8 +354,15 @@ def run_epoch(model, loader, device, optimizer=None, loss_mode="hard", gamma=1.0
             z_in = model(input_seq.unsqueeze(0)).squeeze(0)
             z_tgt = [model(t[m].unsqueeze(0)).squeeze(0)
                      for t, m in zip(tgt_seqs, tgt_masks)]
+            if normalize == "l2":
+                # unit-sphere frames: local DTW cost becomes scale-free, which
+                # closes the degenerate minimum of the alpha pull term (loss
+                # could shrink by shrinking embedding norm globally)
+                z_in = F.normalize(z_in, dim=-1)
+                z_tgt = [F.normalize(z, dim=-1) for z in z_tgt]
             loss, c, t = dtw_partition_loss(z_in, z_tgt, labels, model.threshold,
-                                            loss_mode=loss_mode, gamma=gamma)
+                                            alpha=alpha, loss_mode=loss_mode,
+                                            gamma=gamma)
 
         if is_train:
             optimizer.zero_grad()
@@ -393,6 +401,15 @@ def main():
                     help="hard = NB2 path-sum gradients; soft = batched soft-DTW")
     ap.add_argument("--gamma", type=float, default=1.0,
                     help="soft-DTW temperature (only used with --loss soft)")
+    ap.add_argument("--normalize", choices=["none", "l2"], default="none",
+                    help="l2 = unit-normalize embedding frames before DTW "
+                         "(removes the scale-shrink degenerate minimum). "
+                         "Eval must use the same setting.")
+    ap.add_argument("--alpha", type=float, default=0.05,
+                    help="pull-term weight on the correct-class distance")
+    ap.add_argument("--tag", default="",
+                    help="suffix appended to checkpoint names so reruns of "
+                         "the same config don't overwrite earlier checkpoints")
     args = ap.parse_args()
 
     random.seed(args.seed); np.random.seed(args.seed); torch.manual_seed(args.seed)
@@ -458,12 +475,20 @@ def main():
     t_start = time.time()
 
     ckpt_stem = "wlasl_ftv2" if args.loss == "hard" else f"wlasl_ftv2_soft_g{args.gamma:g}"
+    if args.normalize == "l2":
+        ckpt_stem += "_l2"
+    if args.alpha != 0.05:
+        ckpt_stem += f"_a{args.alpha:g}"
+    if args.tag:
+        ckpt_stem += f"_{args.tag}"
     for epoch in range(1, args.epochs + 1):
         t0 = time.time()
         train_loss, train_acc = run_epoch(model, train_loader, device, optimizer=optimizer,
-                                          loss_mode=args.loss, gamma=args.gamma)
+                                          loss_mode=args.loss, gamma=args.gamma,
+                                          normalize=args.normalize, alpha=args.alpha)
         val_loss, val_acc = run_epoch(model, val_loader, device, optimizer=None,
-                                      loss_mode=args.loss, gamma=args.gamma)
+                                      loss_mode=args.loss, gamma=args.gamma,
+                                      normalize=args.normalize, alpha=args.alpha)
         ckpt_path = out_dir / f"{ckpt_stem}_ep{epoch:02d}.h5"
         torch.save(model.state_dict(), ckpt_path)
 
