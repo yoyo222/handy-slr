@@ -38,6 +38,10 @@ Errors come back as `{ "error": "..." }` — `Invalid JSON`, `Function not found
 Until a `login` or `signup` succeeds, only `login`, `signup` and `onOpen` are
 dispatched; anything else is refused with `Not authenticated`.
 
+Accounts live in `server/login/users.json` as bcrypt hashes. The file is created
+on first signup and is gitignored — a credential database is runtime state, not
+source.
+
 The expensive object is `Session` (`server/model/main.py`), which loads
 MediaPipe, the embedding model, and the user's sign database. It is cached per
 authenticated username in `sessionsList` and shared across that user's

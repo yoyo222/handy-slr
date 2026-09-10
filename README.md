@@ -26,7 +26,9 @@ python server/server.py   # websocket server on :8765
 yarn start                # web app on :3000
 ```
 
-Open <http://localhost:3000> and sign in with `TEST` / `test123`, or create an account.
+Open <http://localhost:3000> and create an account. Accounts are stored locally in
+`server/login/users.json`, which is created on first signup and is not tracked in
+git — the server binds to `127.0.0.1` and is a single-user local application.
 
 **The sign database starts empty**, so nothing will be recognised until you record something. Go to *Record*, click to start, and sign after the three-second countdown — open your mouth to stop. Record each sign twice: the rejection threshold is calibrated from a leave-one-out fit over your own recordings, and it needs at least two per class to do that. With two classes registered, the dashboard starts producing subtitles.
 

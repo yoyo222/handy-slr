@@ -37,6 +37,9 @@ venv/
 /server/database
 /server/tmp
 
+# Local account database, created on first signup. Never commit credentials.
+/server/login/users.json
+
 # Experiment data (code, results_*.json, history JSONs stay tracked)
 /experiments/*landmarks*/
 /experiments/checkpoints/*.h5
