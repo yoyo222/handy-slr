@@ -1,0 +1,47 @@
+Handy — real-time few-shot sign language recognition
+Copyright 2026 Yota Taue and the Handy contributors
+
+This product includes software developed by Yota Taue and <co-author name>.
+
+--------------------------------------------------------------------------------
+Attribution
+--------------------------------------------------------------------------------
+
+The Handy application — the React frontend under src/, the websocket server
+under server/, and the original embedding model weights at
+server/model/weights.h5 — was co-developed by Yota Taue and <co-author name>.
+
+The research contribution under experiments/ and rmd/ is the work of Yota Taue,
+carried out at the Nakazawa-Ohkoshi Laboratory, Faculty of Policy Management,
+Keio University. This covers the class-disjoint evaluation harness, the hand
+detection fallback, DBA prototype aggregation, the batched Soft-DTW
+implementation, the continuous-stream benchmark, and conformal threshold
+calibration.
+
+--------------------------------------------------------------------------------
+Material under separate terms
+--------------------------------------------------------------------------------
+
+The following are NOT covered by the Apache License 2.0 grant in LICENSE:
+
+* rmd/ — the paper, poster, and figures are licensed under Creative Commons
+  Attribution 4.0 International. See LICENSE-docs.
+
+* train/ — the Colab training notebooks are the work of <co-author name>,
+  included for reference with permission. No license is granted for their reuse.
+  See train/README.md.
+
+--------------------------------------------------------------------------------
+Third-party material
+--------------------------------------------------------------------------------
+
+This repository does not redistribute third-party datasets or models.
+
+* WLASL (Word-Level American Sign Language) is used for evaluation but is not
+  included. Obtain it from its maintainers under their terms:
+  https://dxli94.github.io/WLASL/
+
+* MediaPipe is a dependency, not vendored here. Apache License 2.0, Google LLC.
+
+* public/favicon.ico is used under the Flaticon Basic License:
+  https://www.flaticon.com/free-icons/sign-language

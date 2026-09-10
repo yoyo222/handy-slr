@@ -4,7 +4,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
 import Record from '../Record/Record';
-import Saved from '../Saved/Saved';
 import FileViewer from '../Saved/FileViewer';
 import Settings from '../Settings/Settings'; 
 import LoadingScreen from '../LoadingScreen/LoadingScreen';
@@ -12,11 +11,10 @@ import Auth from '../Login/Auth';
 import './App.css';
 import '../VideoStyles.css'; 
 import Webcam from 'react-webcam';
-import { FaPlay, FaCopy, FaQuestionCircle, FaCopy as FaCopyIcon, FaArrowUp } from 'react-icons/fa';
+import { FaQuestionCircle, FaCopy as FaCopyIcon, FaArrowUp } from 'react-icons/fa';
 import { ThemeProvider } from '../contexts/ThemeContext'; 
 import { LanguageProvider, useLanguage } from '../contexts/LanguageContext';
 import { t } from '../translation'; 
-import { FaEye, FaEyeSlash } from 'react-icons/fa'; 
 
 interface SocketMessageProps {
   result: string;
@@ -228,12 +226,6 @@ const Home: React.FC<HomeProps> = ({ socketRef, socketMessage, isConnected }) =>
     }
   }, [socketMessage]);
 
-  const [webcamDimensions, setWebcamDimensions] = useState({
-    width: 0,
-    height: 0,
-    top: 0,
-    left: 0,
-  });
 
   const toggleHelp = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.stopPropagation();
@@ -392,7 +384,6 @@ const App: React.FC = () => {
   const [currentComponent, setCurrentComponent] = useState("auth");
   const videoProcessorRef = useRef(new VideoChunkProcessor());
   const [folders, setFolders] = useState<FolderType[]>([]);
-  const { language } = useLanguage(); 
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
   const toggleSidebar = () => setIsSidebarOpen(prev => !prev);
 

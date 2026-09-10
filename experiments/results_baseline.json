@@ -1,6 +1,6 @@
 [
   {
-    "checkpoint": "server\\model\\weights.h5",
+    "checkpoint": "server/model/weights.h5",
     "n_way": 5,
     "k_shot": 1,
     "n_query": 5,
@@ -11,7 +11,7 @@
     "seed": 0
   },
   {
-    "checkpoint": "server\\model\\weights.h5",
+    "checkpoint": "server/model/weights.h5",
     "n_way": 5,
     "k_shot": 1,
     "n_query": 5,
@@ -22,7 +22,7 @@
     "seed": 0
   },
   {
-    "checkpoint": "server\\model\\weights.h5",
+    "checkpoint": "server/model/weights.h5",
     "n_way": 10,
     "k_shot": 1,
     "n_query": 5,
@@ -33,7 +33,7 @@
     "seed": 0
   },
   {
-    "checkpoint": "server\\model\\weights.h5",
+    "checkpoint": "server/model/weights.h5",
     "n_way": 10,
     "k_shot": 5,
     "n_query": 5,
@@ -44,8 +44,8 @@
     "seed": 0
   },
   {
-    "checkpoint": "server\\model\\weights.h5",
-    "landmarks_dir": "experiments\\wlasl_landmarks",
+    "checkpoint": "server/model/weights.h5",
+    "landmarks_dir": "experiments/wlasl_landmarks",
     "n_way": 5,
     "k_shot": 1,
     "n_query": 5,
@@ -57,8 +57,8 @@
     "seed": 0
   },
   {
-    "checkpoint": "server\\model\\weights.h5",
-    "landmarks_dir": "experiments\\wlasl_landmarks",
+    "checkpoint": "server/model/weights.h5",
+    "landmarks_dir": "experiments/wlasl_landmarks",
     "n_way": 10,
     "k_shot": 1,
     "n_query": 5,
@@ -70,8 +70,8 @@
     "seed": 0
   },
   {
-    "checkpoint": "server\\model\\weights.h5",
-    "landmarks_dir": "experiments\\wlasl_landmarks",
+    "checkpoint": "server/model/weights.h5",
+    "landmarks_dir": "experiments/wlasl_landmarks",
     "n_way": 10,
     "k_shot": 5,
     "n_query": 5,
@@ -83,7 +83,7 @@
     "seed": 0
   },
   {
-    "checkpoint": "server\\model\\weights.h5",
+    "checkpoint": "server/model/weights.h5",
     "landmarks_dir": "wlasl_landmarks_v2",
     "n_way": 5,
     "k_shot": 1,
@@ -96,7 +96,7 @@
     "seed": 0
   },
   {
-    "checkpoint": "server\\model\\weights.h5",
+    "checkpoint": "server/model/weights.h5",
     "landmarks_dir": "wlasl_landmarks_v2",
     "n_way": 10,
     "k_shot": 1,
@@ -109,7 +109,7 @@
     "seed": 0
   },
   {
-    "checkpoint": "server\\model\\weights.h5",
+    "checkpoint": "server/model/weights.h5",
     "landmarks_dir": "wlasl_landmarks_v2",
     "n_way": 10,
     "k_shot": 5,
@@ -122,7 +122,7 @@
     "seed": 0
   },
   {
-    "checkpoint": "server\\model\\weights.h5",
+    "checkpoint": "server/model/weights.h5",
     "landmarks_dir": "wlasl_landmarks_v2",
     "n_way": 5,
     "k_shot": 1,
@@ -135,7 +135,7 @@
     "seed": 0
   },
   {
-    "checkpoint": "server\\model\\weights.h5",
+    "checkpoint": "server/model/weights.h5",
     "landmarks_dir": "wlasl_landmarks_v2",
     "n_way": 10,
     "k_shot": 1,
@@ -148,8 +148,8 @@
     "seed": 0
   },
   {
-    "checkpoint": "server\\model\\weights.h5",
-    "landmarks_dir": "experiments\\wlasl_landmarks",
+    "checkpoint": "server/model/weights.h5",
+    "landmarks_dir": "experiments/wlasl_landmarks",
     "n_way": 5,
     "k_shot": 5,
     "n_query": 5,
@@ -161,7 +161,7 @@
     "seed": 0
   },
   {
-    "checkpoint": "server\\model\\weights.h5",
+    "checkpoint": "server/model/weights.h5",
     "landmarks_dir": "wlasl_landmarks_v2",
     "n_way": 10,
     "k_shot": 5,
@@ -174,8 +174,8 @@
     "seed": 0
   },
   {
-    "checkpoint": "checkpoints\\wlasl_ft_ep01.h5",
-    "landmarks_dir": "experiments\\wlasl_landmarks",
+    "checkpoint": "checkpoints/wlasl_ft_ep01.h5",
+    "landmarks_dir": "experiments/wlasl_landmarks",
     "n_way": 5,
     "k_shot": 1,
     "n_query": 5,
@@ -187,8 +187,8 @@
     "seed": 0
   },
   {
-    "checkpoint": "checkpoints\\wlasl_ft_ep01.h5",
-    "landmarks_dir": "experiments\\wlasl_landmarks",
+    "checkpoint": "checkpoints/wlasl_ft_ep01.h5",
+    "landmarks_dir": "experiments/wlasl_landmarks",
     "n_way": 10,
     "k_shot": 1,
     "n_query": 5,
@@ -200,8 +200,8 @@
     "seed": 0
   },
   {
-    "checkpoint": "checkpoints\\wlasl_ft_ep01.h5",
-    "landmarks_dir": "experiments\\wlasl_landmarks",
+    "checkpoint": "checkpoints/wlasl_ft_ep01.h5",
+    "landmarks_dir": "experiments/wlasl_landmarks",
     "n_way": 10,
     "k_shot": 5,
     "n_query": 5,
@@ -213,8 +213,8 @@
     "seed": 0
   },
   {
-    "checkpoint": "server\\model\\weights.h5",
-    "landmarks_dir": "experiments\\wlasl_landmarks",
+    "checkpoint": "server/model/weights.h5",
+    "landmarks_dir": "experiments/wlasl_landmarks",
     "n_way": 20,
     "k_shot": 5,
     "n_query": 5,
@@ -226,8 +226,8 @@
     "seed": 0
   },
   {
-    "checkpoint": "server\\model\\weights.h5",
-    "landmarks_dir": "experiments\\wlasl_landmarks",
+    "checkpoint": "server/model/weights.h5",
+    "landmarks_dir": "experiments/wlasl_landmarks",
     "n_way": 5,
     "k_shot": 5,
     "n_query": 5,
@@ -239,8 +239,8 @@
     "seed": 0
   },
   {
-    "checkpoint": "server\\model\\weights.h5",
-    "landmarks_dir": "experiments\\wlasl_landmarks",
+    "checkpoint": "server/model/weights.h5",
+    "landmarks_dir": "experiments/wlasl_landmarks",
     "n_way": 10,
     "k_shot": 5,
     "n_query": 5,
@@ -252,8 +252,8 @@
     "seed": 0
   },
   {
-    "checkpoint": "server\\model\\weights.h5",
-    "landmarks_dir": "experiments\\wlasl_landmarks",
+    "checkpoint": "server/model/weights.h5",
+    "landmarks_dir": "experiments/wlasl_landmarks",
     "n_way": 20,
     "k_shot": 5,
     "n_query": 5,
@@ -265,8 +265,8 @@
     "seed": 0
   },
   {
-    "checkpoint": "server\\model\\weights.h5",
-    "landmarks_dir": "experiments\\wlasl_landmarks",
+    "checkpoint": "server/model/weights.h5",
+    "landmarks_dir": "experiments/wlasl_landmarks",
     "n_way": 5,
     "k_shot": 5,
     "n_query": 5,
@@ -278,8 +278,8 @@
     "seed": 0
   },
   {
-    "checkpoint": "server\\model\\weights.h5",
-    "landmarks_dir": "experiments\\wlasl_landmarks",
+    "checkpoint": "server/model/weights.h5",
+    "landmarks_dir": "experiments/wlasl_landmarks",
     "n_way": 10,
     "k_shot": 5,
     "n_query": 5,
@@ -291,8 +291,8 @@
     "seed": 0
   },
   {
-    "checkpoint": "server\\model\\weights.h5",
-    "landmarks_dir": "experiments\\wlasl_landmarks",
+    "checkpoint": "server/model/weights.h5",
+    "landmarks_dir": "experiments/wlasl_landmarks",
     "n_way": 20,
     "k_shot": 5,
     "n_query": 5,

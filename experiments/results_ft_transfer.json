@@ -1,7 +1,7 @@
 [
   {
     "model": "soft_g1_ep01",
-    "checkpoint": "experiments\\checkpoints\\wlasl_ft_soft_g1_ep01.h5",
+    "checkpoint": "experiments/checkpoints/wlasl_ft_soft_g1_ep01.h5",
     "subset": "novel40",
     "n_subset_classes": 40,
     "n_way": 5,
@@ -16,7 +16,7 @@
   },
   {
     "model": "soft_g1_ep01",
-    "checkpoint": "experiments\\checkpoints\\wlasl_ft_soft_g1_ep01.h5",
+    "checkpoint": "experiments/checkpoints/wlasl_ft_soft_g1_ep01.h5",
     "subset": "novel40",
     "n_subset_classes": 40,
     "n_way": 10,
@@ -31,7 +31,7 @@
   },
   {
     "model": "soft_g1_ep01",
-    "checkpoint": "experiments\\checkpoints\\wlasl_ft_soft_g1_ep01.h5",
+    "checkpoint": "experiments/checkpoints/wlasl_ft_soft_g1_ep01.h5",
     "subset": "novel40",
     "n_subset_classes": 40,
     "n_way": 10,
@@ -46,7 +46,7 @@
   },
   {
     "model": "soft_g1_ep01",
-    "checkpoint": "experiments\\checkpoints\\wlasl_ft_soft_g1_ep01.h5",
+    "checkpoint": "experiments/checkpoints/wlasl_ft_soft_g1_ep01.h5",
     "subset": "clean11",
     "n_subset_classes": 11,
     "n_way": 5,
@@ -61,7 +61,7 @@
   },
   {
     "model": "soft_g1_ep01",
-    "checkpoint": "experiments\\checkpoints\\wlasl_ft_soft_g1_ep01.h5",
+    "checkpoint": "experiments/checkpoints/wlasl_ft_soft_g1_ep01.h5",
     "subset": "clean11",
     "n_subset_classes": 11,
     "n_way": 10,
@@ -76,7 +76,7 @@
   },
   {
     "model": "soft_g1_ep01",
-    "checkpoint": "experiments\\checkpoints\\wlasl_ft_soft_g1_ep01.h5",
+    "checkpoint": "experiments/checkpoints/wlasl_ft_soft_g1_ep01.h5",
     "subset": "clean11",
     "n_subset_classes": 11,
     "n_way": 10,
@@ -91,7 +91,7 @@
   },
   {
     "model": "soft_g1_ep02",
-    "checkpoint": "experiments\\checkpoints\\wlasl_ft_soft_g1_ep02.h5",
+    "checkpoint": "experiments/checkpoints/wlasl_ft_soft_g1_ep02.h5",
     "subset": "novel40",
     "n_subset_classes": 40,
     "n_way": 5,
@@ -106,7 +106,7 @@
   },
   {
     "model": "soft_g1_ep02",
-    "checkpoint": "experiments\\checkpoints\\wlasl_ft_soft_g1_ep02.h5",
+    "checkpoint": "experiments/checkpoints/wlasl_ft_soft_g1_ep02.h5",
     "subset": "novel40",
     "n_subset_classes": 40,
     "n_way": 10,
@@ -121,7 +121,7 @@
   },
   {
     "model": "soft_g1_ep02",
-    "checkpoint": "experiments\\checkpoints\\wlasl_ft_soft_g1_ep02.h5",
+    "checkpoint": "experiments/checkpoints/wlasl_ft_soft_g1_ep02.h5",
     "subset": "novel40",
     "n_subset_classes": 40,
     "n_way": 10,
@@ -136,7 +136,7 @@
   },
   {
     "model": "soft_g1_ep02",
-    "checkpoint": "experiments\\checkpoints\\wlasl_ft_soft_g1_ep02.h5",
+    "checkpoint": "experiments/checkpoints/wlasl_ft_soft_g1_ep02.h5",
     "subset": "clean11",
     "n_subset_classes": 11,
     "n_way": 5,
@@ -151,7 +151,7 @@
   },
   {
     "model": "soft_g1_ep02",
-    "checkpoint": "experiments\\checkpoints\\wlasl_ft_soft_g1_ep02.h5",
+    "checkpoint": "experiments/checkpoints/wlasl_ft_soft_g1_ep02.h5",
     "subset": "clean11",
     "n_subset_classes": 11,
     "n_way": 10,
@@ -166,7 +166,7 @@
   },
   {
     "model": "soft_g1_ep02",
-    "checkpoint": "experiments\\checkpoints\\wlasl_ft_soft_g1_ep02.h5",
+    "checkpoint": "experiments/checkpoints/wlasl_ft_soft_g1_ep02.h5",
     "subset": "clean11",
     "n_subset_classes": 11,
     "n_way": 10,
@@ -181,7 +181,7 @@
   },
   {
     "model": "hard_ft_ep01",
-    "checkpoint": "experiments\\checkpoints\\wlasl_ft_ep01.h5",
+    "checkpoint": "experiments/checkpoints/wlasl_ft_ep01.h5",
     "subset": "novel40",
     "n_subset_classes": 40,
     "n_way": 5,
@@ -196,7 +196,7 @@
   },
   {
     "model": "hard_ft_ep01",
-    "checkpoint": "experiments\\checkpoints\\wlasl_ft_ep01.h5",
+    "checkpoint": "experiments/checkpoints/wlasl_ft_ep01.h5",
     "subset": "novel40",
     "n_subset_classes": 40,
     "n_way": 10,
@@ -211,7 +211,7 @@
   },
   {
     "model": "hard_ft_ep01",
-    "checkpoint": "experiments\\checkpoints\\wlasl_ft_ep01.h5",
+    "checkpoint": "experiments/checkpoints/wlasl_ft_ep01.h5",
     "subset": "novel40",
     "n_subset_classes": 40,
     "n_way": 10,
@@ -226,7 +226,7 @@
   },
   {
     "model": "hard_ft_ep01",
-    "checkpoint": "experiments\\checkpoints\\wlasl_ft_ep01.h5",
+    "checkpoint": "experiments/checkpoints/wlasl_ft_ep01.h5",
     "subset": "clean11",
     "n_subset_classes": 11,
     "n_way": 5,
@@ -241,7 +241,7 @@
   },
   {
     "model": "hard_ft_ep01",
-    "checkpoint": "experiments\\checkpoints\\wlasl_ft_ep01.h5",
+    "checkpoint": "experiments/checkpoints/wlasl_ft_ep01.h5",
     "subset": "clean11",
     "n_subset_classes": 11,
     "n_way": 10,
@@ -256,7 +256,7 @@
   },
   {
     "model": "hard_ft_ep01",
-    "checkpoint": "experiments\\checkpoints\\wlasl_ft_ep01.h5",
+    "checkpoint": "experiments/checkpoints/wlasl_ft_ep01.h5",
     "subset": "clean11",
     "n_subset_classes": 11,
     "n_way": 10,
@@ -271,7 +271,7 @@
   },
   {
     "model": "baseline",
-    "checkpoint": "server\\model\\weights.h5",
+    "checkpoint": "server/model/weights.h5",
     "subset": "clean11",
     "n_subset_classes": 11,
     "n_way": 5,
@@ -286,7 +286,7 @@
   },
   {
     "model": "baseline",
-    "checkpoint": "server\\model\\weights.h5",
+    "checkpoint": "server/model/weights.h5",
     "subset": "clean11",
     "n_subset_classes": 11,
     "n_way": 10,
@@ -301,7 +301,7 @@
   },
   {
     "model": "baseline",
-    "checkpoint": "server\\model\\weights.h5",
+    "checkpoint": "server/model/weights.h5",
     "subset": "clean11",
     "n_subset_classes": 11,
     "n_way": 10,
@@ -316,7 +316,7 @@
   },
   {
     "model": "ftv2_hard_ep02",
-    "checkpoint": "experiments\\checkpoints\\wlasl_ftv2_ep02.h5",
+    "checkpoint": "experiments/checkpoints/wlasl_ftv2_ep02.h5",
     "subset": "novel40",
     "n_subset_classes": 40,
     "n_way": 5,
@@ -331,7 +331,7 @@
   },
   {
     "model": "ftv2_hard_ep02",
-    "checkpoint": "experiments\\checkpoints\\wlasl_ftv2_ep02.h5",
+    "checkpoint": "experiments/checkpoints/wlasl_ftv2_ep02.h5",
     "subset": "novel40",
     "n_subset_classes": 40,
     "n_way": 10,
@@ -346,7 +346,7 @@
   },
   {
     "model": "ftv2_hard_ep02",
-    "checkpoint": "experiments\\checkpoints\\wlasl_ftv2_ep02.h5",
+    "checkpoint": "experiments/checkpoints/wlasl_ftv2_ep02.h5",
     "subset": "novel40",
     "n_subset_classes": 40,
     "n_way": 10,
@@ -361,7 +361,7 @@
   },
   {
     "model": "ftv2_hard_ep02",
-    "checkpoint": "experiments\\checkpoints\\wlasl_ftv2_ep02.h5",
+    "checkpoint": "experiments/checkpoints/wlasl_ftv2_ep02.h5",
     "subset": "clean11",
     "n_subset_classes": 11,
     "n_way": 5,
@@ -376,7 +376,7 @@
   },
   {
     "model": "ftv2_hard_ep02",
-    "checkpoint": "experiments\\checkpoints\\wlasl_ftv2_ep02.h5",
+    "checkpoint": "experiments/checkpoints/wlasl_ftv2_ep02.h5",
     "subset": "clean11",
     "n_subset_classes": 11,
     "n_way": 10,
@@ -391,7 +391,7 @@
   },
   {
     "model": "ftv2_hard_ep02",
-    "checkpoint": "experiments\\checkpoints\\wlasl_ftv2_ep02.h5",
+    "checkpoint": "experiments/checkpoints/wlasl_ftv2_ep02.h5",
     "subset": "clean11",
     "n_subset_classes": 11,
     "n_way": 10,
@@ -406,7 +406,7 @@
   },
   {
     "model": "ftv2_soft_g0.1_ep01",
-    "checkpoint": "experiments\\checkpoints\\wlasl_ftv2_soft_g0.1_ep01.h5",
+    "checkpoint": "experiments/checkpoints/wlasl_ftv2_soft_g0.1_ep01.h5",
     "subset": "novel40",
     "n_subset_classes": 40,
     "n_way": 5,
@@ -421,7 +421,7 @@
   },
   {
     "model": "ftv2_soft_g0.1_ep01",
-    "checkpoint": "experiments\\checkpoints\\wlasl_ftv2_soft_g0.1_ep01.h5",
+    "checkpoint": "experiments/checkpoints/wlasl_ftv2_soft_g0.1_ep01.h5",
     "subset": "novel40",
     "n_subset_classes": 40,
     "n_way": 10,
@@ -436,7 +436,7 @@
   },
   {
     "model": "ftv2_soft_g0.1_ep01",
-    "checkpoint": "experiments\\checkpoints\\wlasl_ftv2_soft_g0.1_ep01.h5",
+    "checkpoint": "experiments/checkpoints/wlasl_ftv2_soft_g0.1_ep01.h5",
     "subset": "novel40",
     "n_subset_classes": 40,
     "n_way": 10,
@@ -451,7 +451,7 @@
   },
   {
     "model": "ftv2_soft_g0.1_ep01",
-    "checkpoint": "experiments\\checkpoints\\wlasl_ftv2_soft_g0.1_ep01.h5",
+    "checkpoint": "experiments/checkpoints/wlasl_ftv2_soft_g0.1_ep01.h5",
     "subset": "clean11",
     "n_subset_classes": 11,
     "n_way": 5,
@@ -466,7 +466,7 @@
   },
   {
     "model": "ftv2_soft_g0.1_ep01",
-    "checkpoint": "experiments\\checkpoints\\wlasl_ftv2_soft_g0.1_ep01.h5",
+    "checkpoint": "experiments/checkpoints/wlasl_ftv2_soft_g0.1_ep01.h5",
     "subset": "clean11",
     "n_subset_classes": 11,
     "n_way": 10,
@@ -481,7 +481,7 @@
   },
   {
     "model": "ftv2_soft_g0.1_ep01",
-    "checkpoint": "experiments\\checkpoints\\wlasl_ftv2_soft_g0.1_ep01.h5",
+    "checkpoint": "experiments/checkpoints/wlasl_ftv2_soft_g0.1_ep01.h5",
     "subset": "clean11",
     "n_subset_classes": 11,
     "n_way": 10,
@@ -496,7 +496,7 @@
   },
   {
     "model": "soft_g0.1_l2_ep03",
-    "checkpoint": "experiments\\checkpoints\\wlasl_ftv2_soft_g0.1_l2_ep03.h5",
+    "checkpoint": "experiments/checkpoints/wlasl_ftv2_soft_g0.1_l2_ep03.h5",
     "subset": "novel40",
     "n_subset_classes": 40,
     "n_way": 5,
@@ -512,7 +512,7 @@
   },
   {
     "model": "soft_g0.1_l2_ep03",
-    "checkpoint": "experiments\\checkpoints\\wlasl_ftv2_soft_g0.1_l2_ep03.h5",
+    "checkpoint": "experiments/checkpoints/wlasl_ftv2_soft_g0.1_l2_ep03.h5",
     "subset": "novel40",
     "n_subset_classes": 40,
     "n_way": 10,
@@ -528,7 +528,7 @@
   },
   {
     "model": "soft_g0.1_l2_ep03",
-    "checkpoint": "experiments\\checkpoints\\wlasl_ftv2_soft_g0.1_l2_ep03.h5",
+    "checkpoint": "experiments/checkpoints/wlasl_ftv2_soft_g0.1_l2_ep03.h5",
     "subset": "novel40",
     "n_subset_classes": 40,
     "n_way": 10,
@@ -544,7 +544,7 @@
   },
   {
     "model": "soft_g0.1_l2_ep03",
-    "checkpoint": "experiments\\checkpoints\\wlasl_ftv2_soft_g0.1_l2_ep03.h5",
+    "checkpoint": "experiments/checkpoints/wlasl_ftv2_soft_g0.1_l2_ep03.h5",
     "subset": "clean11",
     "n_subset_classes": 11,
     "n_way": 5,
@@ -560,7 +560,7 @@
   },
   {
     "model": "soft_g0.1_l2_ep03",
-    "checkpoint": "experiments\\checkpoints\\wlasl_ftv2_soft_g0.1_l2_ep03.h5",
+    "checkpoint": "experiments/checkpoints/wlasl_ftv2_soft_g0.1_l2_ep03.h5",
     "subset": "clean11",
     "n_subset_classes": 11,
     "n_way": 10,
@@ -576,7 +576,7 @@
   },
   {
     "model": "soft_g0.1_l2_ep03",
-    "checkpoint": "experiments\\checkpoints\\wlasl_ftv2_soft_g0.1_l2_ep03.h5",
+    "checkpoint": "experiments/checkpoints/wlasl_ftv2_soft_g0.1_l2_ep03.h5",
     "subset": "clean11",
     "n_subset_classes": 11,
     "n_way": 10,
@@ -592,7 +592,7 @@
   },
   {
     "model": "soft_g1_l2_ep09",
-    "checkpoint": "experiments\\checkpoints\\wlasl_ftv2_soft_g1_l2_ep09.h5",
+    "checkpoint": "experiments/checkpoints/wlasl_ftv2_soft_g1_l2_ep09.h5",
     "subset": "novel40",
     "n_subset_classes": 40,
     "n_way": 5,
@@ -608,7 +608,7 @@
   },
   {
     "model": "soft_g1_l2_ep09",
-    "checkpoint": "experiments\\checkpoints\\wlasl_ftv2_soft_g1_l2_ep09.h5",
+    "checkpoint": "experiments/checkpoints/wlasl_ftv2_soft_g1_l2_ep09.h5",
     "subset": "novel40",
     "n_subset_classes": 40,
     "n_way": 10,
@@ -624,7 +624,7 @@
   },
   {
     "model": "soft_g1_l2_ep09",
-    "checkpoint": "experiments\\checkpoints\\wlasl_ftv2_soft_g1_l2_ep09.h5",
+    "checkpoint": "experiments/checkpoints/wlasl_ftv2_soft_g1_l2_ep09.h5",
     "subset": "novel40",
     "n_subset_classes": 40,
     "n_way": 10,
@@ -640,7 +640,7 @@
   },
   {
     "model": "soft_g1_l2_ep09",
-    "checkpoint": "experiments\\checkpoints\\wlasl_ftv2_soft_g1_l2_ep09.h5",
+    "checkpoint": "experiments/checkpoints/wlasl_ftv2_soft_g1_l2_ep09.h5",
     "subset": "clean11",
     "n_subset_classes": 11,
     "n_way": 5,
@@ -656,7 +656,7 @@
   },
   {
     "model": "soft_g1_l2_ep09",
-    "checkpoint": "experiments\\checkpoints\\wlasl_ftv2_soft_g1_l2_ep09.h5",
+    "checkpoint": "experiments/checkpoints/wlasl_ftv2_soft_g1_l2_ep09.h5",
     "subset": "clean11",
     "n_subset_classes": 11,
     "n_way": 10,
@@ -672,7 +672,7 @@
   },
   {
     "model": "soft_g1_l2_ep09",
-    "checkpoint": "experiments\\checkpoints\\wlasl_ftv2_soft_g1_l2_ep09.h5",
+    "checkpoint": "experiments/checkpoints/wlasl_ftv2_soft_g1_l2_ep09.h5",
     "subset": "clean11",
     "n_subset_classes": 11,
     "n_way": 10,
@@ -688,7 +688,7 @@
   },
   {
     "model": "baseline_l2",
-    "checkpoint": "server\\model\\weights.h5",
+    "checkpoint": "server/model/weights.h5",
     "subset": "novel40",
     "n_subset_classes": 40,
     "n_way": 5,
@@ -704,7 +704,7 @@
   },
   {
     "model": "baseline_l2",
-    "checkpoint": "server\\model\\weights.h5",
+    "checkpoint": "server/model/weights.h5",
     "subset": "novel40",
     "n_subset_classes": 40,
     "n_way": 10,
@@ -720,7 +720,7 @@
   },
   {
     "model": "baseline_l2",
-    "checkpoint": "server\\model\\weights.h5",
+    "checkpoint": "server/model/weights.h5",
     "subset": "novel40",
     "n_subset_classes": 40,
     "n_way": 10,
@@ -736,7 +736,7 @@
   },
   {
     "model": "baseline_l2",
-    "checkpoint": "server\\model\\weights.h5",
+    "checkpoint": "server/model/weights.h5",
     "subset": "clean11",
     "n_subset_classes": 11,
     "n_way": 5,
@@ -752,7 +752,7 @@
   },
   {
     "model": "baseline_l2",
-    "checkpoint": "server\\model\\weights.h5",
+    "checkpoint": "server/model/weights.h5",
     "subset": "clean11",
     "n_subset_classes": 11,
     "n_way": 10,
@@ -768,7 +768,7 @@
   },
   {
     "model": "baseline_l2",
-    "checkpoint": "server\\model\\weights.h5",
+    "checkpoint": "server/model/weights.h5",
     "subset": "clean11",
     "n_subset_classes": 11,
     "n_way": 10,
@@ -784,7 +784,7 @@
   },
   {
     "model": "soft_g0.1_l2b_ep07",
-    "checkpoint": "experiments\\checkpoints\\wlasl_ftv2_soft_g0.1_l2_ep07.h5",
+    "checkpoint": "experiments/checkpoints/wlasl_ftv2_soft_g0.1_l2_ep07.h5",
     "subset": "novel40",
     "n_subset_classes": 40,
     "n_way": 5,
@@ -800,7 +800,7 @@
   },
   {
     "model": "soft_g0.1_l2b_ep07",
-    "checkpoint": "experiments\\checkpoints\\wlasl_ftv2_soft_g0.1_l2_ep07.h5",
+    "checkpoint": "experiments/checkpoints/wlasl_ftv2_soft_g0.1_l2_ep07.h5",
     "subset": "novel40",
     "n_subset_classes": 40,
     "n_way": 10,
@@ -816,7 +816,7 @@
   },
   {
     "model": "soft_g0.1_l2b_ep07",
-    "checkpoint": "experiments\\checkpoints\\wlasl_ftv2_soft_g0.1_l2_ep07.h5",
+    "checkpoint": "experiments/checkpoints/wlasl_ftv2_soft_g0.1_l2_ep07.h5",
     "subset": "novel40",
     "n_subset_classes": 40,
     "n_way": 10,
@@ -832,7 +832,7 @@
   },
   {
     "model": "soft_g0.1_l2b_ep07",
-    "checkpoint": "experiments\\checkpoints\\wlasl_ftv2_soft_g0.1_l2_ep07.h5",
+    "checkpoint": "experiments/checkpoints/wlasl_ftv2_soft_g0.1_l2_ep07.h5",
     "subset": "clean11",
     "n_subset_classes": 11,
     "n_way": 5,
@@ -848,7 +848,7 @@
   },
   {
     "model": "soft_g0.1_l2b_ep07",
-    "checkpoint": "experiments\\checkpoints\\wlasl_ftv2_soft_g0.1_l2_ep07.h5",
+    "checkpoint": "experiments/checkpoints/wlasl_ftv2_soft_g0.1_l2_ep07.h5",
     "subset": "clean11",
     "n_subset_classes": 11,
     "n_way": 10,
@@ -864,7 +864,7 @@
   },
   {
     "model": "soft_g0.1_l2b_ep07",
-    "checkpoint": "experiments\\checkpoints\\wlasl_ftv2_soft_g0.1_l2_ep07.h5",
+    "checkpoint": "experiments/checkpoints/wlasl_ftv2_soft_g0.1_l2_ep07.h5",
     "subset": "clean11",
     "n_subset_classes": 11,
     "n_way": 10,
@@ -880,7 +880,7 @@
   },
   {
     "model": "soft_g0.1_l2b_ep14",
-    "checkpoint": "experiments\\checkpoints\\wlasl_ftv2_soft_g0.1_l2_ep14.h5",
+    "checkpoint": "experiments/checkpoints/wlasl_ftv2_soft_g0.1_l2_ep14.h5",
     "subset": "novel40",
     "n_subset_classes": 40,
     "n_way": 5,
@@ -896,7 +896,7 @@
   },
   {
     "model": "soft_g0.1_l2b_ep14",
-    "checkpoint": "experiments\\checkpoints\\wlasl_ftv2_soft_g0.1_l2_ep14.h5",
+    "checkpoint": "experiments/checkpoints/wlasl_ftv2_soft_g0.1_l2_ep14.h5",
     "subset": "novel40",
     "n_subset_classes": 40,
     "n_way": 10,
@@ -912,7 +912,7 @@
   },
   {
     "model": "soft_g0.1_l2b_ep14",
-    "checkpoint": "experiments\\checkpoints\\wlasl_ftv2_soft_g0.1_l2_ep14.h5",
+    "checkpoint": "experiments/checkpoints/wlasl_ftv2_soft_g0.1_l2_ep14.h5",
     "subset": "novel40",
     "n_subset_classes": 40,
     "n_way": 10,
@@ -928,7 +928,7 @@
   },
   {
     "model": "soft_g0.1_l2b_ep14",
-    "checkpoint": "experiments\\checkpoints\\wlasl_ftv2_soft_g0.1_l2_ep14.h5",
+    "checkpoint": "experiments/checkpoints/wlasl_ftv2_soft_g0.1_l2_ep14.h5",
     "subset": "clean11",
     "n_subset_classes": 11,
     "n_way": 5,
@@ -944,7 +944,7 @@
   },
   {
     "model": "soft_g0.1_l2b_ep14",
-    "checkpoint": "experiments\\checkpoints\\wlasl_ftv2_soft_g0.1_l2_ep14.h5",
+    "checkpoint": "experiments/checkpoints/wlasl_ftv2_soft_g0.1_l2_ep14.h5",
     "subset": "clean11",
     "n_subset_classes": 11,
     "n_way": 10,
@@ -960,7 +960,7 @@
   },
   {
     "model": "soft_g0.1_l2b_ep14",
-    "checkpoint": "experiments\\checkpoints\\wlasl_ftv2_soft_g0.1_l2_ep14.h5",
+    "checkpoint": "experiments/checkpoints/wlasl_ftv2_soft_g0.1_l2_ep14.h5",
     "subset": "clean11",
     "n_subset_classes": 11,
     "n_way": 10,
@@ -976,7 +976,7 @@
   },
   {
     "model": "soft_g0.1_l2_r3_ep20",
-    "checkpoint": "experiments\\checkpoints\\wlasl_ftv2_soft_g0.1_l2_r3_ep20.h5",
+    "checkpoint": "experiments/checkpoints/wlasl_ftv2_soft_g0.1_l2_r3_ep20.h5",
     "subset": "novel40",
     "n_subset_classes": 40,
     "n_way": 5,
@@ -992,7 +992,7 @@
   },
   {
     "model": "soft_g0.1_l2_r3_ep20",
-    "checkpoint": "experiments\\checkpoints\\wlasl_ftv2_soft_g0.1_l2_r3_ep20.h5",
+    "checkpoint": "experiments/checkpoints/wlasl_ftv2_soft_g0.1_l2_r3_ep20.h5",
     "subset": "novel40",
     "n_subset_classes": 40,
     "n_way": 10,
@@ -1008,7 +1008,7 @@
   },
   {
     "model": "soft_g0.1_l2_r3_ep20",
-    "checkpoint": "experiments\\checkpoints\\wlasl_ftv2_soft_g0.1_l2_r3_ep20.h5",
+    "checkpoint": "experiments/checkpoints/wlasl_ftv2_soft_g0.1_l2_r3_ep20.h5",
     "subset": "novel40",
     "n_subset_classes": 40,
     "n_way": 10,
@@ -1024,7 +1024,7 @@
   },
   {
     "model": "soft_g0.1_l2_r3_ep20",
-    "checkpoint": "experiments\\checkpoints\\wlasl_ftv2_soft_g0.1_l2_r3_ep20.h5",
+    "checkpoint": "experiments/checkpoints/wlasl_ftv2_soft_g0.1_l2_r3_ep20.h5",
     "subset": "clean11",
     "n_subset_classes": 11,
     "n_way": 5,
@@ -1040,7 +1040,7 @@
   },
   {
     "model": "soft_g0.1_l2_r3_ep20",
-    "checkpoint": "experiments\\checkpoints\\wlasl_ftv2_soft_g0.1_l2_r3_ep20.h5",
+    "checkpoint": "experiments/checkpoints/wlasl_ftv2_soft_g0.1_l2_r3_ep20.h5",
     "subset": "clean11",
     "n_subset_classes": 11,
     "n_way": 10,
@@ -1056,7 +1056,7 @@
   },
   {
     "model": "soft_g0.1_l2_r3_ep20",
-    "checkpoint": "experiments\\checkpoints\\wlasl_ftv2_soft_g0.1_l2_r3_ep20.h5",
+    "checkpoint": "experiments/checkpoints/wlasl_ftv2_soft_g0.1_l2_r3_ep20.h5",
     "subset": "clean11",
     "n_subset_classes": 11,
     "n_way": 10,
@@ -1072,7 +1072,7 @@
   },
   {
     "model": "soft_g0.1_l2_r3_ep30",
-    "checkpoint": "experiments\\checkpoints\\wlasl_ftv2_soft_g0.1_l2_r3_ep30.h5",
+    "checkpoint": "experiments/checkpoints/wlasl_ftv2_soft_g0.1_l2_r3_ep30.h5",
     "subset": "novel40",
     "n_subset_classes": 40,
     "n_way": 5,
@@ -1088,7 +1088,7 @@
   },
   {
     "model": "soft_g0.1_l2_r3_ep30",
-    "checkpoint": "experiments\\checkpoints\\wlasl_ftv2_soft_g0.1_l2_r3_ep30.h5",
+    "checkpoint": "experiments/checkpoints/wlasl_ftv2_soft_g0.1_l2_r3_ep30.h5",
     "subset": "novel40",
     "n_subset_classes": 40,
     "n_way": 10,
@@ -1104,7 +1104,7 @@
   },
   {
     "model": "soft_g0.1_l2_r3_ep30",
-    "checkpoint": "experiments\\checkpoints\\wlasl_ftv2_soft_g0.1_l2_r3_ep30.h5",
+    "checkpoint": "experiments/checkpoints/wlasl_ftv2_soft_g0.1_l2_r3_ep30.h5",
     "subset": "novel40",
     "n_subset_classes": 40,
     "n_way": 10,
@@ -1120,7 +1120,7 @@
   },
   {
     "model": "soft_g0.1_l2_r3_ep30",
-    "checkpoint": "experiments\\checkpoints\\wlasl_ftv2_soft_g0.1_l2_r3_ep30.h5",
+    "checkpoint": "experiments/checkpoints/wlasl_ftv2_soft_g0.1_l2_r3_ep30.h5",
     "subset": "clean11",
     "n_subset_classes": 11,
     "n_way": 5,
@@ -1136,7 +1136,7 @@
   },
   {
     "model": "soft_g0.1_l2_r3_ep30",
-    "checkpoint": "experiments\\checkpoints\\wlasl_ftv2_soft_g0.1_l2_r3_ep30.h5",
+    "checkpoint": "experiments/checkpoints/wlasl_ftv2_soft_g0.1_l2_r3_ep30.h5",
     "subset": "clean11",
     "n_subset_classes": 11,
     "n_way": 10,
@@ -1152,7 +1152,7 @@
   },
   {
     "model": "soft_g0.1_l2_r3_ep30",
-    "checkpoint": "experiments\\checkpoints\\wlasl_ftv2_soft_g0.1_l2_r3_ep30.h5",
+    "checkpoint": "experiments/checkpoints/wlasl_ftv2_soft_g0.1_l2_r3_ep30.h5",
     "subset": "clean11",
     "n_subset_classes": 11,
     "n_way": 10,

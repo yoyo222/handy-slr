@@ -1,0 +1,39 @@
+Creative Commons Attribution 4.0 International (CC BY 4.0)
+
+Copyright 2026 Yota Taue
+
+This license applies to the research documents and figures in this repository,
+namely everything under rmd/, including:
+
+  * rmd/2026_yota_wip_resumefinal-2.pdf   (paper, Japanese)
+  * rmd/yota_WIP_poster.pdf               (poster, Japanese)
+  * rmd/figures/                          (figures and the scripts generating them)
+
+Source code in this repository is licensed separately under the Apache License
+2.0; see LICENSE. The notebooks under train/ are excluded from both grants; see
+train/README.md.
+
+--------------------------------------------------------------------------------
+
+You are free to:
+
+  Share — copy and redistribute the material in any medium or format
+  Adapt  — remix, transform, and build upon the material for any purpose,
+           including commercially
+
+under the following terms:
+
+  Attribution — You must give appropriate credit, provide a link to the license,
+  and indicate if changes were made. You may do so in any reasonable manner, but
+  not in any way that suggests the licensor endorses you or your use.
+
+  No additional restrictions — You may not apply legal terms or technological
+  measures that legally restrict others from doing anything the license permits.
+
+For attribution, please cite the paper as described in CITATION.cff.
+
+The complete legal text of this license is available at:
+https://creativecommons.org/licenses/by/4.0/legalcode
+
+A human-readable summary is available at:
+https://creativecommons.org/licenses/by/4.0/

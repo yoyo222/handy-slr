@@ -139,7 +139,7 @@ def main():
     ap.add_argument("--raw_videos",
                     default=r"data/wlasl/raw_videos")
     ap.add_argument("--out",
-                    default=r"experiments\wlasl_landmarks")
+                    default=r"experiments/wlasl_landmarks")
     ap.add_argument("--top_k_classes", type=int, default=0,
                     help="If >0, only process the top-k most-frequent classes "
                          "(100 -> WLASL-100, 300 -> WLASL-300, etc.)")

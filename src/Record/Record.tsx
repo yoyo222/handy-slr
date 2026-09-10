@@ -6,7 +6,7 @@ import Webcam from 'react-webcam';
 import LoadingScreen from '../LoadingScreen/LoadingScreen';
 import { useLanguage } from '../contexts/LanguageContext';
 import { t } from '../translation';
-import { FaEye, FaEyeSlash, FaQuestionCircle, FaGraduationCap, FaArrowUp } from 'react-icons/fa';
+import { FaQuestionCircle, FaGraduationCap, FaArrowUp } from 'react-icons/fa';
 
 interface SocketMessageProps {
   result: string;

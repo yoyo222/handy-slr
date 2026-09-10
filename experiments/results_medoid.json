@@ -1,7 +1,7 @@
 [
   {
-    "checkpoint": "server\\model\\weights.h5",
-    "landmarks_dir": "experiments\\wlasl_landmarks",
+    "checkpoint": "server/model/weights.h5",
+    "landmarks_dir": "experiments/wlasl_landmarks",
     "n_way": 5,
     "k_shot": 5,
     "n_query": 5,
@@ -13,8 +13,8 @@
     "seed": 0
   },
   {
-    "checkpoint": "server\\model\\weights.h5",
-    "landmarks_dir": "experiments\\wlasl_landmarks",
+    "checkpoint": "server/model/weights.h5",
+    "landmarks_dir": "experiments/wlasl_landmarks",
     "n_way": 10,
     "k_shot": 5,
     "n_query": 5,
@@ -26,8 +26,8 @@
     "seed": 0
   },
   {
-    "checkpoint": "server\\model\\weights.h5",
-    "landmarks_dir": "experiments\\wlasl_landmarks",
+    "checkpoint": "server/model/weights.h5",
+    "landmarks_dir": "experiments/wlasl_landmarks",
     "n_way": 20,
     "k_shot": 5,
     "n_query": 5,

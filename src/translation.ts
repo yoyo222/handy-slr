@@ -6,10 +6,6 @@ interface Translations {
       jp: string;
     };
   }
-  const initialState = {
-    language: 'jp'
-  };
-  
   export const translations: Translations = {
     'hands_detected': {
       en: 'Hands detected',

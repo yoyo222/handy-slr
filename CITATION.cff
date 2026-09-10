@@ -1,0 +1,26 @@
+cff-version: 1.2.0
+title: "Handy: real-time few-shot sign language recognition"
+message: "If you use this software or its results, please cite it as below."
+type: software
+authors:
+  - family-names: Taue
+    given-names: Yota
+    affiliation: "Nakazawa-Ohkoshi Laboratory, Faculty of Policy Management, Keio University"
+repository-code: "https://github.com/yoyo222/handy-sign-recognition"
+abstract: >-
+  Handy recognises sign language in real time from MediaPipe hand landmarks,
+  embedding motion into a 256-dimensional metric space with a CNN+TCN encoder and
+  matching against stored prototypes with partial dynamic time warping. New signs
+  are registered from two recordings without retraining. This repository also
+  contains a class-disjoint few-shot evaluation of the method on WLASL, covering a
+  hand-detection fallback, DBA prototype aggregation, a batched Soft-DTW loss, a
+  continuous-stream benchmark, and conformal calibration of the rejection
+  threshold.
+keywords:
+  - sign language recognition
+  - few-shot learning
+  - dynamic time warping
+  - metric learning
+  - MediaPipe
+license: Apache-2.0
+license-url: "https://www.apache.org/licenses/LICENSE-2.0"

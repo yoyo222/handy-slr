@@ -1,2 +1,13 @@
-*.mp4 filter=lfs diff=lfs merge=lfs -text
-Handy[[:space:]]Promo[[:space:]]Video.mp4 filter=lfs diff=lfs merge=lfs -text
+# Normalise line endings for text, leave binaries alone.
+* text=auto
+
+*.png binary
+*.jpg binary
+*.gif binary
+*.pdf binary
+*.webm binary
+*.npy binary
+*.h5 binary
+*.ipynb binary
+
+yarn.lock linguist-generated=true
