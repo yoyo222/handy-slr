@@ -1,0 +1,152 @@
+/* src/theme.css
+ *
+ * Single source of truth for design tokens. Imported first in index.tsx so
+ * every component stylesheet can rely on these.
+ *
+ * Sidebar.css referenced 9 variables (--button-primary-bg, --shadow-color,
+ * --overlay-bg, ...) that were never defined anywhere, so those declarations
+ * resolved to invalid and silently rendered unstyled. They are all defined
+ * here now. Legacy names are kept as aliases so existing selectors keep
+ * working without a rewrite.
+ */
+
+:root {
+  /* typography — system stack, includes JP faces since the UI is bilingual.
+     No webfont: the demo must render identically offline. */
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue",
+    "Hiragino Sans", "Noto Sans JP", "Yu Gothic UI", sans-serif;
+
+  /* radii */
+  --radius-sm: 6px;
+  --radius: 10px;
+  --radius-lg: 14px;
+  --radius-full: 999px;
+
+  /* motion — one duration/easing everywhere */
+  --transition: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ---------------------------------------------------------------- light -- */
+:root,
+:root[data-theme='light'] {
+  --bg: #fafafa;
+  --surface: #ffffff;
+  --surface-2: #f4f4f5;
+  --surface-3: #e9e9ec;
+
+  --text: #18181b;
+  --text-muted: #71717a;
+  --border: #e4e4e7;
+
+  --accent: #4f46e5;
+  --accent-hover: #4338ca;
+  --accent-fg: #ffffff;
+  --accent-soft: rgba(79, 70, 229, 0.1);
+
+  --success: #15803d;
+  --danger: #dc2626;
+
+  --shadow-color: rgba(24, 24, 27, 0.08);
+  --shadow-sm: 0 1px 2px rgba(24, 24, 27, 0.06);
+  --shadow-md: 0 4px 12px rgba(24, 24, 27, 0.08);
+  --shadow-lg: 0 12px 32px rgba(24, 24, 27, 0.12);
+  --overlay-bg: rgba(24, 24, 27, 0.45);
+}
+
+/* ----------------------------------------------------------------- dark -- */
+:root[data-theme='dark'] {
+  --bg: #09090b;
+  --surface: #18181b;
+  --surface-2: #232326;
+  --surface-3: #2e2e33;
+
+  --text: #fafafa;
+  --text-muted: #a1a1aa;
+  --border: #2a2a2e;
+
+  --accent: #6366f1;
+  --accent-hover: #818cf8;
+  --accent-fg: #ffffff;
+  --accent-soft: rgba(99, 102, 241, 0.16);
+
+  --success: #22c55e;
+  --danger: #f87171;
+
+  --shadow-color: rgba(0, 0, 0, 0.4);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.35);
+  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.5);
+  --overlay-bg: rgba(0, 0, 0, 0.6);
+}
+
+/* ------------------------------------------------- legacy aliases ------- */
+/* Existing component CSS refers to these names; map them onto the tokens
+   above rather than rewriting every selector. */
+:root,
+:root[data-theme='light'],
+:root[data-theme='dark'] {
+  --background-color: var(--bg);
+  --text-color: var(--text);
+
+  --sidebar-bg: var(--surface);
+  --sidebar-bg-hover: var(--surface-2);
+  --sidebar-text: var(--text);
+
+  --border-color: var(--border);
+  --input-bg: var(--surface);
+  --delete-icon-color: var(--danger);
+
+  --toggle-bg: var(--surface-3);
+  --toggle-bg-checked: var(--accent);
+  --toggle-knob: #ffffff;
+
+  /* previously undefined -> caused unstyled buttons in the doc popup */
+  --button-primary-bg: var(--accent);
+  --button-primary-hover: var(--accent-hover);
+  --button-primary-text: var(--accent-fg);
+  --button-secondary-bg: var(--surface-2);
+  --button-secondary-text: var(--text);
+  --button-secondary-hover: var(--surface-3);
+  --button-shadow: var(--shadow-color);
+}
+
+/* ------------------------------------------------------------- base ----- */
+/* Sidebar.css used to carry a global `* { margin:0; padding:0 }` reset, so no
+   component anywhere relies on default margins. Reproduced here verbatim
+   (minus the "Inter" font force) to keep every untouched view pixel-identical. */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* visible, consistent keyboard focus */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

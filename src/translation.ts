@@ -12,8 +12,8 @@ interface Translations {
   
   export const translations: Translations = {
     'hands_detected': {
-      en: '✋ Hands detected',
-      jp: '✋ 手を検出中',
+      en: 'Hands detected',
+      jp: '手を検出中',
     },
     'hands_missing': {
       en: 'Show your hands to the camera',

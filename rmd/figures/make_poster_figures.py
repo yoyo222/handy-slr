@@ -24,7 +24,8 @@ sys.path.insert(0, str(EXP))
 sys.path.insert(0, str(EXP.parent))
 
 plt.rcParams.update({
-    "font.family": ["Times New Roman", "Yu Mincho", "MS Mincho"],
+    "font.family": ["Times New Roman", "Yu Mincho", "Hiragino Mincho ProN",
+                    "MS Mincho"],
     "mathtext.fontset": "cm",
     "axes.unicode_minus": False,
     "font.size": 13,
@@ -73,12 +74,9 @@ def fig_transfer():
     for r in list(b1) + list(b2):
         ax.text(r.get_x() + r.get_width() / 2, r.get_height() + 0.9,
                 f"{r.get_height():.1f}", ha="center", va="bottom", fontsize=11.5)
-    for xi, (b, o) in enumerate(zip(base, ours)):
-        ax.annotate(f"$\\bf{{+{o - b:.1f}}}$", (xi + w / 2 + 0.015, o + 7.6),
-                    ha="center", fontsize=14)
     ax.set_xticks(x, settings, fontsize=12.5)
     ax.set_ylabel("Top-1 精度 [%]", fontsize=12.5)
-    ax.set_ylim(0, 99)
+    ax.set_ylim(0, 92)
     ax.legend(loc="upper left", fontsize=11.5)
     _despine(ax)
     fig.savefig(HERE / "fig_poster_transfer.png")
@@ -174,26 +172,38 @@ def fig_calibration():
     ax.hist(dba["scores"], bins=bins, density=True, histtype="stepfilled",
             color=ROSE, alpha=0.25, ec=ROSE, lw=1.4, zorder=3,
             label="DBA 本人スコア")
-    ymax = ax.get_ylim()[1] * 1.06
+    # headroom for a dedicated label band so annotations never sit on the bars
+    ymax = ax.get_ylim()[1] * 1.42
     ax.set_ylim(0, ymax)
     ax.axvline(per["threshold"], color=BLUE, lw=1.6, ls="--", zorder=4)
     ax.axvline(dba["threshold"], color=ROSE, lw=1.6, ls="--", zorder=4)
     ax.axvline(0.35, color="black", lw=1.2, ls=(0, (1, 2)), zorder=4)
-    ax.annotate(f"自動閾値 {per['threshold']:.3f} (中央値)",
-                (per["threshold"], ymax * 0.985), xytext=(-7, 0),
-                textcoords="offset points", ha="right", va="top",
-                fontsize=11, color=BLUE)
-    ax.annotate(f"自動閾値 {dba['threshold']:.3f} (戦略に自動適応)",
-                (dba["threshold"], ymax * 0.985), xytext=(7, 0),
-                textcoords="offset points", ha="left", va="top",
-                fontsize=11, color=ROSE)
-    ax.annotate("手動探索値 0.35", (0.35, ymax * 0.70), xytext=(-7, 0),
-                textcoords="offset points", ha="right", fontsize=10,
-                color="black")
+    # 0.343 (auto) and 0.35 (manual) nearly coincide -> stagger vertically,
+    # each with a leader line back to its own axvline
+    bb = dict(boxstyle="round,pad=0.2", fc="white", ec="none", alpha=0.9)
+    lead = dict(arrowstyle="-", lw=0.7, shrinkA=0, shrinkB=1)
+    ax.annotate(f"自動閾値 {per['threshold']:.3f} (per-rec.)",
+                (per["threshold"], ymax * 0.995),
+                xytext=(per["threshold"] - 0.035, ymax * 0.995),
+                ha="right", va="top", fontsize=10.5, color=BLUE,
+                bbox=bb, zorder=6,
+                arrowprops=dict(color=BLUE, **lead))
+    ax.annotate("手動探索値 0.35", (0.35, ymax * 0.855),
+                xytext=(0.35 - 0.035, ymax * 0.855),
+                ha="right", va="top", fontsize=10.5, color="black",
+                bbox=bb, zorder=6,
+                arrowprops=dict(color="black", **lead))
+    ax.annotate(f"自動閾値 {dba['threshold']:.3f} (DBA)",
+                (dba["threshold"], ymax * 0.995),
+                xytext=(dba["threshold"] + 0.035, ymax * 0.995),
+                ha="left", va="top", fontsize=10.5, color=ROSE,
+                bbox=bb, zorder=6,
+                arrowprops=dict(color=ROSE, **lead))
     ax.set_xlabel("leave-one-out 本人スコア (正規化 DTW コスト)", fontsize=12.5)
     ax.set_ylabel("密度", fontsize=12.5)
     ax.set_xlim(0, 1.0)
-    ax.legend(loc="center right", fontsize=11)
+    # right side beyond ~0.65 is near-empty; anchor below the label band
+    ax.legend(loc="upper right", bbox_to_anchor=(1.0, 0.70), fontsize=10.5)
     _despine(ax)
     fig.savefig(HERE / "fig_poster_calibration.png")
     plt.close(fig)

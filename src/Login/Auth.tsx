@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import Button from "./Button";
 import Input from "./Input";
 import Label from "./Label";
-import { FaCog } from 'react-icons/fa';
+import { FaCog, FaMoon, FaSun } from 'react-icons/fa';
 import { useTheme } from '../contexts/ThemeContext';
 import { useLanguage } from '../contexts/LanguageContext';
 import { t } from '../translation';
@@ -122,11 +122,12 @@ const Auth: React.FC<AuthProps> = ({
           <div className="settings-modal-content">
             <div className="settings-option">
               <span>{t('theme', language)}</span>
-              <button 
+              <button
                 className="theme-toggle"
                 onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+                aria-label={t(theme === 'light' ? 'dark_mode' : 'light_mode', language)}
               >
-                {theme === 'light' ? '🌙' : '☀️'}
+                {theme === 'light' ? <FaMoon /> : <FaSun />}
               </button>
             </div>
             <div className="settings-option">

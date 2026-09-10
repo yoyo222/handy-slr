@@ -12,7 +12,7 @@ import Auth from '../Login/Auth';
 import './App.css';
 import '../VideoStyles.css'; 
 import Webcam from 'react-webcam';
-import { FaPlay, FaCopy, FaQuestionCircle, FaCopy as FaCopyIcon } from 'react-icons/fa'; 
+import { FaPlay, FaCopy, FaQuestionCircle, FaCopy as FaCopyIcon, FaArrowUp } from 'react-icons/fa';
 import { ThemeProvider } from '../contexts/ThemeContext'; 
 import { LanguageProvider, useLanguage } from '../contexts/LanguageContext';
 import { t } from '../translation'; 
@@ -339,7 +339,7 @@ const Home: React.FC<HomeProps> = ({ socketRef, socketMessage, isConnected }) =>
               {t('screen_paused', language)}
             </div>
             <div className="tutorial-instructions">
-              <span className="arrow">↗️</span> {t('press_help_for_instructions', language)}
+              <FaArrowUp size={13} aria-hidden="true" /> {t('press_help_for_instructions', language)}
             </div>
             <div className="tutorial-hint">
               {t('tap_to_start_translating', language)}
@@ -356,9 +356,11 @@ const Home: React.FC<HomeProps> = ({ socketRef, socketMessage, isConnected }) =>
       )}
       {isVideoVisible && (
         <div className={`hand-indicator ${handsDetected[0] || handsDetected[1] ? 'detected' : 'missing'}`}>
-          {handsDetected[0] || handsDetected[1]
-            ? t('hands_detected', language)
-            : t('hands_missing', language)}
+          <span className="indicator-label">
+            {handsDetected[0] || handsDetected[1]
+              ? t('hands_detected', language)
+              : t('hands_missing', language)}
+          </span>
         </div>
       )}
       <button

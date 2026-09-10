@@ -8,8 +8,7 @@ import {
   FaCamera,
   FaFolder,
   FaBook,
-  FaCog, 
-  FaSignOutAlt, 
+  FaCog,
 } from 'react-icons/fa';
 import './Sidebar.css';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -17,10 +16,11 @@ import { t } from '../translation';
 import Tooltip from '@mui/material/Tooltip';
 
 interface SidebarProps {
-  isOpen: boolean; 
-  toggleSidebar: () => void; 
+  isOpen: boolean;
+  toggleSidebar: () => void;
   setCurrentComponent: (component: string) => void;
-  onLogout: () => void; 
+  /* 認証を廃止したためログアウト項目は非表示。呼び出し側の互換のため残す。 */
+  onLogout?: () => void;
 }
 
 const DocPopup: React.FC<{ onClose: () => void }> = ({ onClose }) => {
@@ -46,7 +46,7 @@ const DocPopup: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   );
 };
 
-const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, setCurrentComponent, onLogout }) => {
+const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, setCurrentComponent }) => {
   const { language } = useLanguage();
   const [showDocPopup, setShowDocPopup] = useState(false);
   const [activeItem, setActiveItem] = useState('dashboard');
@@ -116,16 +116,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, setCurrentComp
           </Tooltip>
         </li>
 
-        <li className="spacer"></li>
-
-        <li onClick={onLogout}>
-          <Tooltip title={isOpen ? '' : t('logout', language)} placement="right">
-            <div className="nav-item" aria-label={t('logout', language)}>
-              <FaSignOutAlt className="icon" />
-              {isOpen && <span className="links_name">{t('logout', language)}</span>}
-            </div>
-          </Tooltip>
-        </li>
       </ul>
 
       {showDocPopup && <DocPopup onClose={() => setShowDocPopup(false)} />}

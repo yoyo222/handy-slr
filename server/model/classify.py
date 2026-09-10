@@ -3,6 +3,26 @@ from numba import njit
 import numpy as np
 import torch.nn.functional as F
 
+
+@njit(inline='always')
+def _euclidean(a: np.ndarray, b: np.ndarray) -> float:
+    """フレーム間ユークリッド距離 ||a - b||_2.
+
+    np.linalg.norm(a - b) は使わない。理由は 2 つある:
+      1. numba の nopython モードでは np.linalg.* が BLAS/LAPACK を要求し，
+         scipy が未インストールの環境では TypingError で JIT に失敗する
+         ("scipy 0.16+ is required for linear algebra")。
+      2. a - b が反復ごとに一時配列を確保する。E=256 の N×M 二重ループでは
+         このアロケーションが支配的になる。
+    スカラー累算は数学的に等価で，かつ float64 で累算するため精度も落ちない。
+    """
+    s = 0.0
+    for k in range(a.shape[0]):
+        d = a[k] - b[k]
+        s += d * d
+    return np.sqrt(s)
+
+
 @njit
 def partial_DTW(x: np.ndarray, y: np.ndarray) -> np.ndarray:
     N, E = x.shape
@@ -12,17 +32,17 @@ def partial_DTW(x: np.ndarray, y: np.ndarray) -> np.ndarray:
     origins = np.empty((N, M))
 
     for i in range(N):
-        dist = np.linalg.norm(x[i] - y[0])
+        dist = _euclidean(x[i], y[0])
         dtw[i, 0] = dist
         origins[i, 0] = i
     for j in range(1, M):
-        dist = np.linalg.norm(x[0] - y[j])
+        dist = _euclidean(x[0], y[j])
         dtw[0, j] = dist + dtw[0, j-1]
         origins[0, j] = 0
 
     for i in range(1, N):
         for j in range(1, M):
-            dist = np.linalg.norm(x[i] - y[j])
+            dist = _euclidean(x[i], y[j])
 
             cost_diag = dtw[i-1, j-1]
             cost_left = dtw[i, j-1]

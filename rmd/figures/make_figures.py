@@ -25,7 +25,8 @@ sys.path.insert(0, str(EXP))
 # --- style ------------------------------------------------------------------
 plt.rcParams.update({
     "font.family": "sans-serif",
-    "font.sans-serif": ["Yu Gothic", "Meiryo", "MS Gothic", "sans-serif"],
+    "font.sans-serif": ["Yu Gothic", "Hiragino Sans", "Meiryo", "MS Gothic",
+                        "sans-serif"],
     "axes.unicode_minus": False,
     "font.size": 12,
     "figure.facecolor": "white",
@@ -457,8 +458,6 @@ def fig_latency():
     ax.set_xlabel("登録クラス数 N  (各クラス K=5 録画, 対数軸)", fontsize=11)
     ax.set_ylabel("1 クエリの照合時間 [ms]", fontsize=11)
     ax.set_ylim(0, 125)
-    ax.set_title("原型を増やすほど照合が遅くなる問題を DBA 集約が 1/K に抑える (実測)",
-                 fontsize=13.5, color=NAVY, weight="bold")
     ax.legend(fontsize=10.5, loc="upper left")
     ax.grid(alpha=0.25, axis="y")
     for sp in ["top", "right"]:

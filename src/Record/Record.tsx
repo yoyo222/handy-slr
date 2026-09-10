@@ -6,7 +6,7 @@ import Webcam from 'react-webcam';
 import LoadingScreen from '../LoadingScreen/LoadingScreen';
 import { useLanguage } from '../contexts/LanguageContext';
 import { t } from '../translation';
-import { FaEye, FaEyeSlash, FaQuestionCircle, FaGraduationCap } from 'react-icons/fa'; 
+import { FaEye, FaEyeSlash, FaQuestionCircle, FaGraduationCap, FaArrowUp } from 'react-icons/fa';
 
 interface SocketMessageProps {
   result: string;
@@ -310,7 +310,7 @@ const Record: React.FC<RecordProps> = ({ socketRef, socketMessage, isConnected }
               {t('screen_paused', language)}
             </div>
             <div className="tutorial-instructions">
-              <span className="arrow">↗️</span> {t('press_help_for_instructions', language)}
+              <FaArrowUp size={13} aria-hidden="true" /> {t('press_help_for_instructions', language)}
             </div>
             <div className="tutorial-hint">
               {t('tap_to_start_recording', language)}

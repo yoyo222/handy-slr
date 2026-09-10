@@ -3,6 +3,6 @@ numba==0.59.0
 numpy>=1.22,<1.27
 opencv_contrib_python==4.9.0.80
 opencv_python==4.9.0.80
-python_bcrypt==0.3.2
+bcrypt>=4.1,<5
 torch==2.2.0
 websockets==12.0

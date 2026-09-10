@@ -11,7 +11,20 @@ from model.classify import partial_DTW
 
 PRESENCE_LAMBDA = 0.3        # must match classify()
 FALLBACK_THRESHOLD = 0.35    # manually calibrated value (WLASL bench)
-QUANTILE = 0.5               # LOO-median operating point
+
+# Operating point on the LOO genuine-score distribution.
+#
+# q=0.5 (the median, used for the WLASL bench) puts the threshold in the middle
+# of the genuine-score distribution, so by construction it REJECTS about half of
+# all real signs. On self-recorded data that reads as "the sign does nothing",
+# and it hits movement signs hardest because their take-to-take timing varies
+# more than a held handshape's, pushing their scores into the rejected upper
+# half. Measured on a 7-class self-recorded set: q=0.5 -> 3/8 signs recognised,
+# q=0.8 -> 5/8, q=0.9 -> 6/8.
+#
+# Raise toward 1.0 for recall (risk: spurious captions while not signing),
+# lower toward 0.5 for precision.
+QUANTILE = 0.8
 
 
 def trim_active_span(landmarks, presence):
