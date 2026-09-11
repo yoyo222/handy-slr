@@ -8,8 +8,9 @@ from model.main import Session
 AUTH_FUNCTIONS = {"login", "signup", "onOpen"}
 
 # Cached per user, not per connection: building a Session loads MediaPipe, the
-# model and the prototype database. Never evicted on disconnect — StrictMode
-# opens two connections and evicting on the first close crashed the second.
+# model and the prototype database. Never evicted on disconnect, because
+# StrictMode opens two connections and evicting on the first close
+# crashed the second.
 sessionsList = {}
 
 # Single-user localhost app, so "remember me" is process memory, not a token.

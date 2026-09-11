@@ -1,5 +1,5 @@
 """
-eval_harness.py — n-way k-shot evaluation of TCNSignEmbedding checkpoints on WLASL.
+eval_harness.py: n-way k-shot evaluation of TCNSignEmbedding checkpoints on WLASL.
 
 USAGE:
     # First time (no embedding cache):
@@ -21,7 +21,7 @@ DESIGN NOTES:
 1. CLASS-DISJOINT SPLIT.
    N_NOVEL_CLASSES of the available classes are held out as novel. The split
    is deterministic via SPLIT_SEED. Episodes are sampled ONLY from novel
-   classes — this is what makes the eval few-shot.
+   classes, which is what makes the eval few-shot.
 
 2. EMBEDDING CACHE.
    Computing model embeddings for every recording takes a few minutes. After
@@ -271,7 +271,7 @@ def build_database(
 
     Strategies:
       - "per_recording": each support example is its own prototype. Baseline.
-      - "medoid": one prototype per class — the support recording with the
+      - "medoid": one prototype per class, the support recording with the
               smallest sum of DTW distances to its classmates. Control for
               DBA: isolates "1 prototype instead of k" from "averaging".
       - "dba": one DBA-aggregated barycenter per class.

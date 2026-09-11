@@ -143,7 +143,7 @@ def fig_arch():
 
 
 # ============================================================================
-# 2. Fallback (hand-detection failure) — the 3 fixes
+# 2. Fallback (hand-detection failure): the 3 fixes
 # ============================================================================
 def fig_fallback():
     fig = plt.figure(figsize=(13.5, 8), layout="constrained")

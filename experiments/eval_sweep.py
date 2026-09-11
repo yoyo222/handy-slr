@@ -1,5 +1,5 @@
 """
-eval_sweep.py — few-shot transfer evaluation of fine-tuned checkpoints.
+eval_sweep.py: few-shot transfer evaluation of fine-tuned checkpoints.
 
 Answers "does (soft-)DTW fine-tuning transfer to novel classes?" on two class
 subsets (see experiments/novel_classes.json):
@@ -7,7 +7,7 @@ subsets (see experiments/novel_classes.json):
   novel40 : the standard eval split. CAVEAT: 29/40 of these classes were in
             the wlasl100 training set of the ft checkpoints (leakage), so
             novel40 numbers for ft ckpts are optimistic.
-  clean11 : novel40 minus WLASL top-100 — classes the ft runs never saw.
+  clean11 : novel40 minus WLASL top-100, classes the ft runs never saw.
             The honest transfer number.
 
 Loads landmarks once, reuses per-checkpoint embedding caches, appends every
@@ -58,7 +58,7 @@ N_EPISODES = 1000
 N_QUERY = 5
 SEED = 0
 
-# baseline novel40 rows already exist in results_baseline.json — skip them.
+# baseline novel40 rows already exist in results_baseline.json, so skip them.
 SKIP = {("baseline", "novel40")}
 
 

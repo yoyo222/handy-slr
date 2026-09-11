@@ -1,5 +1,5 @@
 """
-soft_dtw.py — Soft-DTW (Cuturi & Blondel, ICML 2017) as a PyTorch autograd op.
+soft_dtw.py: Soft-DTW (Cuturi & Blondel, ICML 2017) as a PyTorch autograd op.
 
 Replaces the hard min in the DTW recurrence with softmin_γ, making the
 alignment landscape fully differentiable:
@@ -13,7 +13,7 @@ DESIGN NOTES:
 1. LOCAL COST = EUCLIDEAN (not squared).
    The original hard-DTW losses (train_wlasl.py:dtw_path + path-sum) use
    torch.norm per frame pair. We keep the same local cost so soft-DTW is a
-   drop-in replacement at the same scale — the learned `threshold` parameter
+   drop-in replacement at the same scale, so the learned `threshold` parameter
    and the alpha pull-term stay meaningful.
 
 2. CUSTOM BACKWARD (Cuturi-Blondel Algorithm 2).
@@ -26,7 +26,7 @@ DESIGN NOTES:
    Both passes iterate over anti-diagonals (N+M steps of vectorized ops)
    rather than N·M Python iterations. Single-pair API (soft_dtw) plus a
    batched variant (soft_dtw_many / soft_dtw_pairs) that runs the same DP
-   for P variable-length pairs simultaneously — one Python loop of
+   for P variable-length pairs simultaneously: one Python loop of
    Nmax+Mmax steps total instead of one loop per pair. Batched and
    single-pair results are equivalence-tested against each other below.
 
@@ -209,7 +209,7 @@ class _SoftDTWBatchFn(torch.autograd.Function):
             E[:, i, j] = torch.where(valid, acc, E[:, i, j])
 
         # the terminal's seed E=1 sits at a *padded* D position for pairs
-        # shorter than the grid — zero it so no gradient leaks into padding
+        # shorter than the grid, so zero it and no gradient leaks into padding
         E[idx, n + 1, m + 1] = 0.0
         grad_D = E[:, 1:N + 1, 1:M + 1] * grad_output.view(-1, 1, 1)
         return grad_D, None, None, None

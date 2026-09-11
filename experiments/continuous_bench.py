@@ -1,5 +1,5 @@
 """
-continuous_bench.py — continuous-stream evaluation of the deployed pipeline.
+continuous_bench.py: continuous-stream evaluation of the deployed pipeline.
 
 Fills the gap WLASL cannot measure: recognition on UNSEGMENTED signing.
 Synthesizes continuous streams by Slerp-stitching isolated novel-class clips

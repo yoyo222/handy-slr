@@ -6,7 +6,7 @@ authors:
   - family-names: Taue
     given-names: Yota
     affiliation: "Nakazawa-Ohkoshi Laboratory, Faculty of Policy Management, Keio University"
-repository-code: "https://github.com/yoyo222/handy-sign-recognition"
+repository-code: "https://github.com/yoyo222/handy-SLR"
 abstract: >-
   Handy recognises sign language in real time from MediaPipe hand landmarks,
   embedding motion into a 256-dimensional metric space with a CNN+TCN encoder and

@@ -19,7 +19,7 @@ class BaselineEntry(NamedTuple):
 
 
 # ---------------------------------------------------------------------------
-# Published baselines (fully-supervised WLASL — strict asterisk)
+# Published baselines (fully-supervised WLASL, strict asterisk)
 # ---------------------------------------------------------------------------
 
 PUBLISHED_BASELINES: List[BaselineEntry] = [
@@ -42,7 +42,7 @@ PUBLISHED_BASELINES: List[BaselineEntry] = [
         notes="Skeleton-only, OpenPose keypoints, TGCN backbone. Same train/test classes.",
     ),
 
-    # SL-GCN — Jiang et al. CVPRW 2021. Strongest published skeleton-only baseline.
+    # SL-GCN, Jiang et al. CVPRW 2021. Strongest published skeleton-only baseline.
     BaselineEntry(
         method="SL-GCN",
         dataset="WLASL-100",
@@ -69,8 +69,8 @@ PUBLISHED_BASELINES: List[BaselineEntry] = [
         ),
     ),
 
-    # Bilge et al. — zero-shot SLR. Different dataset (MS-ASL), but the
-    # evaluation protocol (class-disjoint splits) is what you'll adopt.
+    # Bilge et al., zero-shot SLR. Different dataset (MS-ASL), but the
+    # evaluation protocol (class-disjoint splits) is the one we adopt.
     # Cite the methodology, not the number.
     BaselineEntry(
         method="Bilge ZSL (class-disjoint)",
@@ -87,7 +87,7 @@ PUBLISHED_BASELINES: List[BaselineEntry] = [
 ]
 
 
-# Our own numbers are not duplicated here — read them from
+# Our own numbers are not duplicated here. Read them from
 # results_baseline.json, which eval_harness.py appends to.
 
 
@@ -133,7 +133,7 @@ CITATIONS: Dict[str, str] = {
     ),
     "muller2007ir": (
         "Müller, Meinard. 'Information retrieval for music and motion.' "
-        "Springer 2007. (Chapter 4 — subsequence DTW.)"
+        "Springer 2007. (Chapter 4, subsequence DTW.)"
     ),
 }
 
@@ -144,7 +144,7 @@ CITATIONS: Dict[str, str] = {
 
 def format_baseline_row(entry: BaselineEntry, max_method_width: int = 28) -> str:
     """One-line formatter for a baseline entry. Useful for printing tables."""
-    top1_str = f"{entry.top1 * 100:6.2f}%" if entry.top1 is not None else "  —  "
+    top1_str = f"{entry.top1 * 100:6.2f}%" if entry.top1 is not None else f"{'n/a':>7s}"
     method = entry.method[:max_method_width].ljust(max_method_width)
     return f"  {method}  {entry.dataset:12s}  {entry.protocol:20s}  {top1_str}  [{entry.citation_key}]"
 

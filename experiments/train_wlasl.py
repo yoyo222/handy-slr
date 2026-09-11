@@ -5,7 +5,7 @@ Adapts the original training pipeline (`train/02_continuous_decoding_experiments
   - load weights.h5 as the starting checkpoint (NEVER overwritten),
   - train on `experiments/wlasl_landmarks_v2/` (clean preprocessing, presence
     sidecars) with the eval-novel classes EXCLUDED (experiments/
-    novel_classes.json) — the June runs on wlasl100_landmarks had 29/40
+    novel_classes.json). The June runs on wlasl100_landmarks had 29/40
     novel classes leaked into training AND v1 ghost-pose artifacts,
   - hold out --n_val_classes classes (class-disjoint) for validation, so
     val_acc measures transfer to unseen classes instead of memorization,
@@ -20,7 +20,7 @@ Loss = `dtw_partition_loss` (NB2's recipe). Two gradient-flow variants:
                makes the whole alignment landscape differentiable.
 
 Augmentation changes vs NB2 (which always-mirrored without swapping hand
-slots — anatomically impossible data + a systematic train/eval orientation
+slots, producing anatomically impossible data and a systematic train/eval orientation
 mismatch): mirroring is now a 50% augmentation that flips x AND swaps the
 left/right hand blocks, and augmentations preserve exact zeros for absent
 hands (the v2 "no hand" encoding).
@@ -65,7 +65,7 @@ def _present_mask(g):
 
 def mirror_hands(g):
     """Horizontal mirror: flip x -> 1-x AND swap the left/right hand slots
-    (a mirrored left hand IS a right hand — flipping without swapping, as NB2
+    (a mirrored left hand IS a right hand, so flipping without swapping, as NB2
     did, produces configurations MediaPipe can never emit). Absent (all-zero)
     hand blocks pass through unchanged."""
     g = g.copy()
@@ -426,7 +426,7 @@ def main():
 
     model = get_model(path=args.init_weights, device=device)
 
-    # weight decay only on actual weight matrices — biases, BatchNorm params
+    # weight decay only on actual weight matrices. Biases, BatchNorm params
     # and the learned no-match threshold must not be pulled toward zero
     decay, no_decay = [], []
     for name, p in model.named_parameters():

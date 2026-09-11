@@ -7,7 +7,7 @@ under a protocol where the evaluation classes are never seen during training.
 
 ## Getting the data
 
-WLASL is not redistributed here — you have to obtain it from its maintainers at
+WLASL is not redistributed here. You have to obtain it from its maintainers at
 <https://dxli94.github.io/WLASL/> under their terms. The videos are hosted by
 third parties and some links rot, which is why class counts vary between runs.
 
@@ -37,7 +37,7 @@ Two things are worth knowing before comparing any numbers:
   the origin. `v2` is the corrected version and is the default. Only use `v1`
   numbers to show the size of that bug.
 - **`novel40` vs `clean11`.** The original fine-tuning set overlapped the novel
-  split — 29 of the 40 novel classes had been trained on. `clean11` is
+  split: 29 of the 40 novel classes had been trained on. `clean11` is
   `novel40` minus the WLASL top-100, so it is the only honest measure of
   transfer for those checkpoints. The canonical splits are in
   [`novel_classes.json`](novel_classes.json).
@@ -61,7 +61,7 @@ python experiments/eval_harness.py \
 accurate), `medoid` (one representative recording per class), or `dba` (one
 DTW barycentre per class, fastest).
 
-Training. The clean recipe is the default — novel classes excluded, class-disjoint
+Training. The clean recipe is the default: novel classes excluded, class-disjoint
 validation, AdamW with weight decay 1e-4, early stopping:
 
 ```bash
@@ -70,9 +70,9 @@ python experiments/train_wlasl.py --loss soft --gamma 0.1 --normalize l2 --tag m
 
 `--normalize l2` matters. Without it the α term in `dtw_partition_loss` is
 trivially minimised by shrinking the whole embedding scale, and training
-collapses — loss decreases monotonically while accuracy falls apart. Constraining
-frames to the unit sphere removes that degenerate solution. Always pass `--tag`;
-without it, runs overwrite each other's checkpoints.
+collapses, with loss decreasing monotonically while accuracy falls apart.
+Constraining frames to the unit sphere removes that degenerate solution. Always
+pass `--tag`; without it, runs overwrite each other's checkpoints.
 
 `run_gamma_sweep.sh` runs the γ sensitivity sweep plus a hard-DTW control on the
 same data, which is what separates "the loss helped" from "fixing the data
@@ -116,7 +116,7 @@ application ships with; the fine-tuned research checkpoints are not included.
 
 These apply to every number in this directory:
 
-- Continuous recognition is unsolved — exact sequence match is 0%.
+- Continuous recognition is unsolved: exact sequence match is 0%.
 - WLASL has speaker confounds; no signer-disjoint split has been run.
 - `clean11` has only 11 classes, so 10-way episodes draw nearly the same set
   every time and the confidence intervals understate class-level uncertainty.

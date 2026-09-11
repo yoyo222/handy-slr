@@ -1,5 +1,5 @@
 """
-dba.py — DTW Barycenter Averaging (Petitjean 2011) for embedding sequences.
+dba.py: DTW Barycenter Averaging (Petitjean 2011) for embedding sequences.
 
 Implements:
 
@@ -26,7 +26,7 @@ DESIGN NOTES:
    backtrack stays in plain Python.
 
 3. TIE-BREAKING.
-   Backtrack preference on equal costs is (up, left, diagonal) — identical to
+   Backtrack preference on equal costs is (up, left, diagonal), identical to
    NB2's `dtw_path` (train_wlasl.py) argmin order, so paths are reproducible
    against the original notebook's reference implementation.
 
@@ -122,7 +122,7 @@ def full_dtw_with_path(
 
 
 def dtw_cost(x: np.ndarray, y: np.ndarray) -> float:
-    """Standard DTW cost only (no path) — cheaper for medoid computation."""
+    """Standard DTW cost only (no path), cheaper for medoid computation."""
     x = np.ascontiguousarray(x, dtype=np.float64)
     y = np.ascontiguousarray(y, dtype=np.float64)
     return float(_dtw_matrix(x, y)[-1, -1])
@@ -147,7 +147,7 @@ def medoid(sequences: List[np.ndarray]) -> int:
 
 
 # ---------------------------------------------------------------------------
-# DBA — main algorithm
+# DBA: main algorithm
 # ---------------------------------------------------------------------------
 
 def _resample(seq: np.ndarray, length: int) -> np.ndarray:

@@ -1,5 +1,5 @@
 """
-latency_bench.py — inference-latency comparison: per-recording vs DBA prototypes.
+latency_bench.py: inference-latency comparison of per-recording vs DBA prototypes.
 
 Measures wall-clock
 classify time per query as a function of database size for both prototype

@@ -2,7 +2,7 @@
 
 A React frontend talks to a Python backend over a websocket. The backend owns
 MediaPipe, the embedding model, and the sign database; the frontend owns the
-camera and the UI. Nothing is sent to a third-party service — everything runs
+camera and the UI. Nothing is sent to a third-party service, so everything runs
 locally.
 
 ```
@@ -29,7 +29,7 @@ The server dispatches on `function` against `Session.functions`. Names listed in
 `Session.async_functions` (`send_files`, `stop_recording`) are async generators
 and stream their result as a sequence of messages instead of one.
 
-Errors come back as `{ "error": "..." }` — `Invalid JSON`, `Function not found`,
+Errors come back as `{ "error": "..." }`: `Invalid JSON`, `Function not found`,
 `Invalid message format`, or `Not authenticated`.
 
 ## Sessions and authentication
@@ -39,7 +39,7 @@ Until a `login` or `signup` succeeds, only `login`, `signup` and `onOpen` are
 dispatched; anything else is refused with `Not authenticated`.
 
 Accounts live in `server/login/users.json` as bcrypt hashes. The file is created
-on first signup and is gitignored — a credential database is runtime state, not
+on first signup and is gitignored. A credential database is runtime state, not
 source.
 
 The expensive object is `Session` (`server/model/main.py`), which loads
@@ -47,10 +47,10 @@ MediaPipe, the embedding model, and the user's sign database. It is cached per
 authenticated username in `sessionsList` and shared across that user's
 connections, because rebuilding it takes several seconds.
 
-> **A note on the session cache.** Sessions were originally keyed by client IP.
-> Every connection from localhost therefore shared the key `127.0.0.1`, and
-> React StrictMode opens two connections in development — whichever closed
-> first popped the shared session, and the survivor raised `KeyError` on its
+> **A note on the session cache.** Sessions were originally keyed by client IP,
+> so every connection from localhost shared the key `127.0.0.1`. React
+> StrictMode opens two connections in development; whichever closed first
+> popped the shared session, and the survivor then raised `KeyError` on its
 > next message. Per-connection state now lives on the connection itself, and
 > cache entries are deliberately never evicted on disconnect.
 
@@ -86,8 +86,8 @@ The directory is gitignored. Recordings are video of whoever used the app.
 2. The backend extracts 42 hand keypoints (2 hands × 21) per frame and records
    whether each hand was actually detected.
 3. Once 30 frames are buffered, they are encoded into a `(30, 256)` embedding.
-4. `classify()` (`server/model/classify.py`) runs `partial_DTW` — a numba-JIT
-   alignment that allows the query to match a subsequence of a prototype — against
+4. `classify()` (`server/model/classify.py`) runs `partial_DTW`, a numba-JIT
+   alignment that allows the query to match a subsequence of a prototype, against
    every stored prototype.
 5. Matches above the calibrated threshold are rejected. Surviving matches pass a
    3-buffer debounce before being emitted, which suppresses single-window
@@ -105,9 +105,9 @@ alongside the landmarks so downstream code can tell absence from a real pose.
 ### Threshold calibration
 
 `server/model/calibrate.py` sets the no-match threshold from the user's own
-data rather than a constant. It computes leave-one-out distances — each
-recording scored against the prototypes built from that class's *other*
-recordings — and takes their median (`QUANTILE = 0.5`).
+data rather than a constant. It computes leave-one-out distances, scoring each
+recording against the prototypes built from that class's *other* recordings,
+and takes their median (`QUANTILE = 0.5`).
 
 This needs at least two recordings in at least two classes. With less it falls
 back to `FALLBACK_THRESHOLD = 0.35`. Registering or deleting a sign triggers a
@@ -115,7 +115,7 @@ recalculation; the chosen value is printed as `[calibration] threshold = ...` at
 startup and on every change.
 
 A fixed threshold does not work here, because the right value depends on which
-prototype strategy is in use — the app's original hardcoded 0.9 never fired once
+prototype strategy is in use. The app's original hardcoded 0.9 never fired once
 in benchmarking.
 
 ## Recording a sign

@@ -33,7 +33,7 @@ __pycache__/
 venv/
 *.egg-info/
 
-# Server runtime — recorded signs are video of the user, never commit them
+# Server runtime. Recorded signs are video of the user, never commit them.
 /server/database
 /server/tmp
 
@@ -52,11 +52,11 @@ venv/
 # Private research working files. These are deliberately NOT published:
 # RESEARCH.md is the personal results/backlog log, and rmd/overleaf/ is the
 # LaTeX source whose figures live only in Overleaf (it cannot build here).
-# Git does not back these up — keep your own copies.
+# Git does not back these up, so keep your own copies.
 /rmd/RESEARCH.md
 /rmd/overleaf/
 
-# npm lockfile — this project uses yarn; having both desyncs resolution
+# npm lockfile. This project uses yarn; having both desyncs resolution.
 package-lock.json
 
 # IDE

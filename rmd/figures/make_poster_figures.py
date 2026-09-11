@@ -1,4 +1,4 @@
-"""Generate poster figures (A1) for the final WIP presentation — paper style.
+"""Generate poster figures (A1) for the final WIP presentation, paper style.
 
 Serif (Times / Yu Mincho) + Computer Modern math, muted colors, booktabs
 table. Data comes from the canonical results (rmd/RESEARCH.md); the
