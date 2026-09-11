@@ -6,15 +6,16 @@ import torch.nn.functional as F
 
 @njit(inline='always')
 def _euclidean(a: np.ndarray, b: np.ndarray) -> float:
-    """フレーム間ユークリッド距離 ||a - b||_2.
+    """Euclidean distance between two frames, ||a - b||_2.
 
-    np.linalg.norm(a - b) は使わない。理由は 2 つある:
-      1. numba の nopython モードでは np.linalg.* が BLAS/LAPACK を要求し，
-         scipy が未インストールの環境では TypingError で JIT に失敗する
-         ("scipy 0.16+ is required for linear algebra")。
-      2. a - b が反復ごとに一時配列を確保する。E=256 の N×M 二重ループでは
-         このアロケーションが支配的になる。
-    スカラー累算は数学的に等価で，かつ float64 で累算するため精度も落ちない。
+    Deliberately not np.linalg.norm(a - b):
+      1. Under numba nopython, np.linalg.* requires BLAS/LAPACK and fails to
+         JIT where scipy is absent ("scipy 0.16+ is required for linear
+         algebra").
+      2. a - b allocates a temporary array per iteration, which dominates the
+         N x M double loop at E=256.
+    Scalar accumulation is mathematically equivalent and accumulates in
+    float64, so precision is unchanged.
     """
     s = 0.0
     for k in range(a.shape[0]):
@@ -88,7 +89,7 @@ def chunk_min_arr(arr, K):
     return min_array
 
 def classify(embeddings, threshold, database, chunk=10, query_presence=None):
-    # Penalise prototypes whose per-hand presence pattern doesn't match the
+    # Penalize prototypes whose per-hand presence pattern doesn't match the
     # query's, proportional to the L1 difference in visibility fraction.
     PRESENCE_LAMBDA = 0.3
     q_frac = None

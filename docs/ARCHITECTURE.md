@@ -92,7 +92,7 @@ The directory is gitignored. Recordings are video of whoever used the app.
 5. Matches above the calibrated threshold are rejected. Surviving matches pass a
    3-buffer debounce before being emitted, which suppresses single-window
    misfires.
-6. The frontend renders the last 15 recognised words as subtitles.
+6. The frontend renders the last 15 recognized words as subtitles.
 
 ### Detection failures
 
@@ -107,10 +107,18 @@ alongside the landmarks so downstream code can tell absence from a real pose.
 `server/model/calibrate.py` sets the no-match threshold from the user's own
 data rather than a constant. It computes leave-one-out distances, scoring each
 recording against the prototypes built from that class's *other* recordings,
-and takes their median (`QUANTILE = 0.5`).
+and takes a quantile of that distribution (`QUANTILE = 0.8`).
 
-This needs at least two recordings in at least two classes. With less it falls
-back to `FALLBACK_THRESHOLD = 0.35`. Registering or deleting a sign triggers a
+The quantile is an operating point, not an accuracy figure. At 0.5 the
+threshold sits at the median of genuine scores, so roughly half of real signs
+are rejected by construction, which hits movement signs hardest because their
+timing varies more between takes. Measured on a 7-class self-recorded set:
+0.5 recognized 3 of 8, 0.8 recognized 5 of 8, 0.9 recognized 6 of 8. Raise it
+toward 1.0 for recall, lower it for precision.
+
+Calibration needs at least four leave-one-out scores, which means at least two
+classes holding two or more recordings each. Below that it falls back to
+`FALLBACK_THRESHOLD = 0.35`. Registering or deleting a sign triggers a
 recalculation; the chosen value is printed as `[calibration] threshold = ...` at
 startup and on every change.
 

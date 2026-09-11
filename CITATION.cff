@@ -8,7 +8,7 @@ authors:
     affiliation: "Nakazawa-Ohkoshi Laboratory, Faculty of Policy Management, Keio University"
 repository-code: "https://github.com/yoyo222/handy-slr"
 abstract: >-
-  Handy recognises sign language in real time from MediaPipe hand landmarks,
+  Handy recognizes sign language in real time from MediaPipe hand landmarks,
   embedding motion into a 256-dimensional metric space with a CNN+TCN encoder and
   matching against stored prototypes with partial dynamic time warping. New signs
   are registered from two recordings without retraining. This repository also

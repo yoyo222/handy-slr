@@ -19,7 +19,7 @@ import mediapipe as mp
 HERE = Path(__file__).resolve().parent
 INPUT_EXTS = {".png", ".jpg", ".jpeg"}
 
-# ---------- visualisation knobs (tweak freely) ----------------------------
+# ---------- visualization knobs (tweak freely) ----------------------------
 # Colors are BGR tuples (OpenCV convention), 0–255 each.
 LANDMARK_COLOR    = (0, 255, 0)       # green dots
 LANDMARK_RADIUS   = 4                  # dot size in pixels (default ~5)
@@ -71,7 +71,7 @@ def main() -> None:
         # Build a clean canvas the same size as the input (drop the photo).
         # MediaPipe's draw_landmarks insists on 3-channel BGR, so even when
         # we want transparent output, draw on a 3-channel BLACK canvas first
-        # and synthesise the alpha channel afterwards from non-black pixels.
+        # and synthesize the alpha channel afterwards from non-black pixels.
         h, w = img.shape[:2]
         if BACKGROUND is None:
             out = np.zeros((h, w, 3), dtype=np.uint8)      # black, becomes alpha=0

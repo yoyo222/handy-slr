@@ -13,7 +13,7 @@ FALLBACK_THRESHOLD = 0.35    # manually calibrated value (WLASL bench)
 # Operating point on the LOO genuine-score distribution. q=0.5 rejects about
 # half of all real signs by construction, which hits movement signs hardest
 # (their take-to-take timing varies more than a held handshape's). Measured on
-# a 7-class self-recorded set: q=0.5 -> 3/8 recognised, q=0.8 -> 5/8,
+# a 7-class self-recorded set: q=0.5 -> 3/8 recognized, q=0.8 -> 5/8,
 # q=0.9 -> 6/8. Raise toward 1.0 for recall, lower for precision.
 QUANTILE = 0.8
 

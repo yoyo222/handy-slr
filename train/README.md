@@ -34,7 +34,7 @@ notebook 02 and differs in ways that change results:
 - presence-aware preprocessing, so frames with no detected hand are not
   zero-filled into "ghost poses"
 - a batched Soft-DTW loss, roughly 197× faster than the per-pair path
-- L2 normalisation of embedding frames, which removes the degenerate solution
+- L2 normalization of embedding frames, which removes the degenerate solution
   the original loss admits
 
 Use `experiments/` if you want to reproduce the paper. Use these notebooks if you

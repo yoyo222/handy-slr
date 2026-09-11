@@ -59,7 +59,7 @@ python experiments/eval_harness.py \
 
 `--prototype_strategy` is `per_recording` (one prototype per recording, most
 accurate), `medoid` (one representative recording per class), or `dba` (one
-DTW barycentre per class, fastest).
+DTW barycenter per class, fastest).
 
 Training. The clean recipe is the default: novel classes excluded, class-disjoint
 validation, AdamW with weight decay 1e-4, early stopping:
@@ -69,7 +69,7 @@ python experiments/train_wlasl.py --loss soft --gamma 0.1 --normalize l2 --tag m
 ```
 
 `--normalize l2` matters. Without it the α term in `dtw_partition_loss` is
-trivially minimised by shrinking the whole embedding scale, and training
+trivially minimized by shrinking the whole embedding scale, and training
 collapses, with loss decreasing monotonically while accuracy falls apart.
 Constraining frames to the unit sphere removes that degenerate solution. Always
 pass `--tag`; without it, runs overwrite each other's checkpoints.
@@ -87,7 +87,7 @@ python experiments/continuous_bench.py \
 
 `--auto_threshold Q` calibrates the rejection threshold from leave-one-out
 distances over the registered recordings instead of using a fixed
-`--threshold`. Use `q = 0.5`; higher quantiles optimise for accepting true
+`--threshold`. Use `q = 0.5`; higher quantiles optimize for accepting true
 matches and flood the output with insertions.
 
 Latency, and the tests for the Soft-DTW implementation:
