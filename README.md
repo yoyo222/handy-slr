@@ -4,11 +4,7 @@ Real-time sign language recognition that learns a new sign from two recordings, 
 
 Most sign recognition systems are closed-vocabulary classifiers: adding a sign means collecting data and retraining. Handy embeds hand motion into a metric space instead, so registering a sign is just storing a couple of examples and comparing against them. Recording a new sign and having it recognised takes about ten seconds.
 
-<!-- TODO before publishing: record a ~15s screen capture (countdown → sign → subtitle
-     appears → register a brand-new sign → it is recognised immediately), save it as
-     docs/demo.gif, and uncomment the line below.
 ![Handy recognising a newly registered sign](docs/demo.gif)
--->
 
 ## Quick start
 
@@ -60,7 +56,7 @@ Architecture and the websocket protocol are documented in [docs/ARCHITECTURE.md]
 Handy is also the subject of an ongoing research project on few-shot sign recognition, evaluated on WLASL under a class-disjoint protocol where the evaluation classes are never seen during training.
 
 - **Paper** (Japanese): [`rmd/WIP_paper_2026s.pdf`](rmd/WIP_paper_2026s.pdf)
-- **Poster** (Japanese): [`rmd/yota_WIP_poster.pdf`](rmd/yota_WIP_poster.pdf)
+- **Poster** (Japanese): [`rmd/WIP_poster_2026s.pdf`](rmd/WIP_poster_2026s.pdf)
 - **Code**: [`experiments/`](experiments/), with reproduction instructions in [experiments/README.md](experiments/README.md)
 
 Headline results, all on classes disjoint from the training vocabulary:
