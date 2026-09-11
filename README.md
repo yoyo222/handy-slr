@@ -59,7 +59,7 @@ Architecture and the websocket protocol are documented in [docs/ARCHITECTURE.md]
 
 Handy is also the subject of an ongoing research project on few-shot sign recognition, evaluated on WLASL under a class-disjoint protocol where the evaluation classes are never seen during training.
 
-- **Paper** (Japanese): [`rmd/2026_yota_wip_resumefinal-2.pdf`](rmd/2026_yota_wip_resumefinal-2.pdf)
+- **Paper** (Japanese): [`rmd/WIP_paper_2026s.pdf`](rmd/WIP_paper_2026s.pdf)
 - **Poster** (Japanese): [`rmd/yota_WIP_poster.pdf`](rmd/yota_WIP_poster.pdf)
 - **Code**: [`experiments/`](experiments/), with reproduction instructions in [experiments/README.md](experiments/README.md)
 
