@@ -11,7 +11,7 @@ As γ → 0 this recovers hard DTW; larger γ averages over all alignments.
 DESIGN NOTES:
 
 1. LOCAL COST = EUCLIDEAN (not squared).
-   The friend's hard-DTW losses (train_wlasl.py:dtw_path + path-sum) use
+   The original hard-DTW losses (train_wlasl.py:dtw_path + path-sum) use
    torch.norm per frame pair. We keep the same local cost so soft-DTW is a
    drop-in replacement at the same scale — the learned `threshold` parameter
    and the alpha pull-term stay meaningful.

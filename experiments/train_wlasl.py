@@ -1,7 +1,7 @@
 """
 Fine-tune TCNSignEmbedding on WLASL landmarks.
 
-Adapts the friend's NB2 training pipeline (`train/finalfinal_*.ipynb`) to:
+Adapts the original training pipeline (`train/02_continuous_decoding_experiments.ipynb`) to:
   - load weights.h5 as the starting checkpoint (NEVER overwritten),
   - train on `experiments/wlasl_landmarks_v2/` (clean preprocessing, presence
     sidecars) with the eval-novel classes EXCLUDED (experiments/

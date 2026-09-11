@@ -88,10 +88,8 @@ def chunk_min_arr(arr, K):
     return min_array
 
 def classify(embeddings, threshold, database, chunk=10, query_presence=None):
-    # Fix #3: penalize prototypes whose per-hand presence pattern doesn't
-    # match the query's. WLASL-style "one hand absent" prototypes vs. a
-    # "both hands always shown" query (or vice versa) get a cost bump
-    # proportional to the L1 difference in per-hand visibility fraction.
+    # Penalise prototypes whose per-hand presence pattern doesn't match the
+    # query's, proportional to the L1 difference in visibility fraction.
     PRESENCE_LAMBDA = 0.3
     q_frac = None
     if query_presence is not None and len(query_presence) > 0:

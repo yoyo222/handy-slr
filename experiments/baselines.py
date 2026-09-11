@@ -1,36 +1,9 @@
-"""
-baselines.py — Published baseline numbers from prior SLR papers.
+"""Published WLASL baseline numbers from prior sign language recognition work.
 
-This is a LOOKUP TABLE of numbers from papers, with citations. Use it to
-populate the "Comparison against published baselines" row in your results
-tables and slides.
-
-⚠️ CRITICAL CAVEAT (re-read this every time you cite these numbers):
-   ALL of the numbers below are from FULLY-SUPERVISED evaluation:
-   - the model was trained on the same WLASL-100 classes it's tested on
-   - no class-disjoint hold-out
-   - the reported accuracy is on the standard WLASL test split, not a
-     few-shot episodic eval
-
-   Your work uses a CLASS-DISJOINT FEW-SHOT eval (40 novel classes held out
-   from any training). Your numbers and these numbers are NOT directly
-   comparable. Always add an asterisk and explanation in any table that
-   mixes them.
-
-   For the final talk's headline table, show your numbers (your few-shot
-   protocol) prominently and the published numbers in a separate "for
-   reference, fully-supervised baselines achieve" footnote-style row.
-
-Format of each entry:
-    (method_name, dataset, protocol, top1_accuracy, citation_key, notes)
-
-Citations are in CITATIONS dict below. Pull the BibTeX from each paper's
-official page or Google Scholar when you write the final paper.
-
-USAGE:
-    from experiments.baselines import PUBLISHED_BASELINES, format_baseline_row
-    for entry in PUBLISHED_BASELINES:
-        print(format_baseline_row(entry))
+These are all fully-supervised: the model is trained on the same WLASL-100
+classes it is tested on, and scored on the standard test split. Our evaluation
+is class-disjoint few-shot, so the two are not directly comparable and any
+table mixing them needs to say so.
 """
 
 from typing import Dict, List, NamedTuple
@@ -82,16 +55,13 @@ PUBLISHED_BASELINES: List[BaselineEntry] = [
         ),
     ),
 
-    # MS-G3D — strong general skeleton action recognition baseline; numbers for
-    # WLASL come from community reimplementations rather than the original
-    # paper (which evaluated on NTU RGB+D, not WLASL).
-    # When you cite this, verify the WLASL number — there's reimplementation
-    # variability.
+    # MS-G3D: the original paper evaluated on NTU RGB+D, so WLASL numbers come
+    # from community reimplementations and vary. Verify before citing.
     BaselineEntry(
         method="MS-G3D (transferred)",
         dataset="WLASL-100",
         protocol="fully_supervised",
-        top1=None,   # TODO: fill in from community impl / your own; not in original paper
+        top1=None,   # not reported on WLASL in the original paper
         citation_key="liu2020msg3d",
         notes=(
             "Original paper evaluates on NTU RGB+D, not WLASL. Number not "
@@ -117,26 +87,12 @@ PUBLISHED_BASELINES: List[BaselineEntry] = [
 ]
 
 
-# ---------------------------------------------------------------------------
-# Your-system baselines (filled in as Phase 0/1 results come in)
-# ---------------------------------------------------------------------------
-
-YOUR_BASELINES: List[BaselineEntry] = [
-    # These will be populated by eval_harness.py runs.
-    # Suggested entries to fill in:
-    #   ("weights.h5 per-recording, 5w1s", "WLASL-100", "few_shot_5w1s", XX.XX, "ours_phase0", "...")
-    #   ("weights.h5 per-recording, 10w1s", ...)
-    #   ("weights.h5 per-recording, 10w5s", ...)
-    #   ("weights.h5 DBA-aggregated, 5w1s", ...)
-    #   ...
-    # Don't manually edit; have eval_harness.py append to results_baseline.json
-    # and then a small script populate this list. Or just read the JSON in your
-    # slide-building scripts directly.
-]
+# Our own numbers are not duplicated here — read them from
+# results_baseline.json, which eval_harness.py appends to.
 
 
 # ---------------------------------------------------------------------------
-# Citations (TODO: replace with BibTeX entries when writing paper)
+# Citations
 # ---------------------------------------------------------------------------
 
 CITATIONS: Dict[str, str] = {
@@ -194,21 +150,12 @@ def format_baseline_row(entry: BaselineEntry, max_method_width: int = 28) -> str
 
 
 def print_baselines():
-    """Pretty-print all published baselines, then yours (when populated)."""
-    print("PUBLISHED BASELINES (fully-supervised; NOT directly comparable to few-shot):")
+    """Pretty-print the published baselines."""
+    print("Published baselines (fully-supervised; not comparable to few-shot):")
     print(f"  {'method'.ljust(28)}  {'dataset':12s}  {'protocol':20s}  {'top1':>7s}  citation")
     print(f"  {'-' * 28}  {'-' * 12}  {'-' * 20}  {'-' * 7}  {'-' * 20}")
     for entry in PUBLISHED_BASELINES:
         print(format_baseline_row(entry))
-
-    if YOUR_BASELINES:
-        print("\nYOUR RESULTS (few-shot, class-disjoint):")
-        print(f"  {'method'.ljust(28)}  {'dataset':12s}  {'protocol':20s}  {'top1':>7s}  citation")
-        print(f"  {'-' * 28}  {'-' * 12}  {'-' * 20}  {'-' * 7}  {'-' * 20}")
-        for entry in YOUR_BASELINES:
-            print(format_baseline_row(entry))
-    else:
-        print("\nYOUR RESULTS: not yet populated. Run eval_harness.py and add entries.")
 
 
 if __name__ == "__main__":

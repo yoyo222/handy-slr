@@ -30,7 +30,7 @@ DESIGN NOTES:
 3. FIXED 30-FRAME WINDOW.
    WLASL videos vary in length. We center-crop to 30 frames (the deployed
    model's input size). Short clips are padded with last-frame repetition.
-   Document this in your final talk — it's a real source of eval noise.
+   This is a real source of evaluation noise.
 
 4. THRESHOLD AT INFERENCE.
    For closed-set eval (every query has a correct class in the support set),
@@ -274,7 +274,7 @@ def build_database(
       - "medoid": one prototype per class — the support recording with the
               smallest sum of DTW distances to its classmates. Control for
               DBA: isolates "1 prototype instead of k" from "averaging".
-      - "dba": one DBA-aggregated barycenter per class. Phase 1 contribution.
+      - "dba": one DBA-aggregated barycenter per class.
 
     5th tuple field is the presence mask (shape (T, 2)) matching the prototype.
     """
@@ -462,7 +462,7 @@ def main():
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--use_presence", action="store_true",
                     help="Apply the per-prototype presence-mismatch DTW penalty "
-                         "(Fix #3). Requires .presence.npy sidecars in landmarks_dir.")
+                         "Requires .presence.npy sidecars in landmarks_dir.")
     ap.add_argument("--output", type=Path, default=None,
                     help="If set, append results to this JSON file.")
     args = ap.parse_args()

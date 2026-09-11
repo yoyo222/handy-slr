@@ -5,27 +5,14 @@ import json
 from login.login import LoginSession
 from model.main import Session
 
-# Sessions used to be keyed by the client IP (websocket.remote_address[0]).
-# Every connection from localhost therefore shared the key '127.0.0.1', and
-# React StrictMode opens two connections in development: whichever closed
-# first popped the shared session, and the survivor raised KeyError on its
-# next message.
-#
-# The fix is to scope per-connection state to the connection itself. Each
-# websocket gets its own LoginSession (a local, not a dict entry), so there
-# is no shared key to clobber.
 AUTH_FUNCTIONS = {"login", "signup", "onOpen"}
 
-# Session loads MediaPipe, the embedding model and the prototype database, so
-# it is expensive to build and is cached per authenticated user rather than
-# per connection. Entries are deliberately never evicted on disconnect: that
-# eviction is what the IP-keyed bug above turned into a crash, and rebuilding
-# a session on every reconnect made the app unusable during development.
+# Cached per user, not per connection: building a Session loads MediaPipe, the
+# model and the prototype database. Never evicted on disconnect — StrictMode
+# opens two connections and evicting on the first close crashed the second.
 sessionsList = {}
 
-# The server binds to 127.0.0.1 and is a single-user local application, so
-# "remember me" is kept in process memory rather than issued as a token. It
-# survives a reconnect, which is what the frontend's auto-reconnect needs.
+# Single-user localhost app, so "remember me" is process memory, not a token.
 rememberedUser = None
 
 
@@ -43,8 +30,6 @@ async def handler(websocket, path):
     login = LoginSession()
     session = None
 
-    # A remembered user is restored before the first message so the frontend's
-    # onOpen call reports an already-authenticated connection.
     if rememberedUser is not None:
         login.user = rememberedUser
         login.rememberMe = True
@@ -52,9 +37,7 @@ async def handler(websocket, path):
         session = get_session(rememberedUser)
 
     try:
-        # The frontend never calls onOpen; it only listens for it (Auth.tsx
-        # authenticates on result:true). Push it once on connect so a
-        # remembered user skips the login screen after a reconnect.
+        # The frontend never sends onOpen, it only listens for it.
         await websocket.send(json.dumps(
             {"result": session is not None, "function": "onOpen"}
         ))

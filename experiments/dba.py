@@ -28,7 +28,7 @@ DESIGN NOTES:
 3. TIE-BREAKING.
    Backtrack preference on equal costs is (up, left, diagonal) — identical to
    NB2's `dtw_path` (train_wlasl.py) argmin order, so paths are reproducible
-   against the friend's reference implementation.
+   against the original notebook's reference implementation.
 
 4. CONVERGENCE.
    DBA monotonically decreases the sum of within-cluster DTW costs (Petitjean

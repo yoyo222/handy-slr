@@ -133,8 +133,8 @@ class Session:
                             frame_landmarks[i + 21, :] = [landmark.x, landmark.y, landmark.z]
                         self.prev_right_hand = frame_landmarks[21:, :]
 
-            # Fix #1: decay frozen hand to zero after MISSING_RESET frames (~250ms)
-            # so prolonged absence reads as "no hand" instead of a stale ghost pose.
+            # Decay a frozen hand to zero after MISSING_RESET frames (~250ms) so
+            # prolonged absence reads as "no hand" rather than a stale ghost pose.
             MISSING_RESET = 5
             if left_hand_detected:
                 self.left_missing_count = 0
@@ -176,8 +176,8 @@ class Session:
         current_landmarks, presence = self.convert_mediapipe(self.decode_image(frame))
         left_present, right_present = presence
 
-        # Fix #2: if both hands are gone for >8 frames (~400ms) mid-window,
-        # drop the partial buffer so it doesn't poison the embedding.
+        # If both hands are gone for >8 frames (~400ms) mid-window, drop the
+        # partial buffer so it doesn't poison the embedding.
         if mode == 'translate':
             if not left_present and not right_present:
                 self.both_missing_count += 1
