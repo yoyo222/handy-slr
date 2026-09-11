@@ -1,7 +1,7 @@
 Handy — real-time few-shot sign language recognition
 Copyright 2026 Yota Taue and the Handy contributors
 
-This product includes software developed by Yota Taue and <co-author name>.
+This product includes software developed by Yota Taue and Allen Lee.
 
 --------------------------------------------------------------------------------
 Attribution
@@ -9,7 +9,7 @@ Attribution
 
 The Handy application — the React frontend under src/, the websocket server
 under server/, and the original embedding model weights at
-server/model/weights.h5 — was co-developed by Yota Taue and <co-author name>.
+server/model/weights.h5 — was co-developed by Yota Taue and Allen Lee.
 
 The research contribution under experiments/ and rmd/ is the work of Yota Taue,
 carried out at the Nakazawa-Ohkoshi Laboratory, Faculty of Policy Management,
@@ -27,8 +27,8 @@ The following are NOT covered by the Apache License 2.0 grant in LICENSE:
 * rmd/ — the paper, poster, and figures are licensed under Creative Commons
   Attribution 4.0 International. See LICENSE-docs.
 
-* train/ — the Colab training notebooks are the work of <co-author name>,
-  included for reference with permission. No license is granted for their reuse.
+* train/ — the Colab training notebooks are the work of Allen Lee, included for
+  reference with permission. No license is granted for their reuse.
   See train/README.md.
 
 --------------------------------------------------------------------------------

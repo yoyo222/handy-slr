@@ -1,8 +1,8 @@
 # Original training notebooks
 
 The two Colab notebooks in this directory are the original training pipeline for
-Handy's embedding model. They are the work of **<co-author name>**, included here
-for reference because they document how `server/model/weights.h5` was produced.
+Handy's embedding model. They are the work of **Allen Lee**, included here for
+reference because they document how `server/model/weights.h5` was produced.
 
 | Notebook | Contents |
 |---|---|

@@ -89,8 +89,8 @@ rmd/            Paper, poster, and figure generation
 ## Credits
 
 The Handy application — the React frontend, the websocket server, and the original
-embedding model in `server/model/weights.h5` — was **co-developed with
-<co-author name>**, who also wrote the training notebooks in `train/`.
+embedding model in `server/model/weights.h5` — was **co-developed with Allen Lee**,
+who also wrote the training notebooks in `train/`.
 
 The research contribution in `experiments/` and `rmd/` (the evaluation harness, the
 detection fallback, DBA prototype aggregation, the batched Soft-DTW implementation,
