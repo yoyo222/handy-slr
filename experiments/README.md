@@ -1,7 +1,7 @@
 # Experiments
 
 Evaluation and training code for the research described in
-[`rmd/`](../rmd/). This is separate from the live application: the app matches
+[`research/`](../research/). This is separate from the live application: the app matches
 against signs you record yourself, whereas everything here is measured on WLASL
 under a protocol where the evaluation classes are never seen during training.
 

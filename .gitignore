@@ -50,11 +50,11 @@ venv/
 /data/
 
 # Private research working files. These are deliberately NOT published:
-# RESEARCH.md is the personal results/backlog log, and rmd/overleaf/ is the
+# RESEARCH.md is the personal results/backlog log, and research/overleaf/ is the
 # LaTeX source whose figures live only in Overleaf (it cannot build here).
 # Git does not back these up, so keep your own copies.
-/rmd/RESEARCH.md
-/rmd/overleaf/
+/research/RESEARCH.md
+/research/overleaf/
 
 # npm lockfile. This project uses yarn; having both desyncs resolution.
 package-lock.json

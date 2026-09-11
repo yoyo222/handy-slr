@@ -1,6 +1,6 @@
 """Generate presentation figures for the final WIP talk.
 
-Outputs PNGs into rmd/figures/. Figures that illustrate algorithms (DTW path,
+Outputs PNGs into research/figures/. Figures that illustrate algorithms (DTW path,
 DBA barycenter, soft-DTW expected alignment) are computed with the REAL
 implementations in experiments/, not mockups.
 

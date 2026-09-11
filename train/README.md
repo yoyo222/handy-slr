@@ -16,7 +16,7 @@ They expect a Google Colab GPU runtime with the dataset mounted from Drive under
 ## Licensing
 
 **These notebooks are excluded from the Apache License 2.0 grant that covers the
-rest of this repository, and from the CC BY 4.0 grant covering `rmd/`.** They are
+rest of this repository, and from the CC BY 4.0 grant covering `research/`.** They are
 reproduced with permission for reference. No license to use, modify, or
 redistribute them is granted here. Ask the author.
 

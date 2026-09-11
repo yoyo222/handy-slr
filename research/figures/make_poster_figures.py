@@ -1,7 +1,7 @@
 """Generate poster figures (A1) for the final WIP presentation, paper style.
 
 Serif (Times / Yu Mincho) + Computer Modern math, muted colors, booktabs
-table. Data comes from the canonical results (rmd/RESEARCH.md); the
+table. Data comes from the canonical results (research/RESEARCH.md); the
 calibration figure uses the REAL leave-one-out scores computed through the
 continuous_bench code path (cached in calibration_scores.json).
 

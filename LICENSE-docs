@@ -3,11 +3,11 @@ Creative Commons Attribution 4.0 International (CC BY 4.0)
 Copyright 2026 Yota Taue
 
 This license applies to the research documents and figures in this repository,
-namely everything under rmd/, including:
+namely everything under research/, including:
 
-  * rmd/2026_yota_wip_resumefinal-2.pdf   (paper, Japanese)
-  * rmd/yota_WIP_poster.pdf               (poster, Japanese)
-  * rmd/figures/                          (figures and the scripts generating them)
+  * research/WIP_paper_2026s.pdf    (paper, Japanese)
+  * research/WIP_poster_2026s.pdf   (poster, Japanese)
+  * research/figures/               (figures and the scripts generating them)
 
 Source code in this repository is licensed separately under the Apache License
 2.0; see LICENSE. The notebooks under train/ are excluded from both grants; see
