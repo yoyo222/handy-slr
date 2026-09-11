@@ -97,7 +97,18 @@ python experiments/latency_bench.py --class_counts 5,10,20,40,80
 python experiments/soft_dtw.py    # gradcheck, γ→0 equals hard DTW, batched == unbatched
 ```
 
-## Results files
+## Results
+
+Measured on classes disjoint from the training vocabulary.
+
+| Change | Effect |
+|---|---|
+| Detection fallback for missing hands | 5-way 1-shot 44.1% to 52.7% |
+| DBA prototype aggregation | 4.6x faster inference |
+| Soft-DTW loss on L2-normalized embeddings | 10-way 5-shot transfer 67.1% to 76.1% |
+| Conformal threshold calibration | Continuous-stream WER 280% to 83.1%, no manual tuning |
+
+### Results files
 
 | File | Contents |
 |---|---|

@@ -34,27 +34,21 @@ If the UI hangs on the loading screen, read the server terminal. That means an e
 
 ## How it works
 
-Webcam frame every 50 ms over a websocket. MediaPipe extracts 42 hand keypoints per frame; 30 frames are encoded to a 256-dim embedding by a CNN+TCN net. Recognition is partial DTW against every registered sign, which tolerates differences in signing speed.
+The browser sends a webcam frame every 50 ms over a websocket. MediaPipe extracts 42 hand keypoints per frame. Every 30 frames are encoded into a 256-dimensional embedding by a CNN+TCN network and matched against each registered sign with partial DTW, which tolerates differences in signing speed.
 
-Two non-obvious parts:
+The rejection threshold is fitted per user from leave-one-out distances over their own recordings, and recalculated whenever a sign is added or deleted.
 
-- The rejection threshold is fitted per user from leave-one-out distances over their own recordings. The original hardcoded 0.9 never fired once in benchmarking.
-- MediaPipe misses a hand in ~38% of WLASL frames. Zero-filling those puts a landmark at the origin that matches almost anything. Decaying the last known pose instead is worth ~8 points of accuracy.
+Frames where MediaPipe finds no hand are not zero-filled. The last known pose is decayed forward, windows with no recoverable hand are dropped, and a per-frame presence mask is stored alongside the landmarks.
+
+Recognized signs pass a 3-buffer debounce before being shown, which suppresses single-window misfires.
 
 Protocol and component detail: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
 ## Research
 
-Few-shot sign recognition evaluated on WLASL, class-disjoint, so evaluation classes are never seen in training.
+The matching pipeline is evaluated as a few-shot problem on WLASL, using a class-disjoint split so evaluation classes are never seen during training. The harness, benchmarks and results live in [`experiments/`](experiments/), documented in [experiments/README.md](experiments/README.md).
 
-| Change | Effect |
-|---|---|
-| Detection fallback for missing hands | 5-way 1-shot 44.1% to 52.7% |
-| DBA prototype aggregation | 4.6x faster inference |
-| Soft-DTW loss on L2-normalized embeddings | 10-way 5-shot transfer 67.1% to 76.1% |
-| Conformal threshold calibration | Continuous-stream WER 280% to 83.1%, no manual tuning |
-
-Paper and poster are in Japanese: [`research/WIP_paper_2026s.pdf`](research/WIP_paper_2026s.pdf), [`research/WIP_poster_2026s.pdf`](research/WIP_poster_2026s.pdf). Reproduction steps and evaluation protocol: [experiments/README.md](experiments/README.md).
+Paper and poster are in Japanese: [`research/WIP_paper_2026s.pdf`](research/WIP_paper_2026s.pdf), [`research/WIP_poster_2026s.pdf`](research/WIP_poster_2026s.pdf).
 
 ## Repository layout
 
