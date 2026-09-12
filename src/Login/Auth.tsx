@@ -105,7 +105,7 @@ const Auth: React.FC<AuthProps> = ({
         setErrorMessage(t('invalid_credentials', language));
       }
     }
-  }, [socketMessage, isConnected, language]);
+  }, [socketMessage, isConnected, language, setIsAuthenticated]);
 
   return (
     <div className="auth-container" data-theme={theme}>

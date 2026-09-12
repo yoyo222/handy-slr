@@ -1,6 +1,6 @@
 // src/App/App.tsx
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
 import Record from '../Record/Record';
@@ -121,17 +121,16 @@ const Home: React.FC<HomeProps> = ({ socketRef, socketMessage, isConnected }) =>
   const { language } = useLanguage(); 
   const [isTutorialFading, setIsTutorialFading] = useState(false);
 
+  // Runs once on mount: showTutorial starts true, so no guard is needed.
   useEffect(() => {
-    if (showTutorial) {
-      const timer = setTimeout(() => {
-        setIsTutorialFading(true);
-        setTimeout(() => {
-          setShowTutorial(false);
-          setIsTutorialFading(false);
-        }, 500); 
-      }, 8000);
-      return () => clearTimeout(timer);
-    }
+    const timer = setTimeout(() => {
+      setIsTutorialFading(true);
+      setTimeout(() => {
+        setShowTutorial(false);
+        setIsTutorialFading(false);
+      }, 500);
+    }, 8000);
+    return () => clearTimeout(timer);
   }, []);
 
   const toggleOverlay = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -387,7 +386,7 @@ const App: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
   const toggleSidebar = () => setIsSidebarOpen(prev => !prev);
 
-  const onAuthentication = (state: boolean) => {
+  const onAuthentication = useCallback((state: boolean) => {
     if (state) {
       setIsAuthenticated(true);
       console.log("Authenticated!");
@@ -400,7 +399,7 @@ const App: React.FC = () => {
     } else {
       setIsAuthenticated(false);
     }
-  };
+  }, []);
 
   const handleLogin = (username: string, password: string, rememberMe: boolean) => {
     if (!isConnected) return;
@@ -491,22 +490,25 @@ const App: React.FC = () => {
     };
   }, []);
 
-  const setUpDescriptions = (descriptions: { [folderName: string]: string } | string) => {
-    const updatedFolders: FolderType[] = [];
+  const setUpDescriptions = useCallback((descriptions: { [folderName: string]: string } | string) => {
+    // Read the previous folders through the updater so this does not close over
+    // `folders`, which would go stale between renders.
+    setFolders(prevFolders => {
+      const updatedFolders: FolderType[] = [];
 
-    for (const [name, description] of Object.entries(descriptions)) {
-      const existingFolderIndex = folders.findIndex(folder => folder.name === name);
+      for (const [name, description] of Object.entries(descriptions)) {
+        const existingFolderIndex = prevFolders.findIndex(folder => folder.name === name);
 
-      if (existingFolderIndex !== -1) {
-        const existingFolder = { ...folders[existingFolderIndex], description };
-        updatedFolders.push(existingFolder);
-      } else {
-        updatedFolders.push({ name, description, files: [] });
+        if (existingFolderIndex !== -1) {
+          updatedFolders.push({ ...prevFolders[existingFolderIndex], description });
+        } else {
+          updatedFolders.push({ name, description, files: [] });
+        }
       }
-    }
 
-    setFolders(updatedFolders);
-  };
+      return updatedFolders;
+    });
+  }, []);
 
   const updateFoldersWithVideo = (folder: string, filename: string, videoBase64: string) => {
     console.log("!");
@@ -585,7 +587,7 @@ const App: React.FC = () => {
         }
       }
     }
-  }, [socketMessage, isConnected]);
+  }, [socketMessage, isConnected, setUpDescriptions]);
 
   const renderComponent = () => {
     if (!isAuthenticated) {

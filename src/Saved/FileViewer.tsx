@@ -174,16 +174,16 @@ const FileViewer: React.FC<FileViewerProps> = ({
       }
     };
 
-    if (socketRef.current) {
-      socketRef.current.addEventListener('message', handleMessage);
-    }
+    // Capture the socket this effect actually subscribed to. Reading
+    // socketRef.current in the cleanup can see a reconnected socket and leak
+    // the listener on the old one.
+    const socket = socketRef.current;
+    socket?.addEventListener('message', handleMessage);
 
     return () => {
-      if (socketRef.current) {
-        socketRef.current.removeEventListener('message', handleMessage);
-      }
+      socket?.removeEventListener('message', handleMessage);
     };
-  }, [socketRef, language]);
+  }, [socketRef, language, setFolders]);
 
   return (
     <div className="file-viewer">

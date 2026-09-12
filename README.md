@@ -8,19 +8,28 @@ Most sign recognition models have a fixed vocabulary, so adding a word means col
 
 ## Setup
 
-Node.js with Yarn, Python 3.11, and a webcam.
+Node.js with Yarn, Python 3.11, and a webcam. Newer Python versions do not work: `torch` 2.2.0 and `mediapipe` 0.10.9 have no wheels for them.
 
 ```bash
 yarn
+
+python3 -m venv .venv
+source .venv/bin/activate
 pip install -r server/requirements.txt
 ```
 
-Two terminals, both from the repository root:
+Two terminals, both from the repository root. The server needs the virtualenv active:
 
 ```bash
+source .venv/bin/activate
 python server/server.py   # websocket server, :8765
+```
+
+```bash
 yarn start                # web app, :3000
 ```
+
+macOS provides no bare `python` or `pip`; they exist only inside an activated virtualenv. `command not found` means it is not active. Renaming or moving the repository also breaks `.venv`, because it stores absolute paths: delete it and recreate.
 
 Open <http://localhost:3000> and create an account. Accounts live in `server/login/users.json`, created on first signup and untracked. The server binds to `127.0.0.1`.
 

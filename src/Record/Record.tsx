@@ -1,6 +1,6 @@
 // src/Record/Record.tsx
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import './Record.css';
 import Webcam from 'react-webcam';
 import LoadingScreen from '../LoadingScreen/LoadingScreen';
@@ -37,17 +37,16 @@ const Record: React.FC<RecordProps> = ({ socketRef, socketMessage, isConnected }
   const { language } = useLanguage(); 
   const [isTutorialFading, setIsTutorialFading] = useState(false);
 
+  // Runs once on mount: showTutorial starts true, so no guard is needed.
   useEffect(() => {
-    if (showTutorial) {
-      const timer = setTimeout(() => {
-        setIsTutorialFading(true);
-        setTimeout(() => {
-          setShowTutorial(false);
-          setIsTutorialFading(false);
-        }, 500); 
-      }, 8000);
-      return () => clearTimeout(timer);
-    }
+    const timer = setTimeout(() => {
+      setIsTutorialFading(true);
+      setTimeout(() => {
+        setShowTutorial(false);
+        setIsTutorialFading(false);
+      }, 500);
+    }, 8000);
+    return () => clearTimeout(timer);
   }, []);
 
   const handleClick = () => {
@@ -92,13 +91,13 @@ const Record: React.FC<RecordProps> = ({ socketRef, socketMessage, isConnected }
     }
   };
 
-  const stopRecording = () => {
+  const stopRecording = useCallback(() => {
     if (mediaRecorderRef.current && isRecording) {
       mediaRecorderRef.current.stop();
       setIsRecording(false);
       setIsSaving(true);
     }
-  };
+  }, [isRecording]);
 
   const handleSaveRecording = () => {
     if (recordName && recordedChunks.length > 0) {
@@ -191,7 +190,7 @@ const Record: React.FC<RecordProps> = ({ socketRef, socketMessage, isConnected }
       const intervalId = setInterval(captureImage, 50);
       return () => clearInterval(intervalId);
     }
-  }, [countdown, isVideoVisible, isRecording]);
+  }, [countdown, isVideoVisible, isRecording, socketRef]);
 
   useEffect(() => {
     if (socketMessage) {
@@ -207,7 +206,7 @@ const Record: React.FC<RecordProps> = ({ socketRef, socketMessage, isConnected }
         }
       }
     }
-  }, [socketMessage]);
+  }, [socketMessage, stopRecording]);
 
   const toggleOverlay = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.stopPropagation(); 

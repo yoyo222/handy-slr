@@ -1,28 +1,13 @@
-/* src/theme.css
- *
- * Single source of truth for design tokens. Imported first in index.tsx so
- * every component stylesheet can rely on these.
- *
- * Sidebar.css referenced 9 variables (--button-primary-bg, --shadow-color,
- * --overlay-bg, ...) that were never defined anywhere, so those declarations
- * resolved to invalid and silently rendered unstyled. They are all defined
- * here now. Legacy names are kept as aliases so existing selectors keep
- * working without a rewrite.
- */
-
 :root {
   /* typography: system stack, includes JP faces since the UI is bilingual.
      No webfont: the demo must render identically offline. */
   --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue",
     "Hiragino Sans", "Noto Sans JP", "Yu Gothic UI", sans-serif;
 
-  /* radii */
   --radius-sm: 6px;
   --radius: 10px;
   --radius-lg: 14px;
   --radius-full: 999px;
-
-  /* motion: one duration/easing everywhere */
   --transition: 150ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -79,9 +64,6 @@
   --overlay-bg: rgba(0, 0, 0, 0.6);
 }
 
-/* ------------------------------------------------- legacy aliases ------- */
-/* Existing component CSS refers to these names; map them onto the tokens
-   above rather than rewriting every selector. */
 :root,
 :root[data-theme='light'],
 :root[data-theme='dark'] {
@@ -110,10 +92,6 @@
   --button-shadow: var(--shadow-color);
 }
 
-/* ------------------------------------------------------------- base ----- */
-/* Sidebar.css used to carry a global `* { margin:0; padding:0 }` reset, so no
-   component anywhere relies on default margins. Reproduced here verbatim
-   (minus the "Inter" font force) to keep every untouched view pixel-identical. */
 *,
 *::before,
 *::after {
