@@ -8,30 +8,48 @@ Most sign recognition models have a fixed vocabulary, so adding a word means col
 
 ## Setup
 
-Node.js with Yarn, Python 3.11, and a webcam. Newer Python versions do not work: `torch` 2.2.0 and `mediapipe` 0.10.9 have no wheels for them.
+Requires Node.js with Yarn, Python 3.11, and a webcam. `torch` 2.2.0 and `mediapipe` 0.10.9 have no wheels for Python 3.12 or newer.
+
+Install, from the repository root:
 
 ```bash
+# macOS / Linux
 yarn
-
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r server/requirements.txt
 ```
 
-Two terminals, both from the repository root. The server needs the virtualenv active:
+```powershell
+# Windows
+yarn
+py -3.11 -m venv .venv
+.venv\Scripts\activate
+pip install -r server/requirements.txt
+```
+
+Run, in two terminals:
 
 ```bash
-source .venv/bin/activate
-python server/server.py   # websocket server, :8765
+source .venv/bin/activate     # Windows: .venv\Scripts\activate
+python server/server.py       # websocket server, :8765
 ```
 
 ```bash
-yarn start                # web app, :3000
+yarn start                    # web app, :3000
 ```
-
-macOS provides no bare `python` or `pip`; they exist only inside an activated virtualenv. `command not found` means it is not active. Renaming or moving the repository also breaks `.venv`, because it stores absolute paths: delete it and recreate.
 
 Open <http://localhost:3000> and create an account. Accounts live in `server/login/users.json`, created on first signup and untracked. The server binds to `127.0.0.1`.
+
+### Troubleshooting
+
+| Symptom | Cause |
+|---|---|
+| `command not found: python` or `pip` | The virtualenv is not active. Activate it first. |
+| `No module named 'bcrypt'` | Running the system Python instead of the virtualenv's. |
+| `Could not find a version that satisfies mediapipe==0.10.9` | The virtualenv is not on Python 3.11. |
+| `Errno 48 address already in use` | A server is already on :8765. `lsof -ti:8765 \| xargs kill` (Windows: `netstat -ano \| findstr :8765`). |
+| Anything breaks after moving or renaming the repository | `.venv` stores absolute paths. Delete it and reinstall. |
 
 ### First run
 
